@@ -6,11 +6,11 @@ LABEL org.opencontainers.image.source="https://github.com/sneakywrld/octail-yolk
       org.opencontainers.image.title="octail-yolks" \
       org.opencontainers.image.description="Octail installer: Debian 12 with the usual install-script tools"
 
+# SteamCMD's 32-bit libraries only exist on amd64 (multilib); the arm64 image is built without them.
+ARG TARGETARCH
 RUN --mount=type=bind,source=common,target=/tmp/octail \
-    bash /tmp/octail/setup-apt.sh \
-        --i386 \
-        lib32gcc-s1 \
-        lib32stdc++6 \
+    if [ "$TARGETARCH" = amd64 ]; then set -- --i386 lib32gcc-s1 lib32stdc++6; else set --; fi; \
+    bash /tmp/octail/setup-apt.sh "$@" \
         wget \
         file \
         git \
