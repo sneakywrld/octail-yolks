@@ -4,7 +4,8 @@ FROM golang:1.23-bookworm AS rcon
 ARG RCON_CLI_VERSION=v0.10.3
 RUN CGO_ENABLED=0 GOBIN=/out go install "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
 
-# Windows-only servers through GE-Proton: `proton run ./Server.exe`. XVFB=1 starts a virtual display.
+# Windows-only servers through GE-Proton: `proton run ./Server.exe`. XVFB=1 starts a virtual display. The
+# SteamCMD update also updates app 1007 (the Windows Steam client libraries) unless STEAM_SDK=0.
 FROM debian:bookworm-slim
 ARG GE_PROTON_VERSION=GE-Proton11-7
 LABEL org.opencontainers.image.source="https://github.com/sneakywrld/octail-yolks" \
@@ -56,7 +57,8 @@ ENV HOME=/home/container \
     USER=container \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
-    PROTON_NO_FSYNC=1
+    PROTON_NO_FSYNC=1 \
+    OCTAIL_STEAM_SDK_DEFAULT=1
 
 USER container
 WORKDIR /home/container

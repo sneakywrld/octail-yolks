@@ -5,7 +5,8 @@ ARG RCON_CLI_VERSION=v0.10.3
 RUN CGO_ENABLED=0 GOBIN=/out go install "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
 
 # Windows-only servers through Wine (staging branch from WineHQ), winetricks, Wine Mono and Gecko.
-# Hooks: XVFB=1 virtual display, the Wine prefix and WINETRICKS_RUN verbs, SteamCMD update.
+# Hooks: virtual display (on unless XVFB=0), the Wine prefix and WINETRICKS_RUN verbs, SteamCMD update
+# (with app 1007, the Windows Steam client libraries, unless STEAM_SDK=0).
 FROM debian:bookworm-slim
 ARG WINE_BRANCH=staging
 ARG WINETRICKS_VERSION=20260125
@@ -54,7 +55,9 @@ ENV HOME=/home/container \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     WINEPREFIX=/home/container/.wine \
-    WINEDEBUG=-all
+    WINEDEBUG=-all \
+    OCTAIL_XVFB_DEFAULT=1 \
+    OCTAIL_STEAM_SDK_DEFAULT=1
 
 USER container
 WORKDIR /home/container
