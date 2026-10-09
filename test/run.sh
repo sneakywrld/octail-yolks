@@ -196,6 +196,25 @@ if [ ! -f "${work}/home/steamcmd/tries" ]; then ok 'AUTO_UPDATE=0 wins over the 
 out=$(run_ep AUTO_UPDATE=1 SRCDS_APPID='1; touch pwned' STARTUP='echo started')
 expect_contains 'a non-numeric app id is refused' "${out}" 'not a number'
 
+# A Steam account's saved login (Tentacle: STEAM_LOGIN_CACHE, STEAM_USER, empty STEAM_PASS).
+mkdir -p "${work}/cache" "${work}/home/steamcmd/config"
+echo token >"${work}/cache/config.vdf"
+echo old >"${work}/home/steamcmd/config/config.vdf"
+rm -f "${work}/home/steamcmd/tries"
+out=$(run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 STEAM_USER=me STEAM_PASS= STEAM_LOGIN_CACHE="${work}/cache" STARTUP='echo started')
+expect_contains 'the saved Steam login is used' "${out}" 'using the saved Steam login for me'
+if [ "$(readlink "${work}/home/steamcmd/config")" = "${work}/cache" ]; then ok 'steamcmd/config is linked to the login cache'; else not_ok 'steamcmd/config is linked to the login cache' "$(ls -la "${work}/home/steamcmd")"; fi
+expect_contains 'logs in by name only (token from the cache)' "$(cat "${work}/home/steamcmd/args")" $'+login\nme\n+app_update'
+out=$(run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 STEAM_USER=me STEAM_LOGIN_CACHE="${work}/cache" STARTUP='echo started')
+expect_not_contains 'an existing link is kept quietly' "${out}" 'using the saved Steam login'
+rm -f "${work}/home/steamcmd/config" "${work}/cache/config.vdf"
+mkdir -p "${work}/home/steamcmd/config"
+echo own >"${work}/home/steamcmd/config/config.vdf"
+run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 STEAM_USER=me STEAM_LOGIN_CACHE="${work}/cache" STARTUP='true' >/dev/null
+if [ ! -L "${work}/home/steamcmd/config" ] && [ -f "${work}/home/steamcmd/config/config.vdf" ]; then ok 'a server'\''s own login is kept while the cache is empty'; else not_ok 'a server'\''s own login is kept while the cache is empty'; fi
+run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 STEAM_LOGIN_CACHE="${work}/cache" STARTUP='true' >/dev/null
+if [ ! -L "${work}/home/steamcmd/config" ]; then ok 'anonymous logins leave steamcmd/config alone'; else not_ok 'anonymous logins leave steamcmd/config alone'; fi
+
 # --- signals: Ctrl+C (SIGINT) reaches the server --------------------------------------------------------
 # The fake server saves on SIGINT and exits 0, like a game server's graceful stop. It runs once in the
 # foreground of the startup, and once in the background with the egg-style trap that forwards the signal.
