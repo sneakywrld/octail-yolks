@@ -43,6 +43,50 @@ run_ep() {
 		bash "${entrypoint}" 2>&1
 }
 
+# --- images.json, folders and base images (test/check-images.sh) ---------------------------------------
+check="${here}/check-images.sh"
+if out=$("${check}" 2>&1); then ok 'the repository passes check-images.sh'; else not_ok 'the repository passes check-images.sh' "${out}"; fi
+
+# A small fake tree per case: images.json + images/<tag>/Dockerfile.
+fake_tree() { # tag dockerfile-content
+	rm -rf "${work:?}/tree"
+	mkdir -p "${work}/tree/images/$1"
+	printf '%s\n' "$2" >"${work}/tree/images/$1/Dockerfile"
+	printf '{"images":[{"tag":"%s","folder":"images/%s"}]}\n' "$1" "$1" >"${work}/tree/images.json"
+}
+expect_check() { # name pass|fail [needle]
+	local out rc
+	out=$("${check}" "${work}/tree" 2>&1)
+	rc=$?
+	if [ "$2" = pass ] && [ "${rc}" = 0 ]; then
+		ok "$1"
+	elif [ "$2" = fail ] && [ "${rc}" != 0 ] && [[ ${out} == *"${3:-}"* ]]; then
+		ok "$1"
+	else
+		not_ok "$1" "rc=${rc}: ${out}"
+	fi
+}
+fake_tree ok $'FROM golang:1.23-bookworm AS build\nFROM docker.io/library/debian:bookworm-slim@sha256:abc\nCOPY --from=build /a /a\nCOPY --from=mcr.microsoft.com/dotnet/aspnet:8.0 /b /b'
+expect_check 'official bases, stages and digests pass' pass
+fake_tree bad 'FROM ghcr.io/parkervcp/yolks:debian'
+expect_check 'a parkervcp base fails' fail 'Pterodactyl/Pelican/parkervcp'
+fake_tree bad 'FROM ghcr.io/pelican-eggs/yolks:java_21'
+expect_check 'a pelican-eggs base fails' fail 'Pterodactyl/Pelican/parkervcp'
+fake_tree bad $'FROM debian:bookworm-slim\nCOPY \\\n  --from=ghcr.io/pterodactyl/yolks:java_17 /entrypoint.sh /entrypoint.sh'
+expect_check 'COPY --from a Pterodactyl image fails (also across a line break)' fail 'Pterodactyl/Pelican/parkervcp'
+fake_tree bad $'FROM debian:bookworm-slim\nRUN --mount=type=bind,from=quay.io/someone/thing,target=/x true'
+expect_check 'RUN --mount from an unlisted image fails' fail 'not an allowed base'
+fake_tree bad 'FROM randomuser/debian:12'
+expect_check 'an image not in bases.txt fails' fail 'not an allowed base'
+fake_tree bad $'ARG BASE=debian:bookworm-slim\nFROM ${BASE}'
+expect_check 'a FROM through a variable fails' fail "can't be checked"
+fake_tree ok 'FROM alpine:3.22'
+mkdir -p "${work}/tree/images/extra"
+expect_check 'a folder missing from images.json fails' fail 'images/extra is not in images.json'
+fake_tree ok 'FROM alpine:3.22'
+printf '{"images":[{"tag":"ok","folder":"images/ok"},{"tag":"gone","folder":"images/gone"}]}\n' >"${work}/tree/images.json"
+expect_check 'an images.json entry without a folder fails' fail 'images/gone, which does not exist'
+
 # --- {{VAR}} and ${VAR} --------------------------------------------------------------------------------
 fresh
 out=$(run_ep SERVER_PORT=25565 SERVER_JARFILE=server.jar \

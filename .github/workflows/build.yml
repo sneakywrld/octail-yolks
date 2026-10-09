@@ -15,6 +15,7 @@ on:
       - "scripts/**"
       - "test/**"
       - "images.json"
+      - "bases.txt"
       - ".hadolint.yaml"
       - ".github/workflows/build.yml"
   pull_request:
@@ -62,12 +63,9 @@ jobs:
       - name: hadolint
         run: hadolint --config .hadolint.yaml images/*/Dockerfile
 
-      - name: images.json matches the folders
-        run: |
-          listed=$(jq -r '.images[].folder' images.json | sort)
-          present=$(find images -mindepth 1 -maxdepth 1 -type d | sort)
-          diff <(echo "$listed") <(echo "$present")
-          for folder in $listed; do test -f "$folder/Dockerfile"; done
+      # images.json <-> images/ folders, and only the official bases in bases.txt (no Pterodactyl/Pelican images).
+      - name: images.json, folders and base images
+        run: test/check-images.sh
 
       - name: Entrypoint tests
         run: test/run.sh
