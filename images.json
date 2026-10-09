@@ -1,0 +1,549 @@
+{
+  "$comment": "Every image this repository builds: tag -> folder -> platforms. CI builds its matrix from this file; `replaces` lists the third-party images each tag stands in for in Octail's eggs, `eggs` the shipped eggs using it.",
+  "registry": "ghcr.io/sneakywrld/octail-yolks",
+  "images": [
+    {
+      "tag": "java_8",
+      "folder": "images/java_8",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Java 8 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft up to 1.16",
+      "replaces": [
+        "ghcr.io/pelican-eggs/yolks:java_8"
+      ],
+      "eggs": [
+        "minecraft-fabric",
+        "minecraft-forge",
+        "minecraft-neoforge",
+        "minecraft-paper",
+        "minecraft-velocity"
+      ]
+    },
+    {
+      "tag": "java_11",
+      "folder": "images/java_11",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Java 11 (Eclipse Temurin JDK, Ubuntu 24.04)",
+      "replaces": [
+        "ghcr.io/pelican-eggs/yolks:java_11"
+      ],
+      "eggs": [
+        "minecraft-fabric",
+        "minecraft-forge",
+        "minecraft-neoforge",
+        "minecraft-paper",
+        "minecraft-velocity"
+      ]
+    },
+    {
+      "tag": "java_17",
+      "folder": "images/java_17",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Java 17 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft 1.17-1.20.4, Mindustry",
+      "replaces": [
+        "ghcr.io/pelican-eggs/yolks:java_16",
+        "ghcr.io/pelican-eggs/yolks:java_17"
+      ],
+      "eggs": [
+        "mindustry",
+        "minecraft-fabric",
+        "minecraft-forge",
+        "minecraft-neoforge",
+        "minecraft-paper",
+        "minecraft-velocity"
+      ]
+    },
+    {
+      "tag": "java_21",
+      "folder": "images/java_21",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Java 21 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft 1.20.5+, Mindustry",
+      "replaces": [
+        "ghcr.io/pelican-eggs/yolks:java_21"
+      ],
+      "eggs": [
+        "mindustry",
+        "minecraft-fabric",
+        "minecraft-forge",
+        "minecraft-neoforge",
+        "minecraft-paper",
+        "minecraft-velocity"
+      ]
+    },
+    {
+      "tag": "java_25",
+      "folder": "images/java_25",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Java 25 (Eclipse Temurin JDK, Ubuntu 24.04): newest Minecraft",
+      "replaces": [
+        "ghcr.io/pelican-eggs/yolks:java_25"
+      ],
+      "eggs": [
+        "minecraft-fabric",
+        "minecraft-forge",
+        "minecraft-neoforge",
+        "minecraft-paper",
+        "minecraft-velocity"
+      ]
+    },
+    {
+      "tag": "dotnet_8",
+      "folder": "images/dotnet_8",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": ".NET 8 runtime (Debian 12): tModLoader, Vintage Story",
+      "replaces": [
+        "ghcr.io/parkervcp/yolks:dotnet_6",
+        "ghcr.io/parkervcp/yolks:dotnet_8",
+        "ghcr.io/pelican-eggs/yolks:dotnet_7",
+        "ghcr.io/pelican-eggs/yolks:dotnet_8"
+      ],
+      "eggs": [
+        "terraria-tmodloader",
+        "vintage-story"
+      ]
+    },
+    {
+      "tag": "dotnet_10",
+      "folder": "images/dotnet_10",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": ".NET 10 runtime (Ubuntu 24.04): Vintage Story 1.21+",
+      "replaces": [
+        "ghcr.io/pelican-eggs/yolks:dotnet_10"
+      ],
+      "eggs": [
+        "vintage-story"
+      ]
+    },
+    {
+      "tag": "nodejs_20",
+      "folder": "images/nodejs_20",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Node.js 20 (Debian 12) with git and native-module build tools",
+      "replaces": [],
+      "eggs": []
+    },
+    {
+      "tag": "nodejs_22",
+      "folder": "images/nodejs_22",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Node.js 22 (Debian 12) with git and native-module build tools",
+      "replaces": [],
+      "eggs": []
+    },
+    {
+      "tag": "python_3.12",
+      "folder": "images/python_3.12",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Python 3.12 (Debian 12) with git and a C compiler for wheels",
+      "replaces": [],
+      "eggs": []
+    },
+    {
+      "tag": "go_1.23",
+      "folder": "images/go_1.23",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Go 1.23 (Debian 12), Go caches in the server folder",
+      "replaces": [],
+      "eggs": []
+    },
+    {
+      "tag": "debian",
+      "folder": "images/debian",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Generic Debian 12 with common game-server libraries: Factorio, OpenTTD, Terraria, Bedrock",
+      "replaces": [
+        "ghcr.io/parkervcp/yolks:debian",
+        "ghcr.io/pelican-eggs/yolks:debian"
+      ],
+      "eggs": [
+        "factorio",
+        "minecraft-bedrock",
+        "openttd",
+        "terraria-vanilla"
+      ]
+    },
+    {
+      "tag": "alpine",
+      "folder": "images/alpine",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Small generic Alpine Linux runtime",
+      "replaces": [
+        "ghcr.io/pterodactyl/yolks:alpine"
+      ],
+      "eggs": [
+        "test-game"
+      ]
+    },
+    {
+      "tag": "steamcmd_debian",
+      "folder": "images/steamcmd_debian",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "SteamCMD servers on Debian 12: 32-bit libs, Xvfb, libpulse/libatomic (Valheim), ICU, rcon, auto-update hook",
+      "replaces": [
+        "ghcr.io/parkervcp/games:valheim",
+        "ghcr.io/parkervcp/steamcmd:debian",
+        "ghcr.io/pelican-eggs/steamcmd:debian"
+      ],
+      "eggs": [
+        "7-days-to-die",
+        "ark-survival-evolved",
+        "arma-reforger",
+        "avorion",
+        "barotrauma",
+        "conan-exiles",
+        "core-keeper",
+        "counter-strike-source",
+        "craftopia",
+        "dont-starve-together",
+        "euro-truck-simulator-2",
+        "hurtworld",
+        "killing-floor-2",
+        "mordhau",
+        "necesse",
+        "palworld",
+        "project-zomboid",
+        "satisfactory",
+        "soulmask",
+        "squad",
+        "steamcmd-generic",
+        "the-front",
+        "unturned",
+        "valheim",
+        "valheim-bepinex"
+      ]
+    },
+    {
+      "tag": "steamcmd_ubuntu",
+      "folder": "images/steamcmd_ubuntu",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "SteamCMD servers on Ubuntu 24.04 (newer glibc, libc++): Sandstorm, Pavlov, Stationeers",
+      "replaces": [
+        "ghcr.io/parkervcp/steamcmd:ubuntu"
+      ],
+      "eggs": [
+        "insurgency-sandstorm",
+        "pavlov-vr",
+        "stationeers"
+      ]
+    },
+    {
+      "tag": "steamcmd_dotnet",
+      "folder": "images/steamcmd_dotnet",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "SteamCMD servers with the .NET 8 / ASP.NET Core 8 runtime: Eco",
+      "replaces": [
+        "ghcr.io/parkervcp/steamcmd:dotnet"
+      ],
+      "eggs": [
+        "eco"
+      ]
+    },
+    {
+      "tag": "steamcmd_sniper",
+      "folder": "images/steamcmd_sniper",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "Valve's Steam Runtime 3 (sniper) with our entrypoint: Counter-Strike 2",
+      "replaces": [
+        "ghcr.io/parkervcp/steamcmd:sniper"
+      ],
+      "eggs": [
+        "counter-strike-2"
+      ]
+    },
+    {
+      "tag": "source",
+      "folder": "images/source",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "Source engine (srcds) 32-bit libraries; updates before start by default",
+      "replaces": [
+        "ghcr.io/parkervcp/games:source",
+        "ghcr.io/pelican-eggs/games:source"
+      ],
+      "eggs": [
+        "day-of-defeat-source",
+        "garrysmod",
+        "left-4-dead-2",
+        "source-engine",
+        "team-fortress-2"
+      ]
+    },
+    {
+      "tag": "rust",
+      "folder": "images/rust",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "Rust dedicated server: SteamCMD image + FRAMEWORK hook (vanilla/oxide/carbon), updates by default",
+      "replaces": [
+        "ghcr.io/pelican-eggs/games:rust"
+      ],
+      "eggs": [
+        "rust"
+      ]
+    },
+    {
+      "tag": "proton",
+      "folder": "images/proton",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "Windows servers through GE-Proton (`proton run`), Xvfb, SteamCMD update",
+      "replaces": [
+        "ghcr.io/parkervcp/steamcmd:proton",
+        "ghcr.io/pelican-eggs/steamcmd:proton"
+      ],
+      "eggs": [
+        "abiotic-factor",
+        "ark-survival-ascended",
+        "astroneer",
+        "enshrouded",
+        "steamcmd-generic"
+      ]
+    },
+    {
+      "tag": "wine",
+      "folder": "images/wine",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "Windows servers through WineHQ stable, winetricks, Wine Mono/Gecko, Xvfb, SteamCMD update",
+      "replaces": [
+        "ghcr.io/parkervcp/yolks:wine_latest",
+        "ghcr.io/pelican-eggs/yolks:wine_latest"
+      ],
+      "eggs": [
+        "icarus",
+        "sons-of-the-forest",
+        "space-engineers"
+      ]
+    },
+    {
+      "tag": "wine_staging",
+      "folder": "images/wine_staging",
+      "platforms": [
+        "linux/amd64"
+      ],
+      "kind": "runtime",
+      "description": "Windows servers through WineHQ staging (V Rising), otherwise like wine",
+      "replaces": [
+        "ghcr.io/parkervcp/yolks:wine_staging"
+      ],
+      "eggs": [
+        "v-rising"
+      ]
+    },
+    {
+      "tag": "mono",
+      "folder": "images/mono",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "description": "Mono (Debian's mono-complete) for .NET Framework servers",
+      "replaces": [],
+      "eggs": []
+    },
+    {
+      "tag": "installer_debian",
+      "folder": "images/installer_debian",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "installer",
+      "description": "Install scripts (root): Debian 12, SteamCMD 32-bit libs, curl/wget/jq/xq/unzip/git/dos2unix/python3, apt",
+      "replaces": [
+        "ghcr.io/parkervcp/installers:debian",
+        "ghcr.io/pelican-eggs/installers:debian"
+      ],
+      "eggs": [
+        "7-days-to-die",
+        "abiotic-factor",
+        "ark-survival-ascended",
+        "ark-survival-evolved",
+        "arma-reforger",
+        "astroneer",
+        "avorion",
+        "barotrauma",
+        "conan-exiles",
+        "core-keeper",
+        "counter-strike-2",
+        "counter-strike-source",
+        "craftopia",
+        "day-of-defeat-source",
+        "dont-starve-together",
+        "eco",
+        "enshrouded",
+        "euro-truck-simulator-2",
+        "factorio",
+        "garrysmod",
+        "hurtworld",
+        "icarus",
+        "insurgency-sandstorm",
+        "killing-floor-2",
+        "left-4-dead-2",
+        "mindustry",
+        "minecraft-bedrock",
+        "minecraft-neoforge",
+        "mordhau",
+        "necesse",
+        "palworld",
+        "pavlov-vr",
+        "project-zomboid",
+        "rust",
+        "satisfactory",
+        "sons-of-the-forest",
+        "soulmask",
+        "source-engine",
+        "space-engineers",
+        "squad",
+        "stationeers",
+        "steamcmd-generic",
+        "team-fortress-2",
+        "terraria-tmodloader",
+        "terraria-vanilla",
+        "the-front",
+        "unturned",
+        "v-rising",
+        "valheim",
+        "valheim-bepinex",
+        "vintage-story"
+      ]
+    },
+    {
+      "tag": "installer_alpine",
+      "folder": "images/installer_alpine",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "installer",
+      "description": "Install scripts (root): Alpine with bash, curl, wget, jq, unzip, git",
+      "replaces": [
+        "alpine:latest",
+        "ghcr.io/pelican-eggs/installers:alpine",
+        "ghcr.io/pterodactyl/installers:alpine"
+      ],
+      "eggs": [
+        "minecraft-paper",
+        "minecraft-velocity",
+        "openttd",
+        "test-game"
+      ]
+    },
+    {
+      "tag": "installer_java_8",
+      "folder": "images/installer_java_8",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "installer",
+      "description": "Install scripts that run Java 8 (old Forge installers)",
+      "replaces": [
+        "ghcr.io/pelican-eggs/installers:java_8"
+      ],
+      "eggs": [
+        "minecraft-forge"
+      ]
+    },
+    {
+      "tag": "installer_java_11",
+      "folder": "images/installer_java_11",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "installer",
+      "description": "Install scripts that run Java 11 (Fabric installer)",
+      "replaces": [
+        "ghcr.io/pelican-eggs/installers:java_11"
+      ],
+      "eggs": [
+        "minecraft-fabric"
+      ]
+    },
+    {
+      "tag": "installer_java_21",
+      "folder": "images/installer_java_21",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "installer",
+      "description": "Install scripts that run Java 21 (modern Forge / NeoForge installers)",
+      "replaces": [],
+      "eggs": []
+    }
+  ]
+}
