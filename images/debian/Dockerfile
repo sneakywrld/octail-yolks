@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-# Generic Debian 12 runtime for native Linux servers: Factorio, OpenTTD, Terraria, Minecraft Bedrock, ...
+# Generic Debian 12 runtime for native Linux servers: Factorio, OpenTTD (14+ links GLib), Terraria, Minecraft Bedrock, ...
 FROM debian:bookworm-slim
 LABEL org.opencontainers.image.source="https://github.com/sneakywrld/octail-yolks" \
       org.opencontainers.image.title="octail-yolks" \
@@ -27,6 +27,7 @@ RUN --mount=type=bind,source=common,target=/tmp/octail \
         libzip4 \
         libevent-2.1-7 \
         libfluidsynth3 \
+        libglib2.0-0 \
         libmariadb3 \
         file \
         git \
