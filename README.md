@@ -10,6 +10,9 @@ image, and no script is copied from them. Images start from official upstream ba
 Runtime `registry.gitlab.steamos.cloud/steamrt/sniper/platform`) plus upstream software from its own publishers
 (WineHQ's repository, winetricks, GE-Proton, gorcon/rcon-cli built from source). The entrypoint and hooks are written for
 Octail and Tentacle. The other projects' behaviour was only read to learn what game eggs expect from an image.
+The allowed bases are listed in `bases.txt`; `test/check-images.sh` (run by `test/run.sh` and CI) fails when a
+Dockerfile's `FROM`, `COPY --from=` or `RUN --mount=from=` names anything else, and when `images.json` and the
+`images/` folders disagree.
 
 **Licence:** none chosen yet. Until the owner picks one, all rights are reserved; the upstream software inside the
 images keeps its own licences.
@@ -131,7 +134,7 @@ docker buildx build -f images/wine/Dockerfile -t octail-yolks:wine .  # the same
 Build arguments for pinned upstream versions: `GE_PROTON_VERSION` (proton), `WINE_BRANCH` and `WINETRICKS_VERSION`
 (wine*), `RCON_CLI_VERSION` (SteamCMD-family images).
 
-Checks, without Docker: `test/run.sh` (entrypoint behaviour: `{{VAR}}`/`${VAR}`, masking, values never re-evaluated,
+Checks, without Docker: `test/check-images.sh` (folders and allowed bases), `test/run.sh` (that, entrypoint behaviour: `{{VAR}}`/`${VAR}`, masking, values never re-evaluated,
 exit codes, hooks, the SteamCMD retry with a fake `steamcmd.sh`, SIGINT reaching a foreground server and an egg-style
 trapped background server; uses `tini` when installed), `shellcheck -x common/*.sh common/hooks/*.sh scripts/*.sh test/*.sh`
 and `hadolint --config .hadolint.yaml images/*/Dockerfile`.
@@ -140,7 +143,8 @@ and `hadolint --config .hadolint.yaml images/*/Dockerfile`.
 
 `.github/workflows/build.yml`:
 
-- **test**: shellcheck, hadolint, `images.json` matches the `images/` folders, `test/run.sh`.
+- **test**: shellcheck, hadolint, `test/check-images.sh` (`images.json` matches the `images/` folders, bases only
+  from `bases.txt`), `test/run.sh`.
 - **plan**: picks the images (`scripts/select-images.sh`): on a push to `main`, those whose folder changed (all of them
   when `common/`, `images.json` or the workflow changed); weekly (Monday 04:17 UTC) and on a manual run without input,
   all; a manual run can name tags (`java_21,wine`).
@@ -173,7 +177,9 @@ common/install-wine.sh      build-time: WineHQ, winetricks, Wine Mono/Gecko
 common/install-proton.sh    build-time: GE-Proton (checksum-verified)
 images/<tag>/Dockerfile     one folder per tag
 images.json                 tag -> folder -> platforms -> description, replaced images, eggs
+bases.txt                   the official base images Dockerfiles may use (allowlist)
 scripts/select-images.sh    CI matrix
 scripts/build.sh            local build
-test/run.sh                 entrypoint tests
+test/run.sh                 entrypoint tests (also runs check-images.sh)
+test/check-images.sh        images.json <-> folders, base-image allowlist
 ```

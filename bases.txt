@@ -1,0 +1,14 @@
+# The only images a Dockerfile in images/ may start from (FROM) or copy from (COPY --from=, RUN --mount=from=):
+# official upstream bases, one repository per line, without a tag. Docker Hub official images are written
+# without the docker.io/library/ prefix. test/check-images.sh enforces this list in test/run.sh and CI.
+# Adding a line is a policy decision: never a Pterodactyl, Pelican, parkervcp, pelican-eggs or other "yolks" image.
+alpine
+debian
+ubuntu
+eclipse-temurin
+golang
+node
+python
+mcr.microsoft.com/dotnet/runtime
+mcr.microsoft.com/dotnet/aspnet
+registry.gitlab.steamos.cloud/steamrt/sniper/platform
