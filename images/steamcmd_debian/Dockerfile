@@ -5,8 +5,9 @@ ARG RCON_CLI_VERSION=v0.10.3
 RUN CGO_ENABLED=0 GOBIN=/out go install "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
 
 # SteamCMD servers on Debian 12: 32-bit libraries for SteamCMD and Steam clients, Xvfb (Core Keeper),
-# libpulse/libatomic (Valheim), ICU (.NET/Unity servers), gorcon `rcon`. SteamCMD itself is installed
-# into the server folder by the egg's installer (./steamcmd); the auto-update hook uses that one.
+# libpulse/libatomic (Valheim), ICU (.NET/Unity servers), gorcon `rcon`, nc and telnet (7 Days to Die's
+# console waits for its telnet port). SteamCMD itself is installed into the server folder by the egg's
+# installer (./steamcmd); the auto-update hook uses that one.
 FROM debian:bookworm-slim
 LABEL org.opencontainers.image.source="https://github.com/sneakywrld/octail-yolks" \
       org.opencontainers.image.title="octail-yolks" \
@@ -35,7 +36,9 @@ RUN --mount=type=bind,source=common,target=/tmp/octail \
         xvfb \
         xauth \
         sqlite3 \
-        file
+        file \
+        netcat-openbsd \
+        telnet
 COPY --from=rcon /out/gorcon /usr/local/bin/rcon
 
 COPY --chmod=0755 common/entrypoint.sh /entrypoint.sh
