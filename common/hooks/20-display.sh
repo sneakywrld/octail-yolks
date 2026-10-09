@@ -2,10 +2,12 @@
 # Octail hook (Wine / Proton images): a virtual X display when XVFB=1.
 #
 # Starts Xvfb on DISPLAY (default :0) with DISPLAY_WIDTH x DISPLAY_HEIGHT x DISPLAY_DEPTH (1024x768x16) and
-# exports DISPLAY. Servers that start their own Xvfb (or use `xvfb-run`) leave XVFB unset.
+# exports DISPLAY. Unset XVFB means the image's OCTAIL_XVFB_DEFAULT: 1 in the Wine images (Windows servers
+# there expect a display, as eggs written for other Wine images get one), 0 elsewhere. Servers that start
+# their own Xvfb (or use `xvfb-run`) set XVFB=0.
 
 octail_start_xvfb() {
-	case "${XVFB:-0}" in
+	case "${XVFB:-${OCTAIL_XVFB_DEFAULT:-0}}" in
 	1 | true | TRUE | yes) ;;
 	*) return 0 ;;
 	esac

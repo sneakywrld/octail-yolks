@@ -215,6 +215,54 @@ if [ ! -L "${work}/home/steamcmd/config" ] && [ -f "${work}/home/steamcmd/config
 run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 STEAM_LOGIN_CACHE="${work}/cache" STARTUP='true' >/dev/null
 if [ ! -L "${work}/home/steamcmd/config" ]; then ok 'anonymous logins leave steamcmd/config alone'; else not_ok 'anonymous logins leave steamcmd/config alone'; fi
 
+# app 1007 (the Steam client libraries): STEAM_SDK, or the image's OCTAIL_STEAM_SDK_DEFAULT (Wine, Proton).
+run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 STARTUP='true' >/dev/null
+expect_not_contains 'no app 1007 by default' "$(cat "${work}/home/steamcmd/args")" '1007'
+run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 OCTAIL_STEAM_SDK_DEFAULT=1 STARTUP='true' >/dev/null
+expect_contains 'the image default adds app 1007' "$(cat "${work}/home/steamcmd/args")" $'+app_update\n1007\n+app_update\n896660'
+run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 OCTAIL_STEAM_SDK_DEFAULT=1 STEAM_SDK=0 STARTUP='true' >/dev/null
+expect_not_contains 'STEAM_SDK=0 wins over the default' "$(cat "${work}/home/steamcmd/args")" '1007'
+
+# Display hook: XVFB, or the image's OCTAIL_XVFB_DEFAULT (Wine). A malformed DISPLAY shows the hook got that far
+# without needing Xvfb here.
+fresh
+cp "${root}/common/hooks/20-display.sh" "${work}/hooks/"
+out=$(run_ep DISPLAY=bad STARTUP='true')
+expect_not_contains 'no Xvfb by default' "${out}" 'DISPLAY must look like'
+out=$(run_ep DISPLAY=bad OCTAIL_XVFB_DEFAULT=1 STARTUP='true')
+expect_contains 'the image default starts Xvfb' "${out}" 'DISPLAY must look like'
+out=$(run_ep DISPLAY=bad OCTAIL_XVFB_DEFAULT=1 XVFB=0 STARTUP='true')
+expect_not_contains 'XVFB=0 wins over the default' "${out}" 'DISPLAY must look like'
+
+# Wine hook: an existing prefix and no verbs need no Wine; WINEDLLOVERRIDES set without `export` reaches programs.
+fresh
+cp "${root}/common/hooks/30-wine.sh" "${work}/hooks/"
+mkdir -p "${work}/home/.wine"
+touch "${work}/home/.wine/system.reg"
+out=$(run_ep STARTUP='WINEDLLOVERRIDES="winhttp=n,b"; env | grep "^WINE"')
+expect_contains 'WINEDLLOVERRIDES set in the startup reaches Wine' "${out}" 'WINEDLLOVERRIDES=winhttp=n,b'
+expect_contains 'the prefix is in the server folder' "${out}" "WINEPREFIX=${work}/home/.wine"
+
+# Proton hook: a prefix left by another Proton image (compatdata/<appid>) is kept until ~/.proton exists.
+fresh
+cp "${root}/common/hooks/30-proton.sh" "${work}/hooks/"
+out=$(run_ep SRCDS_APPID=2278520 STARTUP='echo "data=${STEAM_COMPAT_DATA_PATH} app=${SteamAppId}"')
+expect_contains 'the Proton prefix lives in ~/.proton' "${out}" "data=${work}/home/.proton app=2278520"
+rm -rf "${work}/home/.proton"
+mkdir -p "${work}/home/.steam/steam/steamapps/compatdata/2278520/pfx"
+out=$(run_ep SRCDS_APPID=2278520 STARTUP='echo "data=${STEAM_COMPAT_DATA_PATH}"')
+expect_contains 'an existing compatdata prefix is kept' "${out}" "data=${work}/home/.steam/steam/steamapps/compatdata/2278520"
+mkdir -p "${work}/home/.proton"
+out=$(run_ep SRCDS_APPID=2278520 STARTUP='echo "data=${STEAM_COMPAT_DATA_PATH}"')
+expect_contains 'a .proton folder wins once it exists' "${out}" "data=${work}/home/.proton"
+
+# Rust hook: the server's own libraries on LD_LIBRARY_PATH; vanilla downloads nothing.
+fresh
+cp "${root}/common/hooks/60-rust-framework.sh" "${work}/hooks/"
+out=$(run_ep FRAMEWORK=vanilla LD_LIBRARY_PATH=/x STARTUP='echo "lib=${LD_LIBRARY_PATH}"')
+expect_contains 'RustDedicated finds its plugins' "${out}" "lib=${work}/home/RustDedicated_Data/Plugins/x86_64:${work}/home:/x"
+expect_not_contains 'vanilla installs no framework' "${out}" 'installing'
+
 # --- signals: Ctrl+C (SIGINT) reaches the server --------------------------------------------------------
 # The fake server saves on SIGINT and exits 0, like a game server's graceful stop. It runs once in the
 # foreground of the startup, and once in the background with the egg-style trap that forwards the signal.

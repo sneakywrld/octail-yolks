@@ -11,6 +11,9 @@
 export WINEPREFIX=${WINEPREFIX:-${HOME:-/home/container}/.wine}
 export WINEDEBUG=${WINEDEBUG:--all}
 export WINEARCH=${WINEARCH:-win64}
+# Exported even when empty: eggs set it in their startup without `export` (`WINEDLLOVERRIDES="winhttp=n,b";
+# wine ...`), which only reaches Wine when the variable is already in the environment.
+export WINEDLLOVERRIDES=${WINEDLLOVERRIDES-}
 
 # Runs "$@" with a display: the current one, or a throwaway Xvfb through xvfb-run.
 octail_with_display() {

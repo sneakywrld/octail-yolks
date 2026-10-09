@@ -6,6 +6,10 @@
 #   oxide | umod       latest Oxide.Rust for Linux from GitHub, unpacked over the server
 #   carbon             Carbon's production build; carbon-edge / carbon-staging pick those builds
 # A failed download leaves the installed framework as it was and the server starts anyway.
+# RustDedicated loads its native plugins (RustDedicated_Data/Plugins/x86_64) and steamclient.so from the
+# server folder, which must be on LD_LIBRARY_PATH or the server doesn't start.
+
+export LD_LIBRARY_PATH="${OCTAIL_HOME}/RustDedicated_Data/Plugins/x86_64:${OCTAIL_HOME}${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
 
 octail_rust_framework() {
 	local fw=${FRAMEWORK:-vanilla} url tmp

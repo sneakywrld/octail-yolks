@@ -3,7 +3,9 @@
 #
 # Runs when AUTO_UPDATE is 1/true (unset: the image's OCTAIL_AUTO_UPDATE_DEFAULT, 0 unless the image says
 # otherwise) and SRCDS_APPID is set. Uses the SteamCMD the egg's installer put in ./steamcmd. Variables:
-#   SRCDS_APPID, SRCDS_BETAID, SRCDS_BETAPASS, WINDOWS_INSTALL=1 (Windows depot), STEAM_SDK=1 (app 1007 too),
+#   SRCDS_APPID, SRCDS_BETAID, SRCDS_BETAPASS, WINDOWS_INSTALL=1 (Windows depot), STEAM_SDK=1 (app 1007 too;
+#   unset: the image's OCTAIL_STEAM_SDK_DEFAULT, 1 in the Wine and Proton images, whose Windows servers take
+#   steamclient64.dll from it),
 #   HLDS_GAME (GoldSrc mod), VALIDATE=1, STEAM_USER/STEAM_PASS/STEAM_AUTH (else anonymous), STEAM_LOGIN_CACHE
 #   (Tentacle's saved login for a Steam account: ./steamcmd/config is linked to it).
 # SteamCMD's first run on a fresh folder often fails with "Missing configuration", so app_update is tried
@@ -57,7 +59,7 @@ octail_steamcmd_update() {
 	args=(+force_install_dir "${OCTAIL_HOME}")
 	[ "${WINDOWS_INSTALL:-0}" = 1 ] && args+=(+@sSteamCmdForcePlatformType windows)
 	args+=(+login "${login[@]}")
-	[ "${STEAM_SDK:-0}" = 1 ] && args+=(+app_update 1007)
+	octail_truthy "${STEAM_SDK:-${OCTAIL_STEAM_SDK_DEFAULT:-0}}" && args+=(+app_update 1007)
 	args+=(+app_update "${SRCDS_APPID}")
 	[ -n "${SRCDS_BETAID:-}" ] && args+=(-beta "${SRCDS_BETAID}")
 	[ -n "${SRCDS_BETAPASS:-}" ] && args+=(-betapassword "${SRCDS_BETAPASS}")
