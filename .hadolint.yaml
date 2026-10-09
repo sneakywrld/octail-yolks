@@ -1,0 +1,12 @@
+# hadolint settings for every images/*/Dockerfile.
+ignored:
+  # Package versions are not pinned on purpose: the weekly rebuild exists to pick up the bases' security fixes.
+  - DL3008
+  - DL3018
+  # The big downloads (Wine, Proton) get their own layer so a base-package change does not redo them.
+  - DL3059
+failure-threshold: warning
+trustedRegistries:
+  - docker.io
+  - mcr.microsoft.com
+  - registry.gitlab.steamos.cloud
