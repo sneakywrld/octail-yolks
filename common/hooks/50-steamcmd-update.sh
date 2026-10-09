@@ -4,7 +4,8 @@
 # Runs when AUTO_UPDATE is 1/true (unset: the image's OCTAIL_AUTO_UPDATE_DEFAULT, 0 unless the image says
 # otherwise) and SRCDS_APPID is set. Uses the SteamCMD the egg's installer put in ./steamcmd. Variables:
 #   SRCDS_APPID, SRCDS_BETAID, SRCDS_BETAPASS, WINDOWS_INSTALL=1 (Windows depot), STEAM_SDK=1 (app 1007 too),
-#   HLDS_GAME (GoldSrc mod), VALIDATE=1, STEAM_USER/STEAM_PASS/STEAM_AUTH (else anonymous).
+#   HLDS_GAME (GoldSrc mod), VALIDATE=1, STEAM_USER/STEAM_PASS/STEAM_AUTH (else anonymous), STEAM_LOGIN_CACHE
+#   (Tentacle's saved login for a Steam account: ./steamcmd/config is linked to it).
 # SteamCMD's first run on a fresh folder often fails with "Missing configuration", so app_update is tried
 # up to 3 times. Afterwards the Steam client libraries in ~/.steam/sdk32|sdk64 are refreshed.
 
@@ -13,6 +14,23 @@ octail_truthy() {
 	1 | true | yes | on) return 0 ;;
 	*) return 1 ;;
 	esac
+}
+
+# A logged-in Steam account (eggs with Octail's `steam_login` feature): Tentacle binds the account's login cache
+# into the container and names it in STEAM_LOGIN_CACHE, and sends STEAM_USER with an empty STEAM_PASS, so
+# `+login <user>` only works with the token SteamCMD keeps in its config folder. The egg's installer links
+# ./steamcmd/config to the cache; this does the same when it isn't (a reinstalled SteamCMD, an imported egg).
+# A server folder that already holds its own login while the cache is still empty is left as it is.
+octail_steam_login_cache() {
+	local cache=${STEAM_LOGIN_CACHE:-} config="${OCTAIL_HOME}/steamcmd/config"
+	[ -n "${cache}" ] && [ -d "${cache}" ] || return 0
+	[ -n "${STEAM_USER:-}" ] && [ "${STEAM_USER}" != anonymous ] || return 0
+	if [ -L "${config}" ] && [ "$(readlink "${config}")" = "${cache}" ]; then return 0; fi
+	if [ -d "${config}" ] && [ ! -L "${config}" ] && [ -f "${config}/config.vdf" ] && [ ! -f "${cache}/config.vdf" ]; then
+		return 0
+	fi
+	echo "octail: using the saved Steam login for ${STEAM_USER}."
+	rm -rf "${config}" && ln -s "${cache}" "${config}"
 }
 
 octail_steamcmd_update() {
@@ -34,6 +52,7 @@ octail_steamcmd_update() {
 		login=("${STEAM_USER}")
 		[ -n "${STEAM_PASS:-}" ] && login+=("${STEAM_PASS}")
 		[ -n "${STEAM_AUTH:-}" ] && login+=("${STEAM_AUTH}")
+		octail_steam_login_cache
 	fi
 	args=(+force_install_dir "${OCTAIL_HOME}")
 	[ "${WINDOWS_INSTALL:-0}" = 1 ] && args+=(+@sSteamCmdForcePlatformType windows)
