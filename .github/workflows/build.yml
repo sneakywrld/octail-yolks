@@ -1,0 +1,171 @@
+# Lints and tests the images' scripts, then builds every image that needs it and pushes it to
+# ghcr.io/sneakywrld/octail-yolks:<tag> (and :<tag>-<yyyymmdd>):
+#   push to main      the images whose folder changed (all of them when common/, images.json or this file did)
+#   weekly schedule   all images, so they pick up their base images' security fixes
+#   manual run        all images, or the tags given (comma-separated)
+#   pull request      lint, tests and builds, nothing pushed
+name: build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "images/**"
+      - "common/**"
+      - "scripts/**"
+      - "test/**"
+      - "images.json"
+      - ".hadolint.yaml"
+      - ".github/workflows/build.yml"
+  pull_request:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      images:
+        description: "Tags to build, comma-separated (or all)"
+        required: false
+        default: all
+
+concurrency:
+  group: build-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+env:
+  HADOLINT_VERSION: v2.12.0
+  SHELLCHECK_VERSION: v0.10.0
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends tini jq
+          mkdir -p "$RUNNER_TEMP/bin"
+          curl -fsSL -o "$RUNNER_TEMP/bin/hadolint" \
+            "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64"
+          curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
+            | tar -xJ -C "$RUNNER_TEMP" && mv "$RUNNER_TEMP/shellcheck-${SHELLCHECK_VERSION}/shellcheck" "$RUNNER_TEMP/bin/"
+          chmod +x "$RUNNER_TEMP/bin/"*
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      - name: shellcheck
+        run: shellcheck -x common/*.sh common/hooks/*.sh scripts/*.sh test/*.sh
+
+      - name: hadolint
+        run: hadolint --config .hadolint.yaml images/*/Dockerfile
+
+      - name: images.json matches the folders
+        run: |
+          listed=$(jq -r '.images[].folder' images.json | sort)
+          present=$(find images -mindepth 1 -maxdepth 1 -type d | sort)
+          diff <(echo "$listed") <(echo "$present")
+          for folder in $listed; do test -f "$folder/Dockerfile"; done
+
+      - name: Entrypoint tests
+        run: test/run.sh
+
+  plan:
+    runs-on: ubuntu-24.04
+    outputs:
+      matrix: ${{ steps.select.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: select
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+          WANTED: ${{ github.event.inputs.images }}
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          case "$EVENT" in
+            push) matrix=$(scripts/select-images.sh changed "$BEFORE" "$AFTER") ;;
+            pull_request) matrix=$(scripts/select-images.sh changed "$PR_BASE" "$AFTER") ;;
+            workflow_dispatch)
+              if [ -z "$WANTED" ] || [ "$WANTED" = all ]; then matrix=$(scripts/select-images.sh all)
+              else matrix=$(scripts/select-images.sh "$WANTED"); fi ;;
+            *) matrix=$(scripts/select-images.sh all) ;;
+          esac
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "Images: $(jq -r 'map(.tag) | join(", ")' <<<"$matrix")"
+
+  build:
+    needs: [test, plan]
+    if: needs.plan.outputs.matrix != '[]'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    name: build ${{ matrix.image.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Names and labels
+        id: meta
+        env:
+          TAG: ${{ matrix.image.tag }}
+          PLATFORMS: ${{ matrix.image.platforms }}
+          REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+        run: |
+          registry=$(jq -r '.registry' images.json)
+          description=$(jq -r --arg t "$TAG" '.images[] | select(.tag == $t) | .description' images.json)
+          {
+            echo "registry=$registry"
+            echo "date=$(date -u +%Y%m%d)"
+            echo "created=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "description=$description"
+            # GHCR links a multi-arch package to its repository through the index's annotations.
+            echo "annotations<<EOF"
+            if [[ "$PLATFORMS" == *,* ]]; then
+              echo "index:org.opencontainers.image.source=$REPO_URL"
+              echo "index:org.opencontainers.image.description=$description"
+            fi
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: docker/setup-qemu-action@v3
+        if: contains(matrix.image.platforms, 'arm64')
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        if: github.event_name != 'pull_request'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.image.folder }}/Dockerfile
+          platforms: ${{ matrix.image.platforms }}
+          pull: true
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: |
+            ${{ steps.meta.outputs.registry }}:${{ matrix.image.tag }}
+            ${{ steps.meta.outputs.registry }}:${{ matrix.image.tag }}-${{ steps.meta.outputs.date }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.created=${{ steps.meta.outputs.created }}
+            org.opencontainers.image.version=${{ matrix.image.tag }}
+            org.opencontainers.image.title=octail-yolks:${{ matrix.image.tag }}
+            org.opencontainers.image.description=${{ steps.meta.outputs.description }}
+          annotations: ${{ steps.meta.outputs.annotations }}
+          cache-from: type=gha,scope=${{ matrix.image.tag }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image.tag }}
