@@ -37,28 +37,31 @@ for, and the shipped eggs that use it). Every tag is also pushed as `<tag>-<yyyy
 | `go_1.23` | amd64, arm64 | Go 1.23 (Debian 12); `GOPATH`/`GOCACHE` in the server folder | – |
 | `debian` | amd64, arm64 | Debian 12 with common game-server libraries (SDL, ICU, LZO, fontconfig, SQLite, ffmpeg, ...) | factorio, minecraft-bedrock, openttd, terraria-vanilla |
 | `alpine` | amd64, arm64 | Small Alpine runtime (bash, libstdc++) | test-game |
-| `steamcmd_debian` | amd64 | SteamCMD servers on Debian 12: i386 + 32-bit libs for SteamCMD/steamclient, Xvfb + xauth, libpulse0 + libatomic1 (Valheim), ICU, libcurl(-gnutls), `rcon`, auto-update hook | 7-days-to-die, ark-survival-evolved, arma-reforger, avorion, barotrauma, conan-exiles, core-keeper, counter-strike-source, craftopia, dont-starve-together, euro-truck-simulator-2, hurtworld, killing-floor-2, mordhau, necesse, palworld, project-zomboid, satisfactory, soulmask, squad, steamcmd-generic, the-front, unturned, valheim, valheim-bepinex |
-| `steamcmd_ubuntu` | amd64 | The same on Ubuntu 24.04 (newer glibc/libstdc++, libc++) | insurgency-sandstorm, pavlov-vr, stationeers |
+| `steamcmd_debian` | amd64 | SteamCMD servers on Debian 12: i386 + 32-bit libs for SteamCMD/steamclient, Xvfb + xauth, libpulse0 + libatomic1 (Valheim), ICU, libcurl(-gnutls), `rcon`, `nc` and `telnet` (7 Days to Die's console), auto-update hook | 7-days-to-die, ark-survival-evolved, arma-reforger, avorion, barotrauma, conan-exiles, core-keeper, counter-strike-source, craftopia, dont-starve-together, euro-truck-simulator-2, hurtworld, killing-floor-2, mordhau, necesse, palworld, project-zomboid, satisfactory, soulmask, squad, steamcmd-generic, the-front, unturned, valheim, valheim-bepinex |
+| `steamcmd_ubuntu` | amd64 | The same on Ubuntu 24.04 (newer glibc/libstdc++, libc++; `libc++.so` is the library itself, not Ubuntu's linker script, so Pavlov can load it) | insurgency-sandstorm, pavlov-vr, stationeers |
 | `steamcmd_dotnet` | amd64 | `steamcmd_debian` + Microsoft's ASP.NET Core 8 runtime (`dotnet` on PATH) | eco |
 | `steamcmd_sniper` | amd64 | Valve's Steam Runtime 3 "sniper" + tini, `rcon`, auto-update hook | counter-strike-2 |
 | `source` | amd64 | `steamcmd_debian` + the 32-bit libraries srcds needs (curl, ncurses5/tinfo5, bz2, tcmalloc); updates before start by default | day-of-defeat-source, garrysmod, left-4-dead-2, source-engine, team-fortress-2 |
 | `rust` | amd64 | `steamcmd_debian` + the `FRAMEWORK` hook (vanilla, oxide, carbon); updates before start by default | rust |
-| `proton` | amd64 | GE-Proton (`proton run ./Server.exe`), Python 3, Xvfb, SteamCMD update | abiotic-factor, ark-survival-ascended, astroneer, enshrouded, steamcmd-generic |
-| `wine` | amd64 | WineHQ stable, winetricks, Wine Mono/Gecko baked in, Xvfb, prefix + `WINETRICKS_RUN` hook, SteamCMD update | icarus, sons-of-the-forest, space-engineers |
+| `proton` | amd64 | GE-Proton (`proton run ./Server.exe`), Python 3, Xvfb, SteamCMD update (with app 1007) | abiotic-factor, ark-survival-ascended, astroneer, enshrouded, steamcmd-generic |
+| `wine` | amd64 | WineHQ stable, winetricks, Wine Mono/Gecko baked in, Xvfb (on unless `XVFB=0`), prefix + `WINETRICKS_RUN` hook, SteamCMD update (with app 1007) | icarus, sons-of-the-forest, space-engineers |
 | `wine_staging` | amd64 | The same with WineHQ staging | v-rising |
 | `mono` | amd64, arm64 | Debian's `mono-complete` | – |
-| `installer_debian` | amd64, arm64 | Install scripts (root): Debian 12, i386 libs for SteamCMD, curl, wget, jq, xq, unzip, zip, 7z, git, dos2unix, rsync, Python 3; apt works | every egg with a Debian installer (51 of them) |
+| `installer_debian` | amd64, arm64 | Install scripts (root): Debian 12, i386 libs for SteamCMD, curl, wget, jq, xq, unzip, zip, 7z, git, dos2unix, rsync, Python 3; apt works | every egg with a Debian installer (50 of them) |
 | `installer_alpine` | amd64, arm64 | Install scripts (root): Alpine with bash, curl, wget, jq, unzip, git | minecraft-paper, minecraft-velocity, openttd, test-game |
-| `installer_java_8` | amd64, arm64 | Install scripts that run Java 8 (Temurin JDK + the installer tools) | minecraft-forge |
+| `installer_java_8` | amd64, arm64 | Install scripts that run Java 8 (Temurin JDK + the installer tools): Forge, whose installers (up to 26.x) are Java 8 code | minecraft-forge |
 | `installer_java_11` | amd64, arm64 | The same with Java 11 | minecraft-fabric |
-| `installer_java_21` | amd64, arm64 | The same with Java 21 (modern Forge / NeoForge installers) | – |
+| `installer_java_21` | amd64, arm64 | The same with Java 21: NeoForge (no OpenJDK from apt at every install) | minecraft-neoforge |
 
 SteamCMD, Wine, Proton and Source images are amd64 only: SteamCMD, the Steam client libraries and Windows servers are
 x86. Node.js 20 and Go 1.23 are past their upstream end of life; they are here because eggs ask for them.
 
-### Switching the eggs
+### The eggs' switch (done)
 
-The third-party image → tag map is in `images.json` (`replaces`). In short:
+Every egg Octail ships uses these images; none uses a Pterodactyl, Pelican or parkervcp image any more (Octail's
+`panel/test/eggs-shipped.test.js` checks it, and the generated octail-eggs workflow refuses them). The third-party
+image → tag map is in `images.json` (`replaces`) and in Octail's `scripts/eggs/yolks-map.json`, which
+`scripts/eggs/switch-images.mjs` applies to eggs imported from elsewhere. In short:
 
 | Old image | Tag |
 | --- | --- |
@@ -112,11 +115,11 @@ The third-party image → tag map is in `images.json` (`replaces`). In short:
 | Hook | Images | Variables |
 | --- | --- | --- |
 | `10-java-info.sh` | java_* | prints `java -version` |
-| `20-display.sh` | proton, wine* | `XVFB=1` starts Xvfb on `DISPLAY` (`:0`), `DISPLAY_WIDTH`/`HEIGHT`/`DEPTH` (1024×768×16) |
-| `30-wine.sh` | wine* | `WINEPREFIX` (`~/.wine`), `WINEDEBUG` (`-all`), `WINEARCH` (`win64`); creates the prefix (Mono/Gecko from the image); `WINETRICKS_RUN="vcrun2022 corefonts ..."` installs each verb once (marker in `$WINEPREFIX/.octail-winetricks/`, failures retried next start); `mono` / `gecko` install the baked MSIs |
-| `30-proton.sh` | proton | `STEAM_COMPAT_DATA_PATH` (`~/.proton`), `STEAM_COMPAT_CLIENT_INSTALL_PATH` (`~/.steam/steam`), `SteamAppId`/`SteamGameId` from `SRCDS_APPID`, `PROTON_LOG=1` |
-| `50-steamcmd-update.sh` | steamcmd_*, source, rust, proton, wine* | Runs when `AUTO_UPDATE=1` (unset: the image default, on for `source` and `rust`) and `SRCDS_APPID` is a number, with the SteamCMD the installer left in `./steamcmd`: `SRCDS_BETAID`, `SRCDS_BETAPASS`, `WINDOWS_INSTALL=1`, `STEAM_SDK=1`, `HLDS_GAME`, `VALIDATE=1`, `STEAM_USER`/`STEAM_PASS`/`STEAM_AUTH` (else anonymous). With a Steam account Tentacle sends `STEAM_USER` and an empty `STEAM_PASS` plus `STEAM_LOGIN_CACHE` (the account's saved login, as for the install); the hook links `./steamcmd/config` to it if the installer didn't, so `+login <user>` uses the saved token (a Steam Guard prompt here makes Tentacle stop the server: reinstall to log in again). `app_update` is tried up to 3 times (SteamCMD's first run fails with "Missing configuration"); passwords are masked in the console; `~/.steam/sdk32|64/steamclient.so` are refreshed afterwards. A failed update starts the installed files. |
-| `60-rust-framework.sh` | rust | `FRAMEWORK=vanilla` (default), `oxide`/`umod`, `carbon`, `carbon-edge`, `carbon-staging`: downloaded and unpacked after the update; Carbon's Doorstop variables are set |
+| `20-display.sh` | proton, wine* | `XVFB=1` starts Xvfb on `DISPLAY` (`:0`), `DISPLAY_WIDTH`/`HEIGHT`/`DEPTH` (1024×768×16). Unset: the image's `OCTAIL_XVFB_DEFAULT`, on in the Wine images (eggs written for other Wine images expect a display), off in proton |
+| `30-wine.sh` | wine* | `WINEPREFIX` (`~/.wine`), `WINEDEBUG` (`-all`), `WINEARCH` (`win64`), `WINEDLLOVERRIDES` exported even when empty (so `WINEDLLOVERRIDES="winhttp=n,b"; wine ...` in a startup reaches Wine); creates the prefix (Mono/Gecko from the image); `WINETRICKS_RUN="vcrun2022 corefonts ..."` installs each verb once (marker in `$WINEPREFIX/.octail-winetricks/`, failures retried next start); `mono` / `gecko` install the baked MSIs |
+| `30-proton.sh` | proton | `STEAM_COMPAT_DATA_PATH` (`~/.proton`), `STEAM_COMPAT_CLIENT_INSTALL_PATH` (`~/.steam/steam`), `SteamAppId`/`SteamGameId` from `SRCDS_APPID`, `PROTON_LOG=1`. A prefix left by another Proton image in `~/.steam/steam/steamapps/compatdata/<SRCDS_APPID>` is used while `~/.proton` doesn't exist |
+| `50-steamcmd-update.sh` | steamcmd_*, source, rust, proton, wine* | Runs when `AUTO_UPDATE=1` (unset: the image default, on for `source` and `rust`; unlike the Pelican/parkervcp images, an unset `AUTO_UPDATE` does not update elsewhere, so eggs carry the variable) and `SRCDS_APPID` is a number, with the SteamCMD the installer left in `./steamcmd`: `SRCDS_BETAID`, `SRCDS_BETAPASS`, `WINDOWS_INSTALL=1`, `STEAM_SDK=1` (app 1007 too; unset: the image's `OCTAIL_STEAM_SDK_DEFAULT`, on in wine* and proton, whose Windows servers take `steamclient64.dll` from it), `HLDS_GAME`, `VALIDATE=1`, `STEAM_USER`/`STEAM_PASS`/`STEAM_AUTH` (else anonymous). With a Steam account Tentacle sends `STEAM_USER` and an empty `STEAM_PASS` plus `STEAM_LOGIN_CACHE` (the account's saved login, as for the install); the hook links `./steamcmd/config` to it if the installer didn't, so `+login <user>` uses the saved token (a Steam Guard prompt here makes Tentacle stop the server: reinstall to log in again). `app_update` is tried up to 3 times (SteamCMD's first run fails with "Missing configuration"); passwords are masked in the console; `~/.steam/sdk32|64/steamclient.so` are refreshed afterwards. A failed update starts the installed files. |
+| `60-rust-framework.sh` | rust | Puts `RustDedicated_Data/Plugins/x86_64` and the server folder on `LD_LIBRARY_PATH`. `FRAMEWORK=vanilla` (default), `oxide`/`umod`, `carbon`, `carbon-edge`, `carbon-staging`: downloaded and unpacked after the update; Carbon's Doorstop variables are set |
 
 Installer images have no entrypoint: Tentacle runs them as root with `bash /mnt/install/install.sh` (or `ash`) in
 `/mnt/server`.

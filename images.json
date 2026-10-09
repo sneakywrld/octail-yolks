@@ -232,7 +232,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
-      "description": "SteamCMD servers on Debian 12: 32-bit libs, Xvfb, libpulse/libatomic (Valheim), ICU, rcon, auto-update hook",
+      "description": "SteamCMD servers on Debian 12: 32-bit libs, Xvfb, libpulse/libatomic (Valheim), ICU, rcon, nc/telnet, auto-update hook",
       "replaces": [
         "ghcr.io/parkervcp/games:valheim",
         "ghcr.io/parkervcp/steamcmd:debian",
@@ -273,7 +273,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
-      "description": "SteamCMD servers on Ubuntu 24.04 (newer glibc, libc++): Sandstorm, Pavlov, Stationeers",
+      "description": "SteamCMD servers on Ubuntu 24.04 (newer glibc, libc++ loadable as libc++.so): Sandstorm, Pavlov, Stationeers",
       "replaces": [
         "ghcr.io/parkervcp/steamcmd:ubuntu"
       ],
@@ -355,7 +355,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
-      "description": "Windows servers through GE-Proton (`proton run`), Xvfb, SteamCMD update",
+      "description": "Windows servers through GE-Proton (`proton run`), Xvfb, SteamCMD update with the Steam client libraries",
       "replaces": [
         "ghcr.io/parkervcp/steamcmd:proton",
         "ghcr.io/pelican-eggs/steamcmd:proton"
@@ -375,7 +375,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
-      "description": "Windows servers through WineHQ stable, winetricks, Wine Mono/Gecko, Xvfb, SteamCMD update",
+      "description": "Windows servers through WineHQ stable, winetricks, Wine Mono/Gecko, Xvfb (on by default), SteamCMD update with the Steam client libraries",
       "replaces": [
         "ghcr.io/parkervcp/yolks:wine_latest",
         "ghcr.io/pelican-eggs/yolks:wine_latest"
@@ -454,7 +454,6 @@
         "left-4-dead-2",
         "mindustry",
         "minecraft-bedrock",
-        "minecraft-neoforge",
         "mordhau",
         "necesse",
         "palworld",
@@ -509,7 +508,7 @@
         "linux/arm64"
       ],
       "kind": "installer",
-      "description": "Install scripts that run Java 8 (old Forge installers)",
+      "description": "Install scripts that run Java 8 (Forge installers)",
       "replaces": [
         "ghcr.io/pelican-eggs/installers:java_8"
       ],
@@ -543,7 +542,9 @@
       "kind": "installer",
       "description": "Install scripts that run Java 21 (modern Forge / NeoForge installers)",
       "replaces": [],
-      "eggs": []
+      "eggs": [
+        "minecraft-neoforge"
+      ]
     }
   ]
 }

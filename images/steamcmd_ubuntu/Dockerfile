@@ -31,7 +31,12 @@ RUN --mount=type=bind,source=common,target=/tmp/octail \
         xvfb \
         xauth \
         sqlite3 \
-        file
+        file \
+        netcat-openbsd \
+        telnet
+# Pavlov VR dlopen()s libc++.so, which Ubuntu ships as a linker script (INPUT(...)) that dlopen can't load.
+RUN test -e /usr/lib/x86_64-linux-gnu/libc++.so.1 \
+    && ln -sf libc++.so.1 /usr/lib/x86_64-linux-gnu/libc++.so
 COPY --from=rcon /out/gorcon /usr/local/bin/rcon
 
 COPY --chmod=0755 common/entrypoint.sh /entrypoint.sh
