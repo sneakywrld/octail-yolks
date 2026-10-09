@@ -6,7 +6,6 @@
 # Uses `tini` from PATH for the signal test when it is installed (CI installs it), and otherwise sends the
 # signal to the process group the way `tini -g` does.
 set -uo pipefail
-# shellcheck disable=SC2016
 
 here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 root=$(dirname "${here}")

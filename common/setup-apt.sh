@@ -23,13 +23,15 @@ apt-get install -y --no-install-recommends "${base[@]}" "$@"
 apt-get clean
 rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*.deb
 
-# en_US.UTF-8: Debian lists it commented out in /etc/locale.gen, Ubuntu's locale-gen takes it as an argument.
-if [ -f /etc/locale.gen ]; then
+# en_US.UTF-8: Ubuntu's locale-gen takes it as an argument, Debian's reads /etc/locale.gen.
+. /etc/os-release
+if [ "${ID}" = ubuntu ]; then
+	locale-gen en_US.UTF-8
+else
+	touch /etc/locale.gen
 	sed -i 's/^# *\(en_US.UTF-8 UTF-8\)/\1/' /etc/locale.gen
 	grep -q '^en_US.UTF-8 UTF-8' /etc/locale.gen || echo 'en_US.UTF-8 UTF-8' >>/etc/locale.gen
 	locale-gen
-else
-	locale-gen en_US.UTF-8
 fi
 
 # The image user. Tentacle runs the container as the node's server user and mounts an /etc/passwd naming it
