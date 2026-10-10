@@ -6,8 +6,12 @@ RUN CGO_ENABLED=0 GOBIN=/out go install "github.com/gorcon/rcon-cli/cmd/gorcon@$
 
 # Windows-only servers through GE-Proton: `proton run ./Server.exe`. XVFB=1 starts a virtual display. The
 # SteamCMD update also updates app 1007 (the Windows Steam client libraries) unless STEAM_SDK=0.
+# GE-Proton stays on 10-34 for now: other hosts report GE-Proton 11 (11-1 to 11-7) hanging ARK: Survival Ascended
+# before its engine writes a line and keeping Astroneer from starting, both fine on 10-34. GE-Proton 11 also needs
+# glibc 2.38, newer than Debian 12's 2.36; install-proton.sh refuses a GE-Proton the base can't load.
+# PROTON_USE_XALIA=0: no Xalia (Proton's gamepad UI helper, a .NET program that fails without a display).
 FROM debian:bookworm-slim
-ARG GE_PROTON_VERSION=GE-Proton11-7
+ARG GE_PROTON_VERSION=GE-Proton10-34
 LABEL org.opencontainers.image.source="https://github.com/sneakywrld/octail-yolks" \
       org.opencontainers.image.title="octail-yolks" \
       org.opencontainers.image.description="Octail runtime: Windows servers through GE-Proton on Debian 12"
@@ -58,6 +62,7 @@ ENV HOME=/home/container \
     LANG=en_US.UTF-8 \
     LC_ALL=en_US.UTF-8 \
     PROTON_NO_FSYNC=1 \
+    PROTON_USE_XALIA=0 \
     OCTAIL_STEAM_SDK_DEFAULT=1
 
 USER container

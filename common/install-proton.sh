@@ -2,7 +2,7 @@
 # Build-time: GE-Proton (GloriousEggroll's Proton build, which runs outside Steam) in /opt/proton, checked
 # against its published SHA-512, and a `proton` command that calls it by its real path (Proton finds its
 # files next to the script, so a symlink would not do).
-#   install-proton.sh <release tag, e.g. GE-Proton11-7>
+#   install-proton.sh <release tag, e.g. GE-Proton10-34>
 set -euo pipefail
 
 tag=${1:?GE-Proton release tag}
@@ -26,6 +26,17 @@ done
 }
 cd /
 rm -rf "${work}"
+
+# GE-Proton runs on the image's own glibc (no Steam Runtime): a release built against a newer one fails at every
+# start with "wine: could not load ntdll.so" (GE-Proton 11 needs 2.38, Debian 12 has 2.36). Refuse it here instead.
+need=$(grep -aohE 'GLIBC_[0-9]+\.[0-9]+' /opt/proton/files/bin/wineserver \
+	/opt/proton/files/lib/wine/x86_64-unix/ntdll.so | sed 's/^GLIBC_//' | sort -uV | tail -n1)
+have=$(getconf GNU_LIBC_VERSION | awk '{print $2}')
+if [ -z "${need}" ] || [ -z "${have}" ] || [ "$(printf '%s\n%s\n' "${need}" "${have}" | sort -V | tail -n1)" != "${have}" ]; then
+	echo "GE-Proton ${tag} needs glibc ${need:-?}, this base image has ${have:-?}: use an older GE-Proton or a newer base" >&2
+	exit 1
+fi
+/opt/proton/files/bin/wineserver --version
 
 cat >/usr/local/bin/proton <<'EOF'
 #!/bin/sh

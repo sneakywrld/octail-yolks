@@ -117,9 +117,23 @@ image → tag map is in `images.json` (`replaces`) and in Octail's `scripts/eggs
 | `10-java-info.sh` | java_* | prints `java -version` |
 | `20-display.sh` | proton, wine* | `XVFB=1` starts Xvfb on `DISPLAY` (`:0`), `DISPLAY_WIDTH`/`HEIGHT`/`DEPTH` (1024×768×16). Unset: the image's `OCTAIL_XVFB_DEFAULT`, on in the Wine images (eggs written for other Wine images expect a display), off in proton |
 | `30-wine.sh` | wine* | `WINEPREFIX` (`~/.wine`), `WINEDEBUG` (`-all`), `WINEARCH` (`win64`), `WINEDLLOVERRIDES` exported even when empty (so `WINEDLLOVERRIDES="winhttp=n,b"; wine ...` in a startup reaches Wine); creates the prefix (Mono/Gecko from the image); `WINETRICKS_RUN="vcrun2022 corefonts ..."` installs each verb once (marker in `$WINEPREFIX/.octail-winetricks/`, failures retried next start); `mono` / `gecko` install the baked MSIs |
-| `30-proton.sh` | proton | `STEAM_COMPAT_DATA_PATH` (`~/.proton`), `STEAM_COMPAT_CLIENT_INSTALL_PATH` (`~/.steam/steam`), `SteamAppId`/`SteamGameId` from `SRCDS_APPID`, `PROTON_LOG=1`. A prefix left by another Proton image in `~/.steam/steam/steamapps/compatdata/<SRCDS_APPID>` is used while `~/.proton` doesn't exist |
+| `30-proton.sh` | proton | `STEAM_COMPAT_DATA_PATH` (`~/.proton`), `STEAM_COMPAT_CLIENT_INSTALL_PATH` (`~/.steam/steam`), `SteamAppId`/`SteamGameId` from `SRCDS_APPID`, `PROTON_LOG=1`. A prefix left by another Proton image in `~/.steam/steam/steamapps/compatdata/<SRCDS_APPID>` is used while `~/.proton` doesn't exist. Start watch: when the container has no open port (a listening TCP socket or an unconnected UDP one) `OCTAIL_PROTON_WATCH` seconds after the start (300; `0` = off), prints one report: threads against the pids limit and how often it was hit, memory and OOM kills, open-files limit, `/tmp` and `/dev/shm` use, each process's state, threads, memory, CPU and kernel wait channel (see "Proton notes") |
 | `50-steamcmd-update.sh` | steamcmd_*, source, rust, proton, wine* | Runs when `AUTO_UPDATE=1` (unset: the image default, on for `source` and `rust`; unlike the Pelican/parkervcp images, an unset `AUTO_UPDATE` does not update elsewhere, so eggs carry the variable) and `SRCDS_APPID` is a number, with the SteamCMD the installer left in `./steamcmd`: `SRCDS_BETAID`, `SRCDS_BETAPASS`, `WINDOWS_INSTALL=1`, `STEAM_SDK=1` (app 1007 too; unset: the image's `OCTAIL_STEAM_SDK_DEFAULT`, on in wine* and proton, whose Windows servers take `steamclient64.dll` from it), `HLDS_GAME`, `VALIDATE=1`, `STEAM_USER`/`STEAM_PASS`/`STEAM_AUTH` (else anonymous). With a Steam account Tentacle sends `STEAM_USER` and an empty `STEAM_PASS` plus `STEAM_LOGIN_CACHE` (the account's saved login, as for the install); the hook links `./steamcmd/config` to it if the installer didn't, so `+login <user>` uses the saved token (a Steam Guard prompt here makes Tentacle stop the server: reinstall to log in again). `app_update` is tried up to 3 times (SteamCMD's first run fails with "Missing configuration"); passwords are masked in the console; `~/.steam/sdk32|64/steamclient.so` are refreshed afterwards. A failed update starts the installed files. |
 | `60-rust-framework.sh` | rust | Puts `RustDedicated_Data/Plugins/x86_64` and the server folder on `LD_LIBRARY_PATH`. `FRAMEWORK=vanilla` (default), `oxide`/`umod`, `carbon`, `carbon-edge`, `carbon-staging`: downloaded and unpacked after the update; Carbon's Doorstop variables are set |
+
+### Proton notes
+
+- GE-Proton is pinned to 10-34. Other hosts report GE-Proton 11 (11-1 to 11-7) hanging ARK: Survival Ascended before
+  the engine logs a line (the console stops after `wineserver: using server-side synchronization`, memory stays flat,
+  CPU near 0) and keeping Astroneer from starting; both run on 10-34. GE-Proton 11 also needs glibc 2.38 (Debian 12
+  has 2.36), so `common/install-proton.sh` fails the build for a GE-Proton the base image can't load. Before moving to
+  11, run ASA and Astroneer on it.
+- `PROTON_USE_XALIA=0`: Proton otherwise starts Xalia (a .NET gamepad-UI helper) next to the game; it needs a display
+  and only adds a crashing process to a server.
+- Reading the start-watch report: a server process in state `S` with almost no CPU and a `futex_wait`/`do_epoll_wait`
+  channel is waiting on something (a lock, a dialog no one sees, the network); `D` is disk; a thread count at the pids
+  limit (Tentacle's `runtime.pids_limit`, 512) or a non-zero "limit reached" means the server couldn't start threads;
+  OOM kills mean memory. `PROTON_LOG=1` adds Proton's own log (`steam-<appid>.log`, can grow by gigabytes).
 
 Installer images have no entrypoint: Tentacle runs them as root with `bash /mnt/install/install.sh` (or `ash`) in
 `/mnt/server`.
