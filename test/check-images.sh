@@ -4,13 +4,17 @@
 #   - tags are unique;
 #   - no Dockerfile starts from or copies from a Pterodactyl / Pelican / parkervcp / pelican-eggs image, nor
 #     from any image that isn't on the allowlist in bases.txt. Build stages of the same Dockerfile are fine; an
-#     image named through a variable (FROM ${BASE}) fails, since it can't be checked.
+#     image named through a variable (FROM ${BASE}) fails, since it can't be checked;
+#   - (the repository only) .github/dependabot.yml is what scripts/dependabot.sh prints, and README.md's tag table
+#     has one anchored row per tag.
 #   yolks/test/check-images.sh            check the repository
 #   yolks/test/check-images.sh <root>     check another tree with the same layout (used by test/run.sh)
 set -uo pipefail
 
 here=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 root=${1:-$(dirname "${here}")}
+repo_mode=0
+[ "$#" -eq 0 ] && repo_mode=1
 bases_file="${here}/../bases.txt"
 [ -f "${root}/bases.txt" ] && bases_file="${root}/bases.txt"
 
@@ -128,6 +132,22 @@ for dockerfile in "${root}"/images/*/Dockerfile; do
 		esac
 	done <"${dockerfile}"
 done
+
+# --- files kept in sync with images.json (only when checking the repository itself) ---------------------
+if [ "${repo_mode}" = 1 ]; then
+	if ! expected=$(cd "${root}" && IMAGES_JSON=images.json scripts/dependabot.sh); then
+		err 'scripts/dependabot.sh failed'
+	elif [ "${expected}" != "$(cat "${root}/.github/dependabot.yml" 2>/dev/null)" ]; then
+		err '.github/dependabot.yml is out of date: run scripts/dependabot.sh > .github/dependabot.yml'
+	fi
+	# Every tag has exactly one row in the README's tag table, starting with its anchor (the octail-eggs README and
+	# the Octail docs link to https://github.com/sneakywrld/octail-yolks#<tag>).
+	while IFS= read -r tag; do
+		[ -n "${tag}" ] || continue
+		rows=$(grep -cF "| <a name=\"${tag}\"></a>\`${tag}\` |" "${root}/README.md")
+		[ "${rows}" = 1 ] || err "README.md: the tag table should have one row for ${tag} (found ${rows})"
+	done < <(jq -r '.images[].tag' "${root}/images.json")
+fi
 
 if [ "${errors}" -gt 0 ]; then
 	echo "check-images: ${errors} problem(s)" >&2
