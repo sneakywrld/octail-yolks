@@ -1,0 +1,63 @@
+name: Bug report
+description: An image doesn't build, a server doesn't start or misbehaves in one of the images.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Security problems go through the Security tab (see SECURITY.md), not here.
+        Remove passwords, tokens, Steam credentials and IP addresses you don't want public from logs before pasting.
+  - type: input
+    id: tag
+    attributes:
+      label: Image tag
+      description: The full image, with the dated tag or digest if you know it.
+      placeholder: ghcr.io/sneakywrld/octail-yolks:steamcmd_debian-20261005
+    validations:
+      required: true
+  - type: input
+    id: egg
+    attributes:
+      label: Egg
+      description: The egg the server uses (name, or its file in octail-eggs), and where it came from.
+      placeholder: steam/palworld.json from octail-eggs
+    validations:
+      required: true
+  - type: dropdown
+    id: runtime
+    attributes:
+      label: Node container runtime
+      options:
+        - Docker
+        - Podman
+        - Other / don't know
+    validations:
+      required: true
+  - type: input
+    id: node
+    attributes:
+      label: Node details
+      description: Operating system, CPU architecture, Tentacle version, container runtime version.
+      placeholder: Debian 12, amd64, Tentacle 1.4.0, Docker 27.3
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected, what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: The server console from the start (including the `container~` line) and, for install problems, the install log.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: more
+    attributes:
+      label: Anything else
+      description: Did an earlier dated tag work? Does it happen with a fresh server?

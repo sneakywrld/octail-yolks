@@ -1,0 +1,46 @@
+name: Image request
+description: Ask for a new runtime, a new version of one, or a library or tool in an existing image.
+labels: ["image request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Images are built only from official upstream bases (see bases.txt), so say where the software officially
+        comes from. Images from Pterodactyl, Pelican or parkervcp can't be used as a base or copied from.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What do you need?
+      options:
+        - A new image (new runtime or game)
+        - A new version of an existing runtime (a new tag)
+        - A package, library or tool added to an existing image
+    validations:
+      required: true
+  - type: input
+    id: existing
+    attributes:
+      label: Existing tag, if any
+      placeholder: steamcmd_debian
+  - type: textarea
+    id: what
+    attributes:
+      label: What and why
+      description: The game or software, which egg would use it, and what fails without it (error messages help).
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source
+      description: The official base image or download (publisher's site, repository or release page).
+      placeholder: https://hub.docker.com/_/eclipse-temurin
+    validations:
+      required: true
+  - type: checkboxes
+    id: platforms
+    attributes:
+      label: Platforms
+      options:
+        - label: amd64
+        - label: arm64
