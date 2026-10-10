@@ -256,6 +256,37 @@ mkdir -p "${work}/home/.proton"
 out=$(run_ep SRCDS_APPID=2278520 STARTUP='echo "data=${STEAM_COMPAT_DATA_PATH}"')
 expect_contains 'a .proton folder wins once it exists' "${out}" "data=${work}/home/.proton"
 
+# Proton start watch: one report when no port is open after OCTAIL_PROTON_WATCH seconds, none once one is.
+mkdir -p "${work}/proc/net" "${work}/cg"
+printf '  sl  local_address rem_address   st\n   0: 0100007F:9C40 0100007F:A3B2 01 0\n' >"${work}/proc/net/tcp"
+printf '  sl  local_address rem_address   st\n   1: 0A00000F:D2F0 08080808:0035 01 0\n' >"${work}/proc/net/udp"
+printf '37\n' >"${work}/cg/pids.current"
+printf '512\n' >"${work}/cg/pids.max"
+printf 'max 3\n' >"${work}/cg/pids.events"
+printf '629145600\n' >"${work}/cg/memory.current"
+printf '9663676416\n' >"${work}/cg/memory.max"
+printf 'low 0\noom_kill 0\n' >"${work}/cg/memory.events"
+watch_env=(SRCDS_APPID=2430930 OCTAIL_PROTON_WATCH=1 OCTAIL_PROC="${work}/proc" OCTAIL_CGROUP="${work}/cg")
+out=$(run_ep "${watch_env[@]}" STARTUP='sleep 3; echo started')
+expect_contains 'the watch reports a server without an open port' "${out}" 'no game port is open 1 s after the start'
+expect_contains 'the report names the thread limit and how often it was hit' "${out}" 'threads 37 of 512 (limit reached 3 times)'
+expect_contains 'the report gives memory in MiB' "${out}" 'memory 600 MiB of 9216 MiB (OOM kills 0)'
+expect_contains 'the report lists the processes' "${out}" 'sleep 3'
+expect_contains 'the startup still runs' "${out}" 'started'
+printf '  sl  local_address rem_address   st\n   0: 00000000:9389 00000000:0000 07 0\n' >"${work}/proc/net/udp"
+out=$(run_ep "${watch_env[@]}" STARTUP='sleep 3; echo started')
+expect_not_contains 'a bound UDP port keeps the watch quiet' "${out}" 'no game port is open'
+printf '  sl  local_address rem_address   st\n' >"${work}/proc/net/udp"
+printf '  sl  local_address rem_address   st\n   0: 00000000:6987 00000000:0000 0A 0\n' >"${work}/proc/net/tcp"
+out=$(run_ep "${watch_env[@]}" STARTUP='sleep 3; echo started')
+expect_not_contains 'a listening TCP port keeps the watch quiet' "${out}" 'no game port is open'
+started=${SECONDS}
+out=$(run_ep "${watch_env[@]}" OCTAIL_PROTON_WATCH=60 STARTUP='echo quick; wait')
+expect_contains 'a startup with a bare wait ends' "${out}" 'quick'
+if [ $((SECONDS - started)) -lt 10 ]; then ok 'the watch ends with the startup'; else not_ok 'the watch ends with the startup' "took $((SECONDS - started)) s"; fi
+out=$(run_ep "${watch_env[@]}" OCTAIL_PROTON_WATCH=0 STARTUP='sleep 2')
+expect_not_contains 'OCTAIL_PROTON_WATCH=0 turns the watch off' "${out}" 'no game port is open'
+
 # Rust hook: the server's own libraries on LD_LIBRARY_PATH; vanilla downloads nothing.
 fresh
 cp "${root}/common/hooks/60-rust-framework.sh" "${work}/hooks/"
