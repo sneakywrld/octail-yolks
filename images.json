@@ -17,6 +17,8 @@
         "minecraft-neoforge",
         "minecraft-paper",
         "minecraft-purpur",
+        "minecraft-quilt",
+        "minecraft-spigot",
         "minecraft-sponge",
         "minecraft-velocity"
       ]
@@ -36,6 +38,8 @@
         "minecraft-neoforge",
         "minecraft-paper",
         "minecraft-purpur",
+        "minecraft-quilt",
+        "minecraft-spigot",
         "minecraft-sponge",
         "minecraft-velocity"
       ]
@@ -61,6 +65,8 @@
         "minecraft-neoforge",
         "minecraft-paper",
         "minecraft-purpur",
+        "minecraft-quilt",
+        "minecraft-spigot",
         "minecraft-sponge",
         "minecraft-velocity"
       ]
@@ -80,9 +86,12 @@
         "minecraft-fabric",
         "minecraft-folia",
         "minecraft-forge",
+        "minecraft-geyser",
         "minecraft-neoforge",
         "minecraft-paper",
         "minecraft-purpur",
+        "minecraft-quilt",
+        "minecraft-spigot",
         "minecraft-sponge",
         "minecraft-velocity"
       ]
@@ -101,9 +110,12 @@
         "minecraft-fabric",
         "minecraft-folia",
         "minecraft-forge",
+        "minecraft-geyser",
         "minecraft-neoforge",
         "minecraft-paper",
         "minecraft-purpur",
+        "minecraft-quilt",
+        "minecraft-spigot",
         "minecraft-sponge",
         "minecraft-velocity"
       ]
@@ -480,6 +492,7 @@
         "luanti",
         "minecraft-bungeecord",
         "minecraft-folia",
+        "minecraft-geyser",
         "minecraft-paper",
         "minecraft-purpur",
         "minecraft-sponge",
@@ -514,9 +527,9 @@
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "installer",
       "smoke": "curl --version && jq --version && java -version",
-      "description": "Install scripts that run Java 21 (modern Forge / NeoForge installers)",
+      "description": "Install scripts that run Java 21 (modern Forge / NeoForge installers, Quilt installer, Spigot BuildTools)",
       "replaces": [],
-      "eggs": ["minecraft-neoforge"]
+      "eggs": ["minecraft-neoforge", "minecraft-quilt", "minecraft-spigot"]
     }
   ]
 }
