@@ -16,6 +16,7 @@
         "ghcr.io/pelican-eggs/yolks:java_8"
       ],
       "eggs": [
+        "java-jar",
         "minecraft-fabric",
         "minecraft-forge",
         "minecraft-neoforge",
@@ -37,6 +38,7 @@
         "ghcr.io/pelican-eggs/yolks:java_11"
       ],
       "eggs": [
+        "java-jar",
         "minecraft-fabric",
         "minecraft-forge",
         "minecraft-neoforge",
@@ -59,6 +61,7 @@
         "ghcr.io/pelican-eggs/yolks:java_17"
       ],
       "eggs": [
+        "java-jar",
         "mindustry",
         "minecraft-fabric",
         "minecraft-forge",
@@ -81,6 +84,7 @@
         "ghcr.io/pelican-eggs/yolks:java_21"
       ],
       "eggs": [
+        "java-jar",
         "mindustry",
         "minecraft-fabric",
         "minecraft-forge",
@@ -103,6 +107,7 @@
         "ghcr.io/pelican-eggs/yolks:java_25"
       ],
       "eggs": [
+        "java-jar",
         "minecraft-fabric",
         "minecraft-forge",
         "minecraft-neoforge",
@@ -159,7 +164,9 @@
       "smoke": "node -v | grep '^v20[.]'",
       "description": "Node.js 20 (Debian 12) with git and native-module build tools",
       "replaces": [],
-      "eggs": []
+      "eggs": [
+        "nodejs-app"
+      ]
     },
     {
       "tag": "nodejs_22",
@@ -172,7 +179,9 @@
       "smoke": "node -v | grep '^v22[.]'",
       "description": "Node.js 22 (Debian 12) with git and native-module build tools",
       "replaces": [],
-      "eggs": []
+      "eggs": [
+        "nodejs-app"
+      ]
     },
     {
       "tag": "python_3.12",
@@ -185,7 +194,9 @@
       "smoke": "python3 -V | grep -F 'Python 3.12.'",
       "description": "Python 3.12 (Debian 12) with git and a C compiler for wheels",
       "replaces": [],
-      "eggs": []
+      "eggs": [
+        "python-app"
+      ]
     },
     {
       "tag": "go_1.23",
@@ -198,7 +209,9 @@
       "smoke": "go version | grep -F 'go1.23'",
       "description": "Go 1.23 (Debian 12), Go caches in the server folder",
       "replaces": [],
-      "eggs": []
+      "eggs": [
+        "go-app"
+      ]
     },
     {
       "tag": "debian",
@@ -473,9 +486,11 @@
         "euro-truck-simulator-2",
         "factorio",
         "garrysmod",
+        "go-app",
         "hurtworld",
         "icarus",
         "insurgency-sandstorm",
+        "java-jar",
         "killing-floor-2",
         "left-4-dead-2",
         "mindustry",
@@ -483,9 +498,11 @@
         "mordhau",
         "mumble",
         "necesse",
+        "nodejs-app",
         "palworld",
         "pavlov-vr",
         "project-zomboid",
+        "python-app",
         "rust",
         "satisfactory",
         "sons-of-the-forest",
