@@ -215,6 +215,7 @@
         "ghcr.io/pelican-eggs/yolks:debian"
       ],
       "eggs": [
+        "beammp",
         "factorio",
         "minecraft-bedrock",
         "mumble",
@@ -256,8 +257,10 @@
       ],
       "eggs": [
         "7-days-to-die",
+        "american-truck-simulator",
         "ark-survival-evolved",
         "arma-reforger",
+        "assetto-corsa",
         "avorion",
         "barotrauma",
         "conan-exiles",
@@ -455,12 +458,15 @@
       "eggs": [
         "7-days-to-die",
         "abiotic-factor",
+        "american-truck-simulator",
         "ark-survival-ascended",
         "ark-survival-evolved",
         "arma-reforger",
+        "assetto-corsa",
         "astroneer",
         "avorion",
         "barotrauma",
+        "beammp",
         "conan-exiles",
         "core-keeper",
         "counter-strike-2",

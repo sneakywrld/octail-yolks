@@ -45,7 +45,7 @@ images each tag stands in for, and the shipped eggs that use it); the tables bel
 | <a name="nodejs_22"></a>`nodejs_22` | amd64, arm64 | Node.js 22 (Debian 12), git, native-module build tools | – |
 | <a name="python_3.12"></a>`python_3.12` | amd64, arm64 | Python 3.12 (Debian 12), git, a C compiler for wheels | – |
 | <a name="go_1.23"></a>`go_1.23` | amd64, arm64 | Go 1.23 (Debian 12); `GOPATH`/`GOCACHE` in the server folder | – |
-| <a name="debian"></a>`debian` | amd64, arm64 | Debian 12 with common game-server libraries (SDL, ICU, LZO, fontconfig, SQLite, ffmpeg, ...) | factorio, minecraft-bedrock, openttd, terraria-vanilla |
+| <a name="debian"></a>`debian` | amd64, arm64 | Debian 12 with common game-server libraries (SDL, ICU, LZO, fontconfig, SQLite, ffmpeg, ...) | beammp, factorio, minecraft-bedrock, openttd, terraria-vanilla |
 | <a name="alpine"></a>`alpine` | amd64, arm64 | Small Alpine runtime (bash, libstdc++) | test-game |
 
 Node.js 20 and Go 1.23 are past their upstream end of life; they are here because eggs ask for them.
@@ -54,7 +54,7 @@ Node.js 20 and Go 1.23 are past their upstream end of life; they are here becaus
 
 | Tag | Platforms | Contents | Octail eggs using it |
 | --- | --- | --- | --- |
-| <a name="steamcmd_debian"></a>`steamcmd_debian` | amd64 | SteamCMD servers on Debian 12: i386 + 32-bit libs for SteamCMD/steamclient, Xvfb + xauth, libpulse0 + libatomic1 (Valheim), ICU, libcurl(-gnutls), `rcon`, `nc` and `telnet` (7 Days to Die's console), auto-update hook | 7-days-to-die, ark-survival-evolved, arma-reforger, avorion, barotrauma, conan-exiles, core-keeper, counter-strike-source, craftopia, dont-starve-together, euro-truck-simulator-2, hurtworld, killing-floor-2, mordhau, necesse, palworld, project-zomboid, satisfactory, soulmask, squad, steamcmd-generic, the-front, unturned, valheim, valheim-bepinex |
+| <a name="steamcmd_debian"></a>`steamcmd_debian` | amd64 | SteamCMD servers on Debian 12: i386 + 32-bit libs for SteamCMD/steamclient, Xvfb + xauth, libpulse0 + libatomic1 (Valheim), ICU, libcurl(-gnutls), `rcon`, `nc` and `telnet` (7 Days to Die's console), auto-update hook | 7-days-to-die, american-truck-simulator, ark-survival-evolved, arma-reforger, assetto-corsa, avorion, barotrauma, conan-exiles, core-keeper, counter-strike-source, craftopia, dont-starve-together, euro-truck-simulator-2, hurtworld, killing-floor-2, mordhau, necesse, palworld, project-zomboid, satisfactory, soulmask, squad, steamcmd-generic, the-front, unturned, valheim, valheim-bepinex |
 | <a name="steamcmd_ubuntu"></a>`steamcmd_ubuntu` | amd64 | The same on Ubuntu 24.04 (newer glibc/libstdc++, libc++; `libc++.so` is the library itself, not Ubuntu's linker script, so Pavlov can load it) | insurgency-sandstorm, pavlov-vr, stationeers |
 | <a name="steamcmd_dotnet"></a>`steamcmd_dotnet` | amd64 | `steamcmd_debian` + Microsoft's ASP.NET Core 8 runtime (`dotnet` on PATH) | eco |
 | <a name="steamcmd_sniper"></a>`steamcmd_sniper` | amd64 | Valve's Steam Runtime 3 "sniper" + tini, `rcon`, auto-update hook | counter-strike-2 |
@@ -78,7 +78,7 @@ Images for egg install scripts: no entrypoint, run as root (see [below](#what-ev
 
 | Tag | Platforms | Contents | Octail eggs using it |
 | --- | --- | --- | --- |
-| <a name="installer_debian"></a>`installer_debian` | amd64, arm64 | Install scripts (root): Debian 12, i386 libs for SteamCMD, curl, wget, jq, xq, unzip, zip, 7z, git, dos2unix, rsync, Python 3; apt works | every egg with a Debian installer (50 of them) |
+| <a name="installer_debian"></a>`installer_debian` | amd64, arm64 | Install scripts (root): Debian 12, i386 libs for SteamCMD, curl, wget, jq, xq, unzip, zip, 7z, git, dos2unix, rsync, Python 3; apt works | every egg with a Debian installer (55 of them) |
 | <a name="installer_alpine"></a>`installer_alpine` | amd64, arm64 | Install scripts (root): Alpine with bash, curl, wget, jq, unzip, git | minecraft-paper, minecraft-velocity, openttd, test-game |
 | <a name="installer_java_8"></a>`installer_java_8` | amd64, arm64 | Install scripts that run Java 8 (Temurin JDK + the installer tools): Forge, whose installers (up to 26.x) are Java 8 code | minecraft-forge |
 | <a name="installer_java_11"></a>`installer_java_11` | amd64, arm64 | The same with Java 11 | minecraft-fabric |
