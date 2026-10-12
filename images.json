@@ -589,7 +589,7 @@
       "smoke": "curl --version && jq --version && java -version",
       "description": "Install scripts that run Java 21 (NeoForge installers, Quilt installer)",
       "replaces": [],
-      "eggs": ["minecraft-neoforge", "minecraft-quilt", "minecraft-spigot"]
+      "eggs": ["minecraft-neoforge", "minecraft-quilt"]
     },
     {
       "tag": "installer_java_25",
