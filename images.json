@@ -186,12 +186,14 @@
       ],
       "eggs": [
         "beammp",
+        "ddnet",
         "factorio",
         "minecraft-bedrock",
         "mumble",
         "openttd",
         "teamspeak",
-        "terraria-vanilla"
+        "terraria-vanilla",
+        "xonotic"
       ]
     },
     {
@@ -202,7 +204,7 @@
       "smoke": "cat /etc/alpine-release && curl --version | head -n 1",
       "description": "Small generic Alpine Linux runtime",
       "replaces": ["ghcr.io/pterodactyl/yolks:alpine"],
-      "eggs": ["test-game"]
+      "eggs": ["luanti", "test-game"]
     },
     {
       "tag": "steamcmd_debian",
@@ -403,6 +405,7 @@
         "craftopia",
         "day-of-defeat",
         "day-of-defeat-source",
+        "ddnet",
         "deathmatch-classic",
         "dont-starve-together",
         "eco",
@@ -451,7 +454,8 @@
         "v-rising",
         "valheim",
         "valheim-bepinex",
-        "vintage-story"
+        "vintage-story",
+        "xonotic"
       ]
     },
     {
@@ -467,6 +471,7 @@
         "ghcr.io/pterodactyl/installers:alpine"
       ],
       "eggs": [
+        "luanti",
         "minecraft-bungeecord",
         "minecraft-folia",
         "minecraft-paper",
