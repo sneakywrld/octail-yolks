@@ -217,7 +217,9 @@
       "eggs": [
         "factorio",
         "minecraft-bedrock",
+        "mumble",
         "openttd",
+        "teamspeak",
         "terraria-vanilla"
       ]
     },
@@ -479,6 +481,7 @@
         "mindustry",
         "minecraft-bedrock",
         "mordhau",
+        "mumble",
         "necesse",
         "palworld",
         "pavlov-vr",
@@ -493,6 +496,7 @@
         "stationeers",
         "steamcmd-generic",
         "team-fortress-2",
+        "teamspeak",
         "terraria-tmodloader",
         "terraria-vanilla",
         "the-front",
