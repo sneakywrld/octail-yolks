@@ -83,7 +83,8 @@ Images for egg install scripts: no entrypoint, run as root (see [below](#what-ev
 | <a name="installer_alpine"></a>`installer_alpine` | amd64, arm64 | Install scripts (root): Alpine with bash, curl, wget, jq, unzip, git | minecraft-paper, minecraft-velocity, openttd, test-game |
 | <a name="installer_java_8"></a>`installer_java_8` | amd64, arm64 | Install scripts that run Java 8 (Temurin JDK + the installer tools): Forge, whose installers (up to 26.x) are Java 8 code | minecraft-forge |
 | <a name="installer_java_11"></a>`installer_java_11` | amd64, arm64 | The same with Java 11 | minecraft-fabric |
-| <a name="installer_java_21"></a>`installer_java_21` | amd64, arm64 | The same with Java 21: NeoForge (no OpenJDK from apt at every install) | minecraft-neoforge |
+| <a name="installer_java_21"></a>`installer_java_21` | amd64, arm64 | The same with Java 21: NeoForge (no OpenJDK from apt at every install), the Quilt installer | minecraft-neoforge, minecraft-quilt |
+| <a name="installer_java_25"></a>`installer_java_25` | amd64, arm64 | The same with Java 25: Spigot's BuildTools, whose current Minecraft builds (1.21.8 and newer, 26.x) run on Java 25 (older ones download a fitting Temurin JDK at install) | minecraft-spigot |
 
 ## Using an image in an egg
 
