@@ -150,6 +150,9 @@ image.
   patch updates of the bases' tags each week. A tag never moves to a new major/minor base by itself (`java_8` stays
   on Java 8); that is a new tag or a deliberate Dockerfile change.
 - Upstream versions pinned in the Dockerfiles (GE-Proton, winetricks, rcon-cli) are bumped by hand after a test run.
+- A new `WINETRICKS_VERSION` needs its commit and sha256 in `common/wine-checksums.sh`; a Wine release that asks for a
+  Wine Mono or Gecko version not listed there stops the build and prints the sha256 Wine's `addons.c` names, to check
+  against the download and add.
 
 ### How CI publishes
 
@@ -267,7 +270,8 @@ common/entrypoint.sh        the entrypoint every runtime image runs
 common/hooks/*.sh           image hooks (copied per image into /etc/octail/entrypoint.d)
 common/setup-apt.sh         build-time: packages, locale, `container` user (Debian/Ubuntu)
 common/setup-apk.sh         the same for Alpine
-common/install-wine.sh      build-time: WineHQ, winetricks, Wine Mono/Gecko
+common/install-wine.sh      build-time: WineHQ, winetricks, Wine Mono/Gecko (checksum-verified)
+common/wine-checksums.sh    pinned sha256 of winetricks and the Wine Mono/Gecko installers
 common/install-proton.sh    build-time: GE-Proton (checksum-verified)
 images/<tag>/Dockerfile     one folder per tag
 images.json                 tag -> folder -> platforms -> description, replaced images, eggs

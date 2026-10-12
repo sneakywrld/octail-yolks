@@ -306,6 +306,124 @@ out=$(run_ep FRAMEWORK=vanilla LD_LIBRARY_PATH=/x STARTUP='echo "lib=${LD_LIBRAR
 expect_contains 'RustDedicated finds its plugins' "${out}" "lib=${work}/home/RustDedicated_Data/Plugins/x86_64:${work}/home:/x"
 expect_not_contains 'vanilla installs no framework' "${out}" 'installing'
 
+# --- Wine build downloads are checksum-verified (common/wine-checksums.sh) -------------------------------
+# A fake downloader: serves "${work}/dl/<url with / as _>" and logs every URL it is asked for.
+fake_curl() {
+	local url="" out="" key
+	while [ $# -gt 0 ]; do
+		case "$1" in
+		-o)
+			out=$2
+			shift 2
+			;;
+		-*) shift ;;
+		*)
+			url=$1
+			shift
+			;;
+		esac
+	done
+	printf '%s\n' "${url}" >>"${work}/dl/calls"
+	key=${url//\//_}
+	[ -f "${work}/dl/${key}" ] || return 22
+	cp "${work}/dl/${key}" "${out}"
+}
+serve() { # url content
+	printf '%s' "$2" >"${work}/dl/${1//\//_}"
+}
+sha_of() { printf '%s' "$1" | sha256sum | awk '{print $1}'; }
+fresh_dl() {
+	rm -rf "${work:?}/dl" "${work:?}/out"
+	mkdir -p "${work}/dl" "${work}/out"
+	: >"${work}/dl/calls"
+}
+wine_sh() { # runs "$@" with wine-checksums.sh sourced and the fake downloader; output and rc on stdout
+	(
+		# shellcheck source-path=SCRIPTDIR source=../common/wine-checksums.sh
+		. "${root}/common/wine-checksums.sh"
+		CURL=fake_curl "$@" 2>&1
+		echo "rc=$?"
+	)
+}
+addons_c() { # mono-version gecko-version: the parts of addons.c the script reads, with an arm64 block too
+	printf '#define GECKO_VERSION "%s"\n#ifdef __i386__\n#define GECKO_ARCH "x86"\n#define GECKO_SHA "%s"\n#elif defined(__x86_64__)\n#define GECKO_ARCH "x86_64"\n#define GECKO_SHA "%s"\n#else\n#define GECKO_ARCH ""\n#define GECKO_SHA "???"\n#endif\n\n#define MONO_VERSION "%s"\n#if defined(__i386__) || defined(__x86_64__)\n#define MONO_ARCH "x86"\n#define MONO_SHA "%s"\n#elif defined(__aarch64__)\n#define MONO_ARCH "arm64"\n#define MONO_SHA "%s"\n#endif\n' \
+		"$2" "$(sha_of gx86)" "$(sha_of gx64)" "$1" "$(sha_of mono)" "$(sha_of monoarm)"
+}
+
+fresh_dl
+serve https://example.test/a.bin 'hello'
+out=$(wine_sh fetch_verified https://example.test/a.bin "${work}/out/a.bin" "$(sha_of hello)")
+expect_contains 'a download with the pinned sha256 is kept' "${out}" 'rc=0'
+if [ "$(cat "${work}/out/a.bin" 2>/dev/null)" = hello ]; then ok 'it lands at its destination'; else not_ok 'it lands at its destination'; fi
+
+out=$(wine_sh fetch_verified https://example.test/a.bin "${work}/out/b.bin" "$(sha_of other)")
+expect_contains 'a download with another sha256 is refused' "${out}" 'checksum mismatch for https://example.test/a.bin'
+expect_not_contains 'a refused download fails the step' "${out}" 'rc=0'
+if [ ! -e "${work}/out/b.bin" ] && [ ! -e "${work}/out/b.bin.part" ]; then ok 'a refused download leaves no file'; else not_ok 'a refused download leaves no file' "$(ls "${work}/out")"; fi
+out=$(wine_sh fetch_verified https://example.test/missing "${work}/out/c.bin" "$(sha_of x)")
+expect_contains 'a failed download fails the step' "${out}" 'download failed: https://example.test/missing'
+
+# Every pinned value is a sha256, and the versions images use today are pinned.
+pins=$(sed -n 's/.*) echo \([^ ;]*\) ;;$/\1/p; s/.*) echo '\''[0-9a-f]* \([^'\'']*\)'\'' ;;$/\1/p' "${root}/common/wine-checksums.sh")
+if [ -n "${pins}" ] && ! grep -qvE '^[0-9a-f]{64}$' <<<"${pins}"; then ok 'every pin is a sha256'; else not_ok 'every pin is a sha256' "${pins}"; fi
+for f in "${root}"/images/wine*/Dockerfile; do
+	tag=$(sed -n 's/^ARG WINETRICKS_VERSION=//p' "${f}")
+	out=$(wine_sh winetricks_pin "${tag}")
+	expect_contains "winetricks ${tag} ($(basename "$(dirname "${f}")")) is pinned" "${out}" 'rc=0'
+done
+
+# The addons: an unpinned version stops the build before any download, naming addons.c's value.
+fresh_dl
+out=$(wine_sh install_addons "$(addons_c 99.0.0 2.47.4)" "${work}/out/mono" "${work}/out/gecko")
+expect_contains 'an unpinned Wine Mono version fails' "${out}" 'no known sha256 for Wine Mono 99.0.0 (x86)'
+expect_contains 'the failure names the x86 sha256 from addons.c (not arm64)' "${out}" "addons.c says $(sha_of mono)"
+expect_not_contains 'an unpinned version fails the step' "${out}" 'rc=0'
+if [ ! -s "${work}/dl/calls" ]; then ok 'nothing is downloaded for an unpinned version'; else not_ok 'nothing is downloaded for an unpinned version' "$(cat "${work}/dl/calls")"; fi
+out=$(wine_sh install_addons "$(addons_c 11.3.0 9.9.9)" "${work}/out/mono" "${work}/out/gecko")
+expect_contains 'an unpinned Wine Gecko version fails, per arch' "${out}" 'no known sha256 for Wine Gecko 9.9.9 (x86_64)'
+
+# Pinned versions whose download doesn't match (here: the fake files) are refused.
+fresh_dl
+serve https://dl.winehq.org/wine/wine-mono/11.3.0/wine-mono-11.3.0-x86.msi 'not the real msi'
+out=$(wine_sh install_addons "$(addons_c 11.3.0 2.47.4)" "${work}/out/mono" "${work}/out/gecko")
+expect_contains 'a pinned Mono version with another file is refused' "${out}" 'checksum mismatch for https://dl.winehq.org/wine/wine-mono/11.3.0/wine-mono-11.3.0-x86.msi'
+if [ ! -e "${work}/out/mono/wine-mono-11.3.0-x86.msi" ]; then ok 'the refused Mono installer is not kept'; else not_ok 'the refused Mono installer is not kept'; fi
+
+# With matching files (the pins swapped for the fake files' sums), all three land where Wine looks.
+fresh_dl
+serve https://dl.winehq.org/wine/wine-mono/11.3.0/wine-mono-11.3.0-x86.msi mono
+serve https://dl.winehq.org/wine/wine-gecko/2.47.4/wine-gecko-2.47.4-x86.msi gx86
+serve https://dl.winehq.org/wine/wine-gecko/2.47.4/wine-gecko-2.47.4-x86_64.msi gx64
+fake_pins() {
+	# shellcheck disable=SC2317 # called by install_addons
+	addon_sha256() {
+		case "$1/$3" in
+		mono/x86) sha_of mono ;;
+		gecko/x86) sha_of gx86 ;;
+		gecko/x86_64) sha_of gx64 ;;
+		esac
+	}
+	install_addons "$@"
+}
+out=$(wine_sh fake_pins "$(addons_c 11.3.0 2.47.4)" "${work}/out/mono" "${work}/out/gecko")
+expect_contains 'matching Mono and Gecko installers are installed' "${out}" 'rc=0'
+if [ -f "${work}/out/mono/wine-mono-11.3.0-x86.msi" ] && [ -f "${work}/out/gecko/wine-gecko-2.47.4-x86.msi" ] &&
+	[ -f "${work}/out/gecko/wine-gecko-2.47.4-x86_64.msi" ]; then
+	ok 'the installers are in the Mono and Gecko folders'
+else
+	not_ok 'the installers are in the Mono and Gecko folders' "$(find "${work}/out")"
+fi
+
+# winetricks comes from the pinned commit, not the movable tag, and is checked too.
+fresh_dl
+out=$(wine_sh install_winetricks 19990101 "${work}/out/winetricks")
+expect_contains 'an unpinned winetricks tag fails' "${out}" 'no pinned commit/sha256 for winetricks 19990101'
+serve https://raw.githubusercontent.com/Winetricks/winetricks/b76e1ee79ac57d7aceb384f74518fc423265810c/src/winetricks '#!/bin/sh'
+out=$(wine_sh install_winetricks 20260125 "${work}/out/winetricks")
+expect_contains 'winetricks is fetched by commit' "$(cat "${work}/dl/calls")" '/b76e1ee79ac57d7aceb384f74518fc423265810c/src/winetricks'
+expect_contains 'a winetricks file with another sha256 is refused' "${out}" 'checksum mismatch'
+if [ ! -e "${work}/out/winetricks" ]; then ok 'the refused winetricks is not installed'; else not_ok 'the refused winetricks is not installed'; fi
+
 # --- signals: Ctrl+C (SIGINT) reaches the server --------------------------------------------------------
 # The fake server saves on SIGINT and exits 0, like a game server's graceful stop. It runs once in the
 # foreground of the startup, and once in the background with the egg-style trap that forwards the signal.
