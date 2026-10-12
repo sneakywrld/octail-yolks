@@ -55,7 +55,7 @@ Node.js 20 and Go 1.23 are past their upstream end of life; they are here becaus
 
 | Tag | Platforms | Contents | Octail eggs using it |
 | --- | --- | --- | --- |
-| <a name="steamcmd_debian"></a>`steamcmd_debian` | amd64 | SteamCMD servers on Debian 12: i386 + 32-bit libs for SteamCMD/steamclient, Xvfb + xauth, libpulse0 + libatomic1 (Valheim), ICU, libcurl(-gnutls), `rcon`, `nc` and `telnet` (7 Days to Die's console), auto-update hook | 7-days-to-die, american-truck-simulator, ark-survival-evolved, arma-reforger, assetto-corsa, avorion, barotrauma, conan-exiles, core-keeper, counter-strike-source, craftopia, dont-starve-together, euro-truck-simulator-2, holdfast, hurtworld, killing-floor-2, mordhau, necesse, palworld, project-zomboid, satisfactory, scp-secret-laboratory, soulmask, squad, steamcmd-generic, the-front, the-isle, unturned, valheim, valheim-bepinex |
+| <a name="steamcmd_debian"></a>`steamcmd_debian` | amd64 | SteamCMD servers on Debian 12: i386 + 32-bit libs for SteamCMD/steamclient, Xvfb + xauth, libpulse0 + libatomic1 (Valheim), ICU, libcurl(-gnutls), `rcon`, `nc` and `telnet` (7 Days to Die's console), auto-update hook | 7-days-to-die, american-truck-simulator, ark-survival-evolved, arma-reforger, assetto-corsa, avorion, barotrauma, conan-exiles, core-keeper, counter-strike-source, craftopia, dont-starve-together, euro-truck-simulator-2, holdfast, hurtworld, killing-floor-2, mordhau, necesse, palworld, project-zomboid, rising-world, satisfactory, scp-secret-laboratory, soulmask, squad, steamcmd-generic, the-front, the-isle, unturned, valheim, valheim-bepinex |
 | <a name="steamcmd_ubuntu"></a>`steamcmd_ubuntu` | amd64 | The same on Ubuntu 24.04 (newer glibc/libstdc++, libc++; `libc++.so` is the library itself, not Ubuntu's linker script, so Pavlov can load it) | insurgency-sandstorm, pavlov-vr, stationeers |
 | <a name="steamcmd_dotnet"></a>`steamcmd_dotnet` | amd64 | `steamcmd_debian` + Microsoft's ASP.NET Core 8 runtime (`dotnet` on PATH) | eco |
 | <a name="steamcmd_sniper"></a>`steamcmd_sniper` | amd64 | Valve's Steam Runtime 3 "sniper" + tini, `rcon`, auto-update hook | counter-strike-2 |
@@ -67,7 +67,7 @@ Node.js 20 and Go 1.23 are past their upstream end of life; they are here becaus
 | Tag | Platforms | Contents | Octail eggs using it |
 | --- | --- | --- | --- |
 | <a name="proton"></a>`proton` | amd64 | GE-Proton (`proton run ./Server.exe`), Python 3, Xvfb, SteamCMD update (with app 1007) | abiotic-factor, ark-survival-ascended, astroneer, enshrouded, steamcmd-generic |
-| <a name="wine"></a>`wine` | amd64 | WineHQ stable, winetricks, Wine Mono/Gecko baked in, Xvfb (on unless `XVFB=0`), prefix + `WINETRICKS_RUN` hook, SteamCMD update (with app 1007) | aska, empyrion, icarus, night-of-the-dead, return-to-moria, sons-of-the-forest, space-engineers, stormworks, the-forest |
+| <a name="wine"></a>`wine` | amd64 | WineHQ stable, winetricks, Wine Mono/Gecko baked in, Xvfb (on unless `XVFB=0`), prefix + `WINETRICKS_RUN` hook, SteamCMD update (with app 1007) | aska, empyrion, icarus, myth-of-empires, night-of-the-dead, pixark, return-to-moria, sons-of-the-forest, space-engineers, stormworks, the-forest |
 | <a name="wine_staging"></a>`wine_staging` | amd64 | The same with WineHQ staging | empyrion, stormworks, v-rising |
 
 SteamCMD, Wine, Proton and Source images are amd64 only: SteamCMD, the Steam client libraries and Windows servers are
