@@ -165,6 +165,23 @@
       ]
     },
     {
+      "tag": "dotnet_9",
+      "folder": "images/dotnet_9",
+      "platforms": [
+        "linux/amd64",
+        "linux/arm64"
+      ],
+      "kind": "runtime",
+      "smoke": "dotnet --list-runtimes | grep -F 'Microsoft.NETCore.App 9.'",
+      "description": ".NET 9 runtime (Debian 12): TShock 6 (Terraria)",
+      "replaces": [
+        "ghcr.io/pelican-eggs/yolks:dotnet_9"
+      ],
+      "eggs": [
+        "terraria-tshock"
+      ]
+    },
+    {
       "tag": "dotnet_10",
       "folder": "images/dotnet_10",
       "platforms": [
