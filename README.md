@@ -66,7 +66,7 @@ Node.js 20 and Go 1.23 are past their upstream end of life; they are here becaus
 | Tag | Platforms | Contents | Octail eggs using it |
 | --- | --- | --- | --- |
 | <a name="proton"></a>`proton` | amd64 | GE-Proton (`proton run ./Server.exe`), Python 3, Xvfb, SteamCMD update (with app 1007) | abiotic-factor, ark-survival-ascended, astroneer, enshrouded, steamcmd-generic |
-| <a name="wine"></a>`wine` | amd64 | WineHQ stable, winetricks, Wine Mono/Gecko baked in, Xvfb (on unless `XVFB=0`), prefix + `WINETRICKS_RUN` hook, SteamCMD update (with app 1007) | empyrion, icarus, night-of-the-dead, sons-of-the-forest, space-engineers, stormworks |
+| <a name="wine"></a>`wine` | amd64 | WineHQ stable, winetricks, Wine Mono/Gecko baked in, Xvfb (on unless `XVFB=0`), prefix + `WINETRICKS_RUN` hook, SteamCMD update (with app 1007) | aska, empyrion, icarus, night-of-the-dead, return-to-moria, sons-of-the-forest, space-engineers, stormworks, the-forest |
 | <a name="wine_staging"></a>`wine_staging` | amd64 | The same with WineHQ staging | empyrion, stormworks, v-rising |
 
 SteamCMD, Wine, Proton and Source images are amd64 only: SteamCMD, the Steam client libraries and Windows servers are
@@ -78,7 +78,7 @@ Images for egg install scripts: no entrypoint, run as root (see [below](#what-ev
 
 | Tag | Platforms | Contents | Octail eggs using it |
 | --- | --- | --- | --- |
-| <a name="installer_debian"></a>`installer_debian` | amd64, arm64 | Install scripts (root): Debian 12, i386 libs for SteamCMD, curl, wget, jq, xq, unzip, zip, 7z, git, dos2unix, rsync, Python 3; apt works | every egg with a Debian installer (65 of them) |
+| <a name="installer_debian"></a>`installer_debian` | amd64, arm64 | Install scripts (root): Debian 12, i386 libs for SteamCMD, curl, wget, jq, xq, unzip, zip, 7z, git, dos2unix, rsync, Python 3; apt works | every egg with a Debian installer (74 of them) |
 | <a name="installer_alpine"></a>`installer_alpine` | amd64, arm64 | Install scripts (root): Alpine with bash, curl, wget, jq, unzip, git | minecraft-paper, minecraft-velocity, openttd, test-game |
 | <a name="installer_java_8"></a>`installer_java_8` | amd64, arm64 | Install scripts that run Java 8 (Temurin JDK + the installer tools): Forge, whose installers (up to 26.x) are Java 8 code | minecraft-forge |
 | <a name="installer_java_11"></a>`installer_java_11` | amd64, arm64 | The same with Java 11 | minecraft-fabric |
