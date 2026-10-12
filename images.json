@@ -1,5 +1,5 @@
 {
-  "$comment": "Every image this repository builds: tag -> folder -> platforms. CI builds its matrix from this file; `replaces` lists the third-party images each tag stands in for in Octail's eggs, `eggs` the shipped eggs using it.",
+  "$comment": "Every image this repository builds: tag -> folder -> platforms. CI builds its matrix from this file and boot-tests each image with its `smoke` command (scripts/smoke.sh: the startup of a runtime image, or a bash -c command run as root for an installer) before pushing it; `replaces` lists the third-party images each tag stands in for in Octail's eggs, `eggs` the shipped eggs using it.",
   "registry": "ghcr.io/sneakywrld/octail-yolks",
   "images": [
     {
@@ -10,6 +10,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "java -version",
       "description": "Java 8 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft up to 1.16",
       "replaces": [
         "ghcr.io/pelican-eggs/yolks:java_8"
@@ -30,6 +31,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "java -version",
       "description": "Java 11 (Eclipse Temurin JDK, Ubuntu 24.04)",
       "replaces": [
         "ghcr.io/pelican-eggs/yolks:java_11"
@@ -50,6 +52,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "java -version",
       "description": "Java 17 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft 1.17-1.20.4, Mindustry",
       "replaces": [
         "ghcr.io/pelican-eggs/yolks:java_16",
@@ -72,6 +75,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "java -version",
       "description": "Java 21 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft 1.20.5+, Mindustry",
       "replaces": [
         "ghcr.io/pelican-eggs/yolks:java_21"
@@ -93,6 +97,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "java -version",
       "description": "Java 25 (Eclipse Temurin JDK, Ubuntu 24.04): newest Minecraft",
       "replaces": [
         "ghcr.io/pelican-eggs/yolks:java_25"
@@ -113,6 +118,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "dotnet --list-runtimes | grep -F 'Microsoft.NETCore.App 8.'",
       "description": ".NET 8 runtime (Debian 12): tModLoader, Vintage Story",
       "replaces": [
         "ghcr.io/parkervcp/yolks:dotnet_6",
@@ -133,6 +139,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "dotnet --list-runtimes | grep -F 'Microsoft.NETCore.App 10.'",
       "description": ".NET 10 runtime (Ubuntu 24.04): Vintage Story 1.21+",
       "replaces": [
         "ghcr.io/pelican-eggs/yolks:dotnet_10"
@@ -149,6 +156,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "node -v | grep '^v20[.]'",
       "description": "Node.js 20 (Debian 12) with git and native-module build tools",
       "replaces": [],
       "eggs": []
@@ -161,6 +169,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "node -v | grep '^v22[.]'",
       "description": "Node.js 22 (Debian 12) with git and native-module build tools",
       "replaces": [],
       "eggs": []
@@ -173,6 +182,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "python3 -V | grep -F 'Python 3.12.'",
       "description": "Python 3.12 (Debian 12) with git and a C compiler for wheels",
       "replaces": [],
       "eggs": []
@@ -185,6 +195,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "go version | grep -F 'go1.23'",
       "description": "Go 1.23 (Debian 12), Go caches in the server folder",
       "replaces": [],
       "eggs": []
@@ -197,6 +208,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "cat /etc/debian_version && curl --version | head -n 1 && python3 -V",
       "description": "Generic Debian 12 with common game-server libraries: Factorio, OpenTTD, Terraria, Bedrock",
       "replaces": [
         "ghcr.io/parkervcp/yolks:debian",
@@ -217,6 +229,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "cat /etc/alpine-release && curl --version | head -n 1",
       "description": "Small generic Alpine Linux runtime",
       "replaces": [
         "ghcr.io/pterodactyl/yolks:alpine"
@@ -232,6 +245,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && ldd /usr/lib32/libstdc++.so.6 >/tmp/ldd && cat /tmp/ldd && ! grep -F 'not found' /tmp/ldd",
       "description": "SteamCMD servers on Debian 12: 32-bit libs, Xvfb, libpulse/libatomic (Valheim), ICU, rcon, nc/telnet, auto-update hook",
       "replaces": [
         "ghcr.io/parkervcp/games:valheim",
@@ -273,6 +287,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && ldd /usr/lib32/libstdc++.so.6 >/tmp/ldd && cat /tmp/ldd && ! grep -F 'not found' /tmp/ldd",
       "description": "SteamCMD servers on Ubuntu 24.04 (newer glibc, libc++ loadable as libc++.so): Sandstorm, Pavlov, Stationeers",
       "replaces": [
         "ghcr.io/parkervcp/steamcmd:ubuntu"
@@ -290,6 +305,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && ldd /usr/lib32/libstdc++.so.6 >/tmp/ldd && cat /tmp/ldd && ! grep -F 'not found' /tmp/ldd && dotnet --list-runtimes | grep -F 'Microsoft.AspNetCore.App 8.'",
       "description": "SteamCMD servers with the .NET 8 / ASP.NET Core 8 runtime: Eco",
       "replaces": [
         "ghcr.io/parkervcp/steamcmd:dotnet"
@@ -305,6 +321,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && grep -F VERSION_ID /etc/os-release && ldd /bin/bash >/tmp/ldd && ! grep -F 'not found' /tmp/ldd",
       "description": "Valve's Steam Runtime 3 (sniper) with our entrypoint: Counter-Strike 2",
       "replaces": [
         "ghcr.io/parkervcp/steamcmd:sniper"
@@ -320,6 +337,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && ldd /usr/lib32/libstdc++.so.6 /usr/lib/i386-linux-gnu/libtcmalloc_minimal.so.4 >/tmp/ldd && cat /tmp/ldd && ! grep -F 'not found' /tmp/ldd",
       "description": "Source engine (srcds) 32-bit libraries; updates before start by default",
       "replaces": [
         "ghcr.io/parkervcp/games:source",
@@ -340,6 +358,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && ldd /usr/lib32/libstdc++.so.6 >/tmp/ldd && cat /tmp/ldd && ! grep -F 'not found' /tmp/ldd",
       "description": "Rust dedicated server: SteamCMD image + FRAMEWORK hook (vanilla/oxide/carbon), updates by default",
       "replaces": [
         "ghcr.io/pelican-eggs/games:rust"
@@ -355,6 +374,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && cat /opt/proton/OCTAIL_VERSION && test -x /opt/proton/proton && /opt/proton/files/bin/wine --version && test -d \"${STEAM_COMPAT_DATA_PATH}\"",
       "description": "Windows servers through GE-Proton (`proton run`), Xvfb, SteamCMD update with the Steam client libraries",
       "replaces": [
         "ghcr.io/parkervcp/steamcmd:proton",
@@ -375,6 +395,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && wine --version && test -f \"${WINEPREFIX}/system.reg\"",
       "description": "Windows servers through WineHQ stable, winetricks, Wine Mono/Gecko, Xvfb (on by default), SteamCMD update with the Steam client libraries",
       "replaces": [
         "ghcr.io/parkervcp/yolks:wine_latest",
@@ -393,6 +414,7 @@
         "linux/amd64"
       ],
       "kind": "runtime",
+      "smoke": "command -v rcon && wine --version | grep -i staging && test -f \"${WINEPREFIX}/system.reg\"",
       "description": "Windows servers through WineHQ staging (V Rising), otherwise like wine",
       "replaces": [
         "ghcr.io/parkervcp/yolks:wine_staging"
@@ -409,6 +431,7 @@
         "linux/arm64"
       ],
       "kind": "runtime",
+      "smoke": "mono --version | head -n 1",
       "description": "Mono (Debian's mono-complete) for .NET Framework servers",
       "replaces": [],
       "eggs": []
@@ -421,6 +444,7 @@
         "linux/arm64"
       ],
       "kind": "installer",
+      "smoke": "curl --version && jq --version",
       "description": "Install scripts (root): Debian 12, SteamCMD 32-bit libs, curl/wget/jq/xq/unzip/git/dos2unix/python3, apt",
       "replaces": [
         "ghcr.io/parkervcp/installers:debian",
@@ -487,6 +511,7 @@
         "linux/arm64"
       ],
       "kind": "installer",
+      "smoke": "curl --version && jq --version",
       "description": "Install scripts (root): Alpine with bash, curl, wget, jq, unzip, git",
       "replaces": [
         "alpine:latest",
@@ -508,6 +533,7 @@
         "linux/arm64"
       ],
       "kind": "installer",
+      "smoke": "curl --version && jq --version && java -version",
       "description": "Install scripts that run Java 8 (Forge installers)",
       "replaces": [
         "ghcr.io/pelican-eggs/installers:java_8"
@@ -524,6 +550,7 @@
         "linux/arm64"
       ],
       "kind": "installer",
+      "smoke": "curl --version && jq --version && java -version",
       "description": "Install scripts that run Java 11 (Fabric installer)",
       "replaces": [
         "ghcr.io/pelican-eggs/installers:java_11"
@@ -540,6 +567,7 @@
         "linux/arm64"
       ],
       "kind": "installer",
+      "smoke": "curl --version && jq --version && java -version",
       "description": "Install scripts that run Java 21 (modern Forge / NeoForge installers)",
       "replaces": [],
       "eggs": [

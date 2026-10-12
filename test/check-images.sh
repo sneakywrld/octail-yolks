@@ -1,6 +1,7 @@
 #!/bin/bash
 # Static checks of images/ and images.json, no Docker needed (run by test/run.sh and CI):
 #   - every images/<folder> is in images.json and every images.json entry has a folder with a Dockerfile;
+#   - every tag has a kind (runtime or installer) and a `smoke` command (the boot test scripts/smoke.sh runs in CI);
 #   - tags are unique;
 #   - no Dockerfile starts from or copies from a Pterodactyl / Pelican / parkervcp / pelican-eggs image, nor
 #     from any image that isn't on the allowlist in bases.txt. Build stages of the same Dockerfile are fine; an
@@ -49,6 +50,14 @@ while IFS= read -r folder; do
 done <<<"${listed}"
 dupes=$(jq -r '.images[].tag' "${root}/images.json" | sort | uniq -d)
 [ -z "${dupes}" ] || err "tags listed twice in images.json: ${dupes//$'\n'/, }"
+# Every tag has a boot test (scripts/smoke.sh, run by CI before the push) and a kind it knows.
+while IFS=$'\t' read -r tag kind smoke; do
+	[ -n "${smoke}" ] || err "images.json: ${tag} has no smoke command (the boot test CI runs before pushing it)"
+	case "${kind}" in
+	runtime | installer) ;;
+	*) err "images.json: ${tag} has kind '${kind}', expected runtime or installer" ;;
+	esac
+done < <(jq -r '.images[] | [.tag, (.kind // ""), ((.smoke // "") | tostring | gsub("^\\s+|\\s+$"; ""))] | @tsv' "${root}/images.json")
 
 # --- base images ---------------------------------------------------------------------------------------
 allowed=$(grep -v '^[[:space:]]*\(#\|$\)' "${bases_file}" | tr -d '[:blank:]')

@@ -52,7 +52,7 @@ fake_tree() { # tag dockerfile-content
 	rm -rf "${work:?}/tree"
 	mkdir -p "${work}/tree/images/$1"
 	printf '%s\n' "$2" >"${work}/tree/images/$1/Dockerfile"
-	printf '{"images":[{"tag":"%s","folder":"images/%s"}]}\n' "$1" "$1" >"${work}/tree/images.json"
+	printf '{"images":[{"tag":"%s","folder":"images/%s","kind":"runtime","smoke":"true"}]}\n' "$1" "$1" >"${work}/tree/images.json"
 }
 expect_check() { # name pass|fail [needle]
 	local out rc
@@ -84,8 +84,126 @@ fake_tree ok 'FROM alpine:3.22'
 mkdir -p "${work}/tree/images/extra"
 expect_check 'a folder missing from images.json fails' fail 'images/extra is not in images.json'
 fake_tree ok 'FROM alpine:3.22'
-printf '{"images":[{"tag":"ok","folder":"images/ok"},{"tag":"gone","folder":"images/gone"}]}\n' >"${work}/tree/images.json"
+printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"runtime","smoke":"true"},{"tag":"gone","folder":"images/gone","kind":"runtime","smoke":"true"}]}\n' >"${work}/tree/images.json"
 expect_check 'an images.json entry without a folder fails' fail 'images/gone, which does not exist'
+fake_tree ok 'FROM alpine:3.22'
+printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"runtime"}]}\n' >"${work}/tree/images.json"
+expect_check 'a tag without a smoke command fails' fail 'ok has no smoke command'
+printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"runtime","smoke":"  "}]}\n' >"${work}/tree/images.json"
+expect_check 'a blank smoke command fails' fail 'ok has no smoke command'
+printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"server","smoke":"true"}]}\n' >"${work}/tree/images.json"
+expect_check 'an unknown kind fails' fail "kind 'server'"
+
+# --- the boot test (scripts/smoke.sh) with a fake docker ------------------------------------------------
+# The fake logs each call's arguments (one per line, calls separated by "--call--") and answers `image inspect`
+# with FAKE_SIZE / FAKE_PLATFORM; `run` prints FAKE_OUT, sleeps FAKE_SLEEP and exits FAKE_RC.
+smoke="${root}/scripts/smoke.sh"
+mkdir -p "${work}/fakebin"
+cat >"${work}/fakebin/docker" <<'EOF'
+#!/bin/bash
+{
+	echo '--call--'
+	printf '%s\n' "$@"
+} >>"${FAKE_LOG}"
+case "$1 ${2:-}" in
+'image inspect')
+	[ -n "${FAKE_SIZE:-}" ] || exit 1
+	case "$4" in
+	*Size*) echo "${FAKE_SIZE}" ;;
+	*) echo "${FAKE_PLATFORM:-linux/amd64}" ;;
+	esac
+	;;
+run*)
+	printf '%b' "${FAKE_OUT:-}"
+	sleep "${FAKE_SLEEP:-0}"
+	exit "${FAKE_RC:-0}"
+	;;
+esac
+exit 0
+EOF
+chmod +x "${work}/fakebin/docker"
+run_smoke() { # VAR=value ... -- image tag : output in SMOKE_OUT, exit code in SMOKE_RC, docker calls in SMOKE_LOG
+	local vars=()
+	while [ "$1" != -- ]; do
+		vars+=("$1")
+		shift
+	done
+	shift
+	rm -f "${work}/docker.log" "${work}/summary.md"
+	SMOKE_OUT=$(env FAKE_LOG="${work}/docker.log" DOCKER="${work}/fakebin/docker" GITHUB_STEP_SUMMARY="${work}/summary.md" \
+		FAKE_SIZE=123456789 "${vars[@]}" "${smoke}" "$@" 2>&1)
+	SMOKE_RC=$?
+	SMOKE_LOG=$(cat "${work}/docker.log" 2>/dev/null)
+	# The `docker run` call alone.
+	SMOKE_RUN=$(awk '/^--call--$/ { first = 1; keep = 0; next } first { keep = ($0 == "run"); first = 0 } keep' \
+		"${work}/docker.log" 2>/dev/null)
+	SMOKE_SUMMARY=$(cat "${work}/summary.md" 2>/dev/null)
+}
+expect_rc() { # name expected actual output
+	if [ "$2" = "$3" ]; then ok "$1"; else not_ok "$1" "exit code $3 (expected $2): $4"; fi
+}
+
+run_smoke 'FAKE_OUT=\033[1m\033[33mcontainer~ \033[0mjava -version\nopenjdk version "21"\n' -- smoke-img:java_21 java_21
+expect_rc 'smoke: a runtime image that starts passes' 0 "${SMOKE_RC}" "${SMOKE_OUT}"
+run_log=${SMOKE_RUN}
+for arg in run --read-only $'--cap-drop\nALL' $'--security-opt\nno-new-privileges' --pids-limit \
+	':/home/container' ':/etc/passwd:ro,z' ':/etc/group:ro,z' '/tmp:rw,exec,nosuid' 'STARTUP=' 'java -version'; do
+	expect_contains "smoke: runtime containers run with ${arg//$'\n'/ }" "${run_log}" "${arg}"
+done
+expect_contains 'smoke: the startup checks PID 1 is tini' "${run_log}" '/proc/1/comm)" = tini'
+expect_not_contains 'smoke: runtime containers keep the image entrypoint' "${run_log}" '--entrypoint'
+expect_not_contains 'smoke: runtime containers do not run as root' "${run_log}" $'--user\n0:'
+if [[ $(tail -n 1 <<<"${run_log}") == smoke-img:java_21 ]]; then ok 'smoke: runtime containers get no command'; else not_ok 'smoke: runtime containers get no command' "${run_log}"; fi
+expect_contains 'smoke: the size is printed' "${SMOKE_OUT}" '123 MB'
+expect_contains 'smoke: the job summary has the size and result' "${SMOKE_SUMMARY}" '| `java_21` | runtime | linux/amd64 | 123 MB | passed in'
+expect_contains 'smoke: the container is removed afterwards' "${SMOKE_LOG}" $'rm\n-f\nocta'
+# The STARTUP smoke.sh sends goes through the real entrypoint ({{ }}, display, eval) intact: here PID 1 isn't
+# tini, so its first check stops it with smoke.sh's message.
+startup=$(grep '^STARTUP=' <<<"${run_log}")
+if [ "$(cat /proc/1/comm 2>/dev/null)" != tini ]; then
+	fresh
+	out=$(run_ep "${startup}")
+	expect_contains 'smoke: the startup runs through the entrypoint and checks PID 1' "${out}" 'not tini'
+fi
+run_smoke SMOKE_UID=0 -- smoke-img:java_21 java_21
+expect_rc 'smoke: runtime images are never tested as root' 2 "${SMOKE_RC}" "${SMOKE_OUT}"
+run_smoke SMOKE_UID=4321 SMOKE_GID=4322 'FAKE_OUT=container~ x\n' -- smoke-img:java_21 java_21
+expect_contains 'smoke: SMOKE_UID/SMOKE_GID pick the container user' "${SMOKE_LOG}" $'--user\n4321:4322'
+
+run_smoke 'FAKE_OUT=container~ java -version\nError: could not find libjava.so\n' FAKE_RC=1 -- smoke-img:java_21 java_21
+expect_rc 'smoke: a failing startup fails' 1 "${SMOKE_RC}" "${SMOKE_OUT}"
+expect_contains 'smoke: the summary says why' "${SMOKE_SUMMARY}" 'FAILED: exit code 1'
+expect_contains 'smoke: the summary shows the output tail' "${SMOKE_SUMMARY}" 'could not find libjava.so'
+run_smoke 'FAKE_OUT=/usr/bin/tini: exec /entrypoint.sh failed\n' -- smoke-img:java_21 java_21
+expect_rc 'smoke: exit 0 without the "container~" line fails' 1 "${SMOKE_RC}" "${SMOKE_OUT}"
+expect_contains 'smoke: ... and says the entrypoint never got there' "${SMOKE_OUT}" 'never printed'
+run_smoke SMOKE_TIMEOUT=1 FAKE_SLEEP=3 -- smoke-img:java_21 java_21
+expect_rc 'smoke: a hanging startup fails after SMOKE_TIMEOUT' 1 "${SMOKE_RC}" "${SMOKE_OUT}"
+expect_contains 'smoke: ... as a timeout' "${SMOKE_OUT}" 'timed out after 1 s'
+
+run_smoke 'FAKE_OUT=curl 8.5.0\njq-1.7\n' -- smoke-img:installer_debian installer_debian
+expect_rc 'smoke: an installer image passes without the "container~" line' 0 "${SMOKE_RC}" "${SMOKE_OUT}"
+run_log=${SMOKE_RUN}
+for arg in $'--user\n0:0' $'--cap-drop\nALL' $'--cap-add\nCHOWN' $'--cap-add\nDAC_OVERRIDE' $'--security-opt\nno-new-privileges' \
+	':/mnt/server' $'smoke-img:installer_debian\nbash\n-c' 'curl --version && jq --version'; do
+	expect_contains "smoke: installers run with ${arg//$'\n'/ }" "${run_log}" "${arg}"
+done
+expect_not_contains 'smoke: installers have a writable root filesystem, as on a node' "${run_log}" '--read-only'
+
+# Every smoke command in images.json is valid bash (the entrypoint evals it, installers run it with bash -c).
+bad_smoke=''
+while IFS=$'\t' read -r tag cmd; do
+	bash -n -c "${cmd}" 2>/dev/null || bad_smoke+=" ${tag}"
+done < <(jq -r '.images[] | [.tag, .smoke] | @tsv' "${root}/images.json")
+if [ -z "${bad_smoke}" ]; then ok 'smoke: every smoke command in images.json parses'; else not_ok 'smoke: every smoke command in images.json parses' "${bad_smoke}"; fi
+
+run_smoke -- smoke-img:nope nope
+expect_rc 'smoke: an unknown tag is a usage error' 2 "${SMOKE_RC}" "${SMOKE_OUT}"
+run_smoke FAKE_SIZE= -- smoke-img:java_21 java_21
+expect_rc 'smoke: a missing image is a usage error' 2 "${SMOKE_RC}" "${SMOKE_OUT}"
+printf '{"images":[{"tag":"t","folder":"images/t","kind":"runtime"}]}\n' >"${work}/nosmoke.json"
+run_smoke IMAGES_JSON="${work}/nosmoke.json" -- smoke-img:t t
+expect_rc 'smoke: a tag without a smoke command is a usage error' 2 "${SMOKE_RC}" "${SMOKE_OUT}"
 
 # --- {{VAR}} and ${VAR} --------------------------------------------------------------------------------
 fresh
