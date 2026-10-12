@@ -343,12 +343,15 @@
         "ghcr.io/pelican-eggs/yolks:wine_latest"
       ],
       "eggs": [
+        "aska",
         "empyrion",
         "icarus",
         "night-of-the-dead",
+        "return-to-moria",
         "sons-of-the-forest",
         "space-engineers",
-        "stormworks"
+        "stormworks",
+        "the-forest"
       ]
     },
     {
@@ -389,6 +392,7 @@
         "ark-survival-ascended",
         "ark-survival-evolved",
         "arma-reforger",
+        "aska",
         "assetto-corsa",
         "astroneer",
         "avorion",
@@ -430,6 +434,7 @@
         "pavlov-vr",
         "project-zomboid",
         "python-app",
+        "return-to-moria",
         "rust",
         "satisfactory",
         "sons-of-the-forest",
@@ -446,6 +451,7 @@
         "teamspeak",
         "terraria-tmodloader",
         "terraria-vanilla",
+        "the-forest",
         "the-front",
         "unturned",
         "v-rising",
