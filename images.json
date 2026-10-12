@@ -402,9 +402,12 @@
         "ghcr.io/pelican-eggs/yolks:wine_latest"
       ],
       "eggs": [
+        "empyrion",
         "icarus",
+        "night-of-the-dead",
         "sons-of-the-forest",
-        "space-engineers"
+        "space-engineers",
+        "stormworks"
       ]
     },
     {
@@ -420,6 +423,8 @@
         "ghcr.io/parkervcp/yolks:wine_staging"
       ],
       "eggs": [
+        "empyrion",
+        "stormworks",
         "v-rising"
       ]
     },
@@ -467,6 +472,7 @@
         "day-of-defeat-source",
         "dont-starve-together",
         "eco",
+        "empyrion",
         "enshrouded",
         "euro-truck-simulator-2",
         "factorio",
@@ -480,6 +486,7 @@
         "minecraft-bedrock",
         "mordhau",
         "necesse",
+        "night-of-the-dead",
         "palworld",
         "pavlov-vr",
         "project-zomboid",
@@ -492,6 +499,7 @@
         "squad",
         "stationeers",
         "steamcmd-generic",
+        "stormworks",
         "team-fortress-2",
         "terraria-tmodloader",
         "terraria-vanilla",
