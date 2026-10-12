@@ -46,6 +46,28 @@ octail_is_secret() {
 	return 1
 }
 
+# stdin to stdout with the values of secret-looking variables (octail_is_secret) replaced by ********, for
+# hooks that print command lines (the Proton start watch's process list shows the game's arguments, which
+# hold e.g. ?ServerAdminPassword=...). Longer values first, so a secret that contains another isn't half
+# shown; values shorter than 4 characters are left alone (masking "1" would garble every number).
+octail_mask() {
+	local name value line values=()
+	while IFS= read -r name; do
+		value=${!name-}
+		[ "${#value}" -ge 4 ] && [[ ${value} != *$'\n'* ]] && octail_is_secret "${name}" && values+=("${value}")
+	done < <(compgen -e)
+	if [ "${#values[@]}" -gt 1 ]; then
+		mapfile -t values < <(for value in "${values[@]}"; do printf '%s\t%s\n' "${#value}" "${value}"; done |
+			sort -rn | cut -f2-)
+	fi
+	while IFS= read -r line || [ -n "${line}" ]; do
+		for value in "${values[@]}"; do
+			line=${line//"${value}"/********}
+		done
+		printf '%s\n' "${line}"
+	done
+}
+
 # {{NAME}} / {{ NAME }} -> ${NAME}; anything else between {{ }} is left alone. Result in OCTAIL_OUT.
 octail_braces() {
 	local rest=$1 match

@@ -273,6 +273,18 @@ expect_contains 'the report names the thread limit and how often it was hit' "${
 expect_contains 'the report gives memory in MiB' "${out}" 'memory 600 MiB of 9216 MiB (OOM kills 0)'
 expect_contains 'the report lists the processes' "${out}" 'sleep 3'
 expect_contains 'the startup still runs' "${out}" 'started'
+# The process list goes through octail_proton_masked: the game's arguments carry its passwords, and the console
+# is read by subusers too. (On a test host ps lists the host's processes, so the filter is checked on its own.)
+out=$(run_ep ADMIN_PASSWORD=hunter2hunter2 RCON_PASS=hunter2 MAP=Island \
+	STARTUP='printf "%s\n" "42 S game ?Map=${MAP}?ServerAdminPassword=${ADMIN_PASSWORD} -rcon=${RCON_PASS} -n=1" | octail_proton_masked')
+expect_contains 'the start watch masks secret values in the process list' "${out}" \
+	'42 S game ?Map=Island?ServerAdminPassword=******** -rcon=******** -n=1'
+expect_not_contains 'no part of a secret is left (longer values first)' "${out}" 'hunter2'
+if grep -q 'args= .*|$' "${root}/common/hooks/30-proton.sh" && grep -q '^[[:space:]]*octail_proton_masked |' "${root}/common/hooks/30-proton.sh"; then
+	ok 'the report pipes ps through octail_proton_masked'
+else
+	not_ok 'the report pipes ps through octail_proton_masked'
+fi
 printf '  sl  local_address rem_address   st\n   0: 00000000:9389 00000000:0000 07 0\n' >"${work}/proc/net/udp"
 out=$(run_ep "${watch_env[@]}" STARTUP='sleep 3; echo started')
 expect_not_contains 'a bound UDP port keeps the watch quiet' "${out}" 'no game port is open'

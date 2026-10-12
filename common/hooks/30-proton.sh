@@ -75,6 +75,17 @@ octail_cgroup_value() { # file [key]: a cgroup file's value, or the value after 
 	printf '?'
 }
 
+# Everyone with console access reads the report, also subusers who can't see the egg's hidden variables, and
+# the game's arguments carry its passwords (?ServerAdminPassword=...): secret values are masked (octail_mask in
+# entrypoint.sh); without it, every NAME=value argument is hidden.
+octail_proton_masked() {
+	if declare -F octail_mask >/dev/null; then
+		octail_mask
+	else
+		sed -E 's/([^ =]+)=[^ ]*/\1=********/g'
+	fi
+}
+
 octail_proton_report() {
 	local mib='?' max
 	max=$(octail_cgroup_value memory.max)
@@ -84,8 +95,9 @@ octail_proton_report() {
 	echo "octail:   threads $(octail_cgroup_value pids.current) of $(octail_cgroup_value pids.max) (limit reached $(octail_cgroup_value pids.events max) times), memory ${mib} MiB of ${max} (OOM kills $(octail_cgroup_value memory.events oom_kill)), open files limit $(ulimit -n)"
 	echo "octail:   /tmp $(df -Pm /tmp 2>/dev/null | awk 'NR==2 {print $3 " of " $2 " MiB used"}'), /dev/shm $(df -Pm /dev/shm 2>/dev/null | awk 'NR==2 {print $3 " of " $2 " MiB used"}')"
 	echo "octail:   processes (STAT D = disk wait, S = sleeping; WCHAN = what the kernel waits for; the watch itself left out):"
+	# Masked before the cut, so a cut can't leave half a password in the line.
 	ps -N -p "${BASHPID}" --ppid "${BASHPID}" -o pid=,stat=,nlwp=,rss=,pcpu=,wchan:22=,args= 2>/dev/null |
-		head -n 40 | cut -c1-200 | sed 's/^/octail:     /'
+		octail_proton_masked | head -n 40 | cut -c1-200 | sed 's/^/octail:     /'
 	echo "octail:   for Proton's own log set PROTON_LOG=1 (steam-<appid>.log in the server folder); see 'Proton notes' in the yolks README."
 }
 
