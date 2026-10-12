@@ -337,17 +337,20 @@
         "linux/amd64"
       ],
       "kind": "runtime",
-      "smoke": "command -v rcon && ldd /usr/lib32/libstdc++.so.6 /usr/lib/i386-linux-gnu/libtcmalloc_minimal.so.4 >/tmp/ldd && cat /tmp/ldd && ! grep -F 'not found' /tmp/ldd",
-      "description": "Source engine (srcds) 32-bit libraries; updates before start by default",
+      "smoke": "command -v rcon && ldd /usr/lib32/libstdc++.so.6 /usr/lib/i386-linux-gnu/libtcmalloc_minimal.so.4 /usr/lib/i386-linux-gnu/libssl.so.3 /usr/lib/i386-linux-gnu/libz.so.1 >/tmp/ldd && cat /tmp/ldd && ! grep -F 'not found' /tmp/ldd",
+      "description": "Source engine (srcds) and GoldSrc (hlds: CS 1.6, HLDM, Sven Co-op) 32-bit libraries; updates before start by default",
       "replaces": [
         "ghcr.io/parkervcp/games:source",
         "ghcr.io/pelican-eggs/games:source"
       ],
       "eggs": [
+        "counter-strike-16",
         "day-of-defeat-source",
         "garrysmod",
+        "half-life-deathmatch",
         "left-4-dead-2",
         "source-engine",
+        "sven-co-op",
         "team-fortress-2"
       ]
     },

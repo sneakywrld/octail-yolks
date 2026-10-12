@@ -4,13 +4,15 @@ FROM golang:1.23-bookworm AS rcon
 ARG RCON_CLI_VERSION=v0.10.3
 RUN CGO_ENABLED=0 GOBIN=/out go install "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
 
-# Source engine dedicated servers (srcds_run: TF2, L4D2, GMod, CS:S, DoD:S, ...): the 32-bit libraries
-# srcds needs on top of the SteamCMD image. These eggs have no AUTO_UPDATE variable and old servers
+# Source engine dedicated servers (srcds_run: TF2, L4D2, GMod, CS:S, DoD:S, ...) and GoldSrc ones (hlds_run:
+# Counter-Strike 1.6, Half-Life Deathmatch; svends_run: Sven Co-op): the 32-bit libraries srcds and hlds need on top
+# of the SteamCMD image. Sven Co-op's svends_i686 also loads 32-bit OpenSSL 3 and zlib; libcurl4:i386 pulls both in
+# today, they are named here so they stay when that changes. These eggs have no AUTO_UPDATE variable and old servers
 # refuse current clients, so the update before start is on unless AUTO_UPDATE=0.
 FROM debian:bookworm-slim
 LABEL org.opencontainers.image.source="https://github.com/sneakywrld/octail-yolks" \
       org.opencontainers.image.title="octail-yolks" \
-      org.opencontainers.image.description="Octail runtime: Source engine (SRCDS) servers on Debian 12"
+      org.opencontainers.image.description="Octail runtime: Source (SRCDS) and GoldSrc (HLDS) servers on Debian 12"
 
 RUN --mount=type=bind,source=common,target=/tmp/octail \
     bash /tmp/octail/setup-apt.sh \
@@ -42,7 +44,9 @@ RUN --mount=type=bind,source=common,target=/tmp/octail \
         libtinfo5:i386 \
         libbz2-1.0:i386 \
         libtcmalloc-minimal4:i386 \
-        libstdc++6:i386
+        libstdc++6:i386 \
+        libssl3:i386 \
+        zlib1g:i386
 COPY --from=rcon /out/gorcon /usr/local/bin/rcon
 
 COPY --chmod=0755 common/entrypoint.sh /entrypoint.sh
