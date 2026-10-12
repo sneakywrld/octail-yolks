@@ -20,6 +20,8 @@
         "minecraft-forge",
         "minecraft-neoforge",
         "minecraft-paper",
+        "minecraft-purpur",
+        "minecraft-sponge",
         "minecraft-velocity"
       ]
     },
@@ -41,6 +43,8 @@
         "minecraft-forge",
         "minecraft-neoforge",
         "minecraft-paper",
+        "minecraft-purpur",
+        "minecraft-sponge",
         "minecraft-velocity"
       ]
     },
@@ -60,10 +64,14 @@
       ],
       "eggs": [
         "mindustry",
+        "minecraft-bungeecord",
         "minecraft-fabric",
+        "minecraft-folia",
         "minecraft-forge",
         "minecraft-neoforge",
         "minecraft-paper",
+        "minecraft-purpur",
+        "minecraft-sponge",
         "minecraft-velocity"
       ]
     },
@@ -82,10 +90,14 @@
       ],
       "eggs": [
         "mindustry",
+        "minecraft-bungeecord",
         "minecraft-fabric",
+        "minecraft-folia",
         "minecraft-forge",
         "minecraft-neoforge",
         "minecraft-paper",
+        "minecraft-purpur",
+        "minecraft-sponge",
         "minecraft-velocity"
       ]
     },
@@ -103,10 +115,14 @@
         "ghcr.io/pelican-eggs/yolks:java_25"
       ],
       "eggs": [
+        "minecraft-bungeecord",
         "minecraft-fabric",
+        "minecraft-folia",
         "minecraft-forge",
         "minecraft-neoforge",
         "minecraft-paper",
+        "minecraft-purpur",
+        "minecraft-sponge",
         "minecraft-velocity"
       ]
     },
@@ -519,7 +535,11 @@
         "ghcr.io/pterodactyl/installers:alpine"
       ],
       "eggs": [
+        "minecraft-bungeecord",
+        "minecraft-folia",
         "minecraft-paper",
+        "minecraft-purpur",
+        "minecraft-sponge",
         "minecraft-velocity",
         "openttd",
         "test-game"
