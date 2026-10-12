@@ -27,8 +27,10 @@ applied there by hand and come back with the next publish, so your commit may ar
    `ENTRYPOINT ["/usr/bin/tini", "-g", "--"]` and `CMD ["/entrypoint.sh"]`. `images/java_21/Dockerfile` is a short
    example; set the `org.opencontainers.image.*` labels the same way.
 2. **`images.json`**: an entry with `tag`, `folder`, `platforms` (`linux/amd64` and, when everything inside runs on
-   it, `linux/arm64`), `kind` (`runtime` or `installer`), `description`, `replaces` (third-party images it stands in
-   for, or `[]`) and `eggs` (the Octail eggs using it, or `[]`).
+   it, `linux/arm64`), `kind` (`runtime` or `installer`), `smoke` (the boot test CI runs before pushing: a startup
+   for a runtime image, a `bash -c` command run as root for an installer, fast and offline, see
+   [Boot tests](README.md#boot-tests)), `description`, `replaces` (third-party images it stands in for, or `[]`) and
+   `eggs` (the Octail eggs using it, or `[]`).
 3. **`bases.txt`**: only when the image needs a base that isn't listed yet (see the ground rules).
 4. **README**: a row in the right table under [Tags](README.md#tags), starting with
    `<a name="<tag>"></a>` and the tag (other repositories link to that anchor), and hook variables in
@@ -42,15 +44,15 @@ Run these before opening a pull request (CI runs the same):
 
 ```bash
 test/run.sh                                               # entrypoint and hook tests, also runs check-images.sh
-test/check-images.sh                                      # images.json <-> folders, bases, README rows, dependabot.yml
+test/check-images.sh                                      # images.json <-> folders, smoke, bases, README rows, dependabot.yml
 shellcheck -x common/*.sh common/hooks/*.sh scripts/*.sh test/*.sh
 hadolint --config .hadolint.yaml images/*/Dockerfile
 actionlint                                                # when you change a workflow
 scripts/build.sh <tag>                                    # needs Docker Buildx
+scripts/smoke.sh ghcr.io/sneakywrld/octail-yolks:<tag> <tag>   # the boot test CI runs before the push
 ```
 
-Then start the image the way a node would (`docker run --rm -e STARTUP='...' ghcr.io/sneakywrld/octail-yolks:<tag>`)
-or, better, run a server of an egg that uses it on an Octail test node, and say in the pull request what you ran.
+Then, better still, run a server of an egg that uses it on an Octail test node, and say in the pull request what you ran.
 
 ## Pull requests
 

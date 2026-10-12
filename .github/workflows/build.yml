@@ -3,7 +3,9 @@
 #   push to main      the images whose folder changed (all of them when common/, images.json or this file did)
 #   weekly schedule   all images, so they pick up their base images' security fixes
 #   manual run        all images, or the tags given (comma-separated)
-#   pull request      lint, tests and builds, nothing pushed
+#   pull request      lint, tests, builds and boot tests, nothing pushed
+# Every image is boot-tested before its push (scripts/smoke.sh, the `smoke` command in images.json): a build that
+# succeeds but can't start (no tini, wrong user, a broken hook, a missing runtime) is never pushed.
 name: build
 
 on:
@@ -150,7 +152,30 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: docker/build-push-action@v6
+      # Boot test before anything is pushed: the linux/amd64 image is loaded into the runner's Docker and started the
+      # way Tentacle starts it, with the tag's `smoke` command from images.json (scripts/smoke.sh; it also adds the
+      # image's size to the job summary). A failure stops the job, so neither :<tag> nor :<tag>-<date> moves. The
+      # multi-arch build below reuses this build's layers from the builder's cache. arm64 is not booted (QEMU).
+      - name: Build linux/amd64 for the boot test
+        if: contains(matrix.image.platforms, 'linux/amd64')
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ${{ matrix.image.folder }}/Dockerfile
+          platforms: linux/amd64
+          pull: true
+          load: true
+          tags: octail-yolks-smoke:${{ matrix.image.tag }}
+          cache-from: type=gha,scope=${{ matrix.image.tag }}
+
+      - name: Boot test
+        if: contains(matrix.image.platforms, 'linux/amd64')
+        env:
+          TAG: ${{ matrix.image.tag }}
+        run: scripts/smoke.sh "octail-yolks-smoke:${TAG}" "${TAG}"
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
         with:
           context: .
           file: ${{ matrix.image.folder }}/Dockerfile
