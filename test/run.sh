@@ -341,6 +341,12 @@ expect_contains 'the image default adds app 1007' "$(cat "${work}/home/steamcmd/
 run_ep AUTO_UPDATE=1 SRCDS_APPID=896660 OCTAIL_STEAM_SDK_DEFAULT=1 STEAM_SDK=0 STARTUP='true' >/dev/null
 expect_not_contains 'STEAM_SDK=0 wins over the default' "$(cat "${work}/home/steamcmd/args")" '1007'
 
+# GoldSrc (app 90): the mod is set before app_update, and only for app 90.
+run_ep AUTO_UPDATE=1 SRCDS_APPID=90 HLDS_GAME=cstrike STARTUP='true' >/dev/null
+expect_contains 'HLDS: the mod is set before app_update' "$(cat "${work}/home/steamcmd/args")" $'+app_set_config\n90\nmod\ncstrike\n+app_update\n90'
+run_ep AUTO_UPDATE=1 SRCDS_APPID=276060 HLDS_GAME=cstrike STARTUP='true' >/dev/null
+expect_not_contains 'no HLDS mod for other apps' "$(cat "${work}/home/steamcmd/args")" 'app_set_config'
+
 # Display hook: XVFB, or the image's OCTAIL_XVFB_DEFAULT (Wine). A malformed DISPLAY shows the hook got that far
 # without needing Xvfb here.
 fresh
