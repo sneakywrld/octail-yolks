@@ -58,7 +58,7 @@ Node.js 20 and Go 1.23 are past their upstream end of life; they are here becaus
 | <a name="steamcmd_ubuntu"></a>`steamcmd_ubuntu` | amd64 | The same on Ubuntu 24.04 (newer glibc/libstdc++, libc++; `libc++.so` is the library itself, not Ubuntu's linker script, so Pavlov can load it) | insurgency-sandstorm, pavlov-vr, stationeers |
 | <a name="steamcmd_dotnet"></a>`steamcmd_dotnet` | amd64 | `steamcmd_debian` + Microsoft's ASP.NET Core 8 runtime (`dotnet` on PATH) | eco |
 | <a name="steamcmd_sniper"></a>`steamcmd_sniper` | amd64 | Valve's Steam Runtime 3 "sniper" + tini, `rcon`, auto-update hook | counter-strike-2 |
-| <a name="source"></a>`source` | amd64 | `steamcmd_debian` + the 32-bit libraries srcds and hlds need (curl, ncurses5/tinfo5, bz2, tcmalloc, OpenSSL 3 and zlib for Sven Co-op); updates before start by default | counter-strike-16, day-of-defeat-source, garrysmod, half-life-deathmatch, left-4-dead-2, source-engine, sven-co-op, team-fortress-2 |
+| <a name="source"></a>`source` | amd64 | `steamcmd_debian` + the 32-bit libraries srcds and hlds need (curl, ncurses5/tinfo5, bz2, tcmalloc, OpenSSL 3 and zlib for Sven Co-op); updates before start by default | counter-strike-16, counter-strike-condition-zero, day-of-defeat, day-of-defeat-source, deathmatch-classic, garrysmod, half-life-deathmatch, left-4-dead-2, source-engine, sven-co-op, team-fortress-2, team-fortress-classic |
 | <a name="rust"></a>`rust` | amd64 | `steamcmd_debian` + the `FRAMEWORK` hook (vanilla, oxide, carbon); updates before start by default | rust |
 
 ### Wine and Proton
