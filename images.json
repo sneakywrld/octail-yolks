@@ -124,14 +124,24 @@
       "eggs": ["terraria-tmodloader", "vintage-story"]
     },
     {
+      "tag": "dotnet_9",
+      "folder": "images/dotnet_9",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "runtime",
+      "smoke": "dotnet --list-runtimes | grep -F 'Microsoft.NETCore.App 9.'",
+      "description": ".NET 9 runtime (Debian 12): TShock 6 (Terraria)",
+      "replaces": ["ghcr.io/pelican-eggs/yolks:dotnet_9"],
+      "eggs": ["terraria-tshock"]
+    },
+    {
       "tag": "dotnet_10",
       "folder": "images/dotnet_10",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
       "smoke": "dotnet --list-runtimes | grep -F 'Microsoft.NETCore.App 10.'",
-      "description": ".NET 10 runtime (Ubuntu 24.04): Vintage Story 1.21+",
+      "description": ".NET 10 runtime (Ubuntu 24.04): Vintage Story 1.21+, Space Station 14",
       "replaces": ["ghcr.io/pelican-eggs/yolks:dotnet_10"],
-      "eggs": ["vintage-story"]
+      "eggs": ["space-station-14", "terraria-tshock", "vintage-story"]
     },
     {
       "tag": "nodejs_20",
@@ -179,7 +189,7 @@
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
       "smoke": "cat /etc/debian_version && curl --version | head -n 1 && python3 -V",
-      "description": "Generic Debian 12 with common game-server libraries: Factorio, OpenTTD, Terraria, Bedrock",
+      "description": "Generic Debian 12 with common game-server libraries: Factorio, OpenTTD, OpenRCT2, Terraria, Bedrock",
       "replaces": [
         "ghcr.io/parkervcp/yolks:debian",
         "ghcr.io/pelican-eggs/yolks:debian"
@@ -189,6 +199,7 @@
         "factorio",
         "minecraft-bedrock",
         "mumble",
+        "openrct2",
         "openttd",
         "teamspeak",
         "terraria-vanilla"
@@ -419,6 +430,7 @@
         "necesse",
         "night-of-the-dead",
         "nodejs-app",
+        "openrct2",
         "palworld",
         "pavlov-vr",
         "project-zomboid",
@@ -429,6 +441,7 @@
         "soulmask",
         "source-engine",
         "space-engineers",
+        "space-station-14",
         "squad",
         "stationeers",
         "steamcmd-generic",
@@ -437,6 +450,7 @@
         "team-fortress-2",
         "teamspeak",
         "terraria-tmodloader",
+        "terraria-tshock",
         "terraria-vanilla",
         "the-front",
         "unturned",

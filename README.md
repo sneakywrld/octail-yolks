@@ -39,13 +39,14 @@ images each tag stands in for, and the shipped eggs that use it); the tables bel
 | <a name="java_21"></a>`java_21` | amd64, arm64 | Java 21 (Eclipse Temurin JDK): Minecraft 1.20.5+ | mindustry, minecraft-* |
 | <a name="java_25"></a>`java_25` | amd64, arm64 | Java 25 (Eclipse Temurin JDK) | minecraft-* |
 | <a name="dotnet_8"></a>`dotnet_8` | amd64, arm64 | .NET 8 runtime (Debian 12) | terraria-tmodloader, vintage-story |
-| <a name="dotnet_10"></a>`dotnet_10` | amd64, arm64 | .NET 10 runtime (Ubuntu 24.04) | vintage-story |
+| <a name="dotnet_9"></a>`dotnet_9` | amd64, arm64 | .NET 9 runtime (Debian 12); .NET 9 support ends November 2026 | terraria-tshock |
+| <a name="dotnet_10"></a>`dotnet_10` | amd64, arm64 | .NET 10 runtime (Ubuntu 24.04) | space-station-14, terraria-tshock, vintage-story |
 | <a name="mono"></a>`mono` | amd64, arm64 | Debian's `mono-complete` | – |
 | <a name="nodejs_20"></a>`nodejs_20` | amd64, arm64 | Node.js 20 (Debian 12), git, native-module build tools | – |
 | <a name="nodejs_22"></a>`nodejs_22` | amd64, arm64 | Node.js 22 (Debian 12), git, native-module build tools | – |
 | <a name="python_3.12"></a>`python_3.12` | amd64, arm64 | Python 3.12 (Debian 12), git, a C compiler for wheels | – |
 | <a name="go_1.23"></a>`go_1.23` | amd64, arm64 | Go 1.23 (Debian 12); `GOPATH`/`GOCACHE` in the server folder | – |
-| <a name="debian"></a>`debian` | amd64, arm64 | Debian 12 with common game-server libraries (SDL, ICU, LZO, fontconfig, SQLite, ffmpeg, ...) | beammp, factorio, minecraft-bedrock, openttd, terraria-vanilla |
+| <a name="debian"></a>`debian` | amd64, arm64 | Debian 12 with common game-server libraries (SDL, ICU, LZO, fontconfig, SQLite, ffmpeg, ...) | beammp, factorio, minecraft-bedrock, openrct2, openttd, terraria-vanilla |
 | <a name="alpine"></a>`alpine` | amd64, arm64 | Small Alpine runtime (bash, libstdc++) | test-game |
 
 Node.js 20 and Go 1.23 are past their upstream end of life; they are here because eggs ask for them.
@@ -224,6 +225,7 @@ image → tag map is in `images.json` (`replaces`) and in Octail's `scripts/eggs
 | `ghcr.io/pelican-eggs/yolks:java_8` / `java_11` / `java_17` / `java_21` / `java_25` | `java_8` / `java_11` / `java_17` / `java_21` / `java_25` |
 | `ghcr.io/pelican-eggs/yolks:java_16` | `java_17` (Java 16 is gone upstream; 1.17 runs on 17) |
 | `ghcr.io/parkervcp/yolks:dotnet_6`, `pelican-eggs/yolks:dotnet_7`, `*/yolks:dotnet_8` | `dotnet_8` |
+| `ghcr.io/pelican-eggs/yolks:dotnet_9` | `dotnet_9` |
 | `ghcr.io/pelican-eggs/yolks:dotnet_10` | `dotnet_10` |
 | `ghcr.io/parkervcp/yolks:debian`, `pelican-eggs/yolks:debian` | `debian` |
 | `ghcr.io/pterodactyl/yolks:alpine` | `alpine` |

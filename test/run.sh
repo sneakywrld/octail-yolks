@@ -94,6 +94,25 @@ expect_check 'a blank smoke command fails' fail 'ok has no smoke command'
 printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"server","smoke":"true"}]}\n' >"${work}/tree/images.json"
 expect_check 'an unknown kind fails' fail "kind 'server'"
 
+# --- libraries the eggs' native servers link (no Docker: the package lists in the Dockerfiles) ----------
+# apt_packages <folder>: the packages a Dockerfile hands to setup-apt.sh, one per line.
+apt_packages() {
+	sed -n '/setup-apt.sh/,/^$/p' "${root}/$1/Dockerfile" | tr -d '\134' | tr -s ' \t' '\n' | grep -E '^[a-z0-9][a-z0-9.+-]*$'
+}
+# OpenRCT2's Linux-bookworm build (libopenrct2.so NEEDED): crypto, curl, ICU 72, fontconfig, freetype, png, zlib,
+# libzip and zstd. bookworm-slim happens to carry libzstd1 for apt itself; it is listed so it can't vanish.
+debian_pkgs=$(apt_packages images/debian)
+for pkg in libssl3 libcurl4 libicu72 libfontconfig1 libfreetype6 libpng16-16 zlib1g libzip4 libzstd1 libstdc++6; do
+	if grep -qxF "${pkg}" <<<"${debian_pkgs}"; then ok "debian has ${pkg} (OpenRCT2)"; else not_ok "debian has ${pkg} (OpenRCT2)" "${debian_pkgs}"; fi
+done
+# TShock 6 is a framework-dependent .NET 9 app and Space Station 14's Robust.Server a .NET 10 one: each image
+# starts from Microsoft's runtime of that version and has ICU for .NET globalization.
+for pair in 'dotnet_9:runtime:9.0' 'dotnet_10:runtime:10.0'; do
+	tag=${pair%%:*}
+	if grep -q "^FROM mcr.microsoft.com/dotnet/${pair#*:}-" "${root}/images/${tag}/Dockerfile"; then ok "${tag} starts from the .NET ${pair##*:} runtime"; else not_ok "${tag} starts from the .NET ${pair##*:} runtime"; fi
+	if apt_packages "images/${tag}" | grep -q '^libicu[0-9]*$'; then ok "${tag} has ICU"; else not_ok "${tag} has ICU"; fi
+done
+
 # --- the boot test (scripts/smoke.sh) with a fake docker ------------------------------------------------
 # The fake logs each call's arguments (one per line, calls separated by "--call--") and answers `image inspect`
 # with FAKE_SIZE / FAKE_PLATFORM; `run` prints FAKE_OUT, sleeps FAKE_SLEEP and exits FAKE_RC.
