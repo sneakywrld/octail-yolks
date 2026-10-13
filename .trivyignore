@@ -1,0 +1,9 @@
+# Accepted vulnerability findings: scripts/scan.sh hands this file to Trivy, which then leaves these IDs out of the
+# report, the SARIF upload and the policy check. Use it only for a fixable CRITICAL in our own layers that can't be
+# fixed right away (the policy: docs/dev/yolks.md, "Vulnerability scans"). Every entry needs a comment line right
+# above it saying why, and an expiry date, after which Trivy reports the finding again:
+#
+#   # proton: GE-Proton's bundled curl, fixed in the next GE release (issue #123)
+#   CVE-2026-12345 exp:2026-12-31
+#
+# test/check-workflows.sh fails an entry without both.
