@@ -109,9 +109,10 @@
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
       "smoke": "java -version",
-      "description": "Java 25 (Eclipse Temurin JDK, Ubuntu 24.04): newest Minecraft",
+      "description": "Java 25 (Eclipse Temurin JDK, Ubuntu 24.04): newest Minecraft, Hytale",
       "replaces": ["ghcr.io/pelican-eggs/yolks:java_25"],
       "eggs": [
+        "hytale",
         "java-jar",
         "minecraft-bungeecord",
         "minecraft-fabric",
@@ -556,6 +557,7 @@
         "ghcr.io/pterodactyl/installers:alpine"
       ],
       "eggs": [
+        "hytale",
         "luanti",
         "minecraft-arclight",
         "minecraft-bungeecord",
