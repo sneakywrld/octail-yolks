@@ -24,6 +24,8 @@ on:
       - "images.json"
       - "bases.txt"
       - ".hadolint.yaml"
+      # Accepted vulnerability findings (no image is rebuilt for it; the next build's scan uses it)
+      - ".trivyignore"
       # test/check-images.sh keeps these in sync with images.json (no image is rebuilt for them)
       - "README.md"
       - ".github/dependabot.yml"

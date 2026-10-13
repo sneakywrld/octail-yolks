@@ -49,12 +49,12 @@ mkdir -p "${out}" || exit 2
 
 # The image the final stage starts from, following stage names (FROM build AS x ... FROM x).
 final_base() {
-	local line ref as name
+	local line ref as name i words
 	local -A stages=()
 	ref=''
 	while IFS= read -r line || [ -n "${line}" ]; do
 		read -r -a words <<<"${line}"
-		[ "${#words[@]}" -gt 0 ] && [ "${words[0],,}" = from ] || continue
+		if [ "${#words[@]}" -eq 0 ] || [ "${words[0],,}" != from ]; then continue; fi
 		i=1
 		while [ "${i}" -lt "${#words[@]}" ] && [[ ${words[i]} == --* ]]; do i=$((i + 1)); done
 		ref=${words[i]:-}

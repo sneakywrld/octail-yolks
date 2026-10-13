@@ -567,6 +567,10 @@ expect_contains 'winetricks is fetched by commit' "$(cat "${work}/dl/calls")" '/
 expect_contains 'a winetricks file with another sha256 is refused' "${out}" 'checksum mismatch'
 if [ ! -e "${work}/out/winetricks" ]; then ok 'the refused winetricks is not installed'; else not_ok 'the refused winetricks is not installed'; fi
 
+# --- supply chain: workflows, scripts/scan.sh, scripts/sign.sh (test/supply-chain.sh) ---------------------
+# shellcheck source=test/supply-chain.sh
+. "${here}/supply-chain.sh"
+
 # --- signals: Ctrl+C (SIGINT) reaches the server --------------------------------------------------------
 # The fake server saves on SIGINT and exits 0, like a game server's graceful stop. It runs once in the
 # foreground of the startup, and once in the background with the egg-style trap that forwards the signal.
