@@ -353,7 +353,9 @@
         "source-engine",
         "sven-co-op",
         "team-fortress-2",
-        "team-fortress-classic"
+        "team-fortress-2-classified",
+        "team-fortress-classic",
+        "zombie-panic-source"
       ]
     },
     {
@@ -526,6 +528,7 @@
         "stormworks",
         "sven-co-op",
         "team-fortress-2",
+        "team-fortress-2-classified",
         "team-fortress-classic",
         "teamspeak",
         "terraria-tmodloader",
@@ -540,7 +543,8 @@
         "valheim",
         "valheim-bepinex",
         "vintage-story",
-        "xonotic"
+        "xonotic",
+        "zombie-panic-source"
       ]
     },
     {
