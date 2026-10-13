@@ -6,6 +6,11 @@
 #   pull request      lint, tests, builds and boot tests, nothing pushed
 # Every image is boot-tested before its push (scripts/smoke.sh, the `smoke` command in images.json): a build that
 # succeeds but can't start (no tini, wrong user, a broken hook, a missing runtime) is never pushed.
+# Supply chain (docs/dev/yolks.md, "Supply chain"): every image is scanned with Trivy before its push
+# (scripts/scan.sh: HIGH/CRITICAL in the job summary and code scanning; only a fixable CRITICAL in our own layers
+# fails), gets a CycloneDX SBOM (a build artifact, and a signed attestation on the pushed image) and a keyless cosign
+# signature (scripts/sign.sh). Every third-party action is pinned to a commit SHA (Dependabot updates the pins), and
+# every downloaded tool is checked against a pinned sha256 (test/check-workflows.sh enforces both).
 name: build
 
 on:
@@ -42,24 +47,37 @@ permissions:
 
 env:
   HADOLINT_VERSION: v2.12.0
+  HADOLINT_SHA256: 56de6d5e5ec427e17b74fa48d51271c7fc0d61244bf5c90e828aab8362d55010
   SHELLCHECK_VERSION: v0.10.0
+  SHELLCHECK_SHA256: 6c881ab0698e4e6ea235245f22832860544f17ba386442fe7e9d629f8cbedf87
+  ACTIONLINT_VERSION: 1.7.12
+  ACTIONLINT_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+  # Installed by setup-trivy / cosign-installer (both pinned by SHA below). Never `latest`: Trivy's own release
+  # channel was compromised in March 2026 (GHSA-69fq-xp46-6x23); bump these by hand after reading the release notes.
+  TRIVY_VERSION: v0.74.0
+  COSIGN_VERSION: v3.1.3
 
 jobs:
   test:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Tools
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends tini jq
-          mkdir -p "$RUNNER_TEMP/bin"
-          curl -fsSL -o "$RUNNER_TEMP/bin/hadolint" \
-            "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64"
-          curl -fsSL "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \
-            | tar -xJ -C "$RUNNER_TEMP" && mv "$RUNNER_TEMP/shellcheck-${SHELLCHECK_VERSION}/shellcheck" "$RUNNER_TEMP/bin/"
-          chmod +x "$RUNNER_TEMP/bin/"*
+          mkdir -p "$RUNNER_TEMP/bin" "$RUNNER_TEMP/dl"
+          cd "$RUNNER_TEMP/dl"
+          # Every download is checked against the sha256 pinned above before it runs.
+          curl -fsSL -o hadolint "https://github.com/hadolint/hadolint/releases/download/${HADOLINT_VERSION}/hadolint-Linux-x86_64"
+          curl -fsSL -o shellcheck.tar.xz "https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz"
+          curl -fsSL -o actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          printf '%s  %s\n' "$HADOLINT_SHA256" hadolint "$SHELLCHECK_SHA256" shellcheck.tar.xz \
+            "$ACTIONLINT_SHA256" actionlint.tar.gz | sha256sum -c -
+          install -m 0755 hadolint "$RUNNER_TEMP/bin/hadolint"
+          tar -xJf shellcheck.tar.xz && install -m 0755 "shellcheck-${SHELLCHECK_VERSION}/shellcheck" "$RUNNER_TEMP/bin/"
+          tar -xzf actionlint.tar.gz actionlint && install -m 0755 actionlint "$RUNNER_TEMP/bin/"
           echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
 
       - name: shellcheck
@@ -72,6 +90,11 @@ jobs:
       - name: images.json, folders and base images
         run: test/check-images.sh
 
+      # Actions pinned by SHA, downloads by sha256, the scan/sign steps in place, .trivyignore entries with a reason
+      # and an expiry, and actionlint (with shellcheck on every run: block).
+      - name: Workflows and supply chain
+        run: test/check-workflows.sh
+
       - name: Entrypoint tests
         run: test/run.sh
 
@@ -80,7 +103,7 @@ jobs:
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           fetch-depth: 0
       - id: select
@@ -108,14 +131,17 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
-      packages: write
+      packages: write # push to ghcr.io
+      id-token: write # cosign keyless signing (GitHub OIDC -> Sigstore Fulcio)
+      security-events: write # SARIF upload to code scanning
+      actions: read # needed by upload-sarif in private repositories
     strategy:
       fail-fast: false
       matrix:
         image: ${{ fromJSON(needs.plan.outputs.matrix) }}
     name: build ${{ matrix.image.tag }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
 
       - name: Names and labels
         id: meta
@@ -140,12 +166,12 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-      - uses: docker/setup-qemu-action@v3
+      - uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
         if: contains(matrix.image.platforms, 'arm64')
 
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
 
-      - uses: docker/login-action@v3
+      - uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         if: github.event_name != 'pull_request'
         with:
           registry: ghcr.io
@@ -158,7 +184,7 @@ jobs:
       # multi-arch build below reuses this build's layers from the builder's cache. arm64 is not booted (QEMU).
       - name: Build linux/amd64 for the boot test
         if: contains(matrix.image.platforms, 'linux/amd64')
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: ${{ matrix.image.folder }}/Dockerfile
@@ -174,8 +200,34 @@ jobs:
           TAG: ${{ matrix.image.tag }}
         run: scripts/smoke.sh "octail-yolks-smoke:${TAG}" "${TAG}"
 
+      - uses: aquasecurity/setup-trivy@81e514348e19b6112ce2a7e3ecbafe19c1e1f567 # v0.3.1
+        with:
+          version: ${{ env.TRIVY_VERSION }}
+          cache: true
+
+      # Trivy scan of the amd64 image just boot-tested, before anything is pushed (scripts/scan.sh): HIGH/CRITICAL
+      # findings go to the job summary and (next step) code scanning; the job fails only on a CRITICAL with a fixed
+      # version in a layer we added, not on what the base image brings (the weekly rebuild picks its fixes up).
+      # Accepted exceptions: .trivyignore (with a reason and an expiry). Also writes the image's CycloneDX SBOM.
+      - name: Vulnerability scan
+        id: scan
+        if: contains(matrix.image.platforms, 'linux/amd64')
+        env:
+          TAG: ${{ matrix.image.tag }}
+        run: scripts/scan.sh "octail-yolks-smoke:${TAG}" "${TAG}" "$RUNNER_TEMP/supply-chain"
+
+      # Code scanning needs GitHub Advanced Security on a private repository; without it (or on a fork's pull request)
+      # the upload fails and the job goes on: the job summary and the artifact have the same findings.
+      - uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        if: ${{ !cancelled() && steps.scan.outcome != 'skipped' }}
+        continue-on-error: true
+        with:
+          sarif_file: ${{ runner.temp }}/supply-chain/${{ matrix.image.tag }}.sarif
+          category: octail-yolks-${{ matrix.image.tag }}
+
       - name: Build and push
-        uses: docker/build-push-action@v6
+        id: push
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: ${{ matrix.image.folder }}/Dockerfile
@@ -195,3 +247,29 @@ jobs:
           annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha,scope=${{ matrix.image.tag }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image.tag }}
+
+      - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
+        if: github.event_name != 'pull_request'
+        with:
+          cosign-release: ${{ env.COSIGN_VERSION }}
+
+      # Keyless signature of the pushed index and every platform image (the workflow's OIDC identity, recorded in
+      # Sigstore's public transparency log), plus a signed CycloneDX SBOM attestation per platform. Hosts verify with
+      # the `cosign verify` command in docs/staff/admin/runtime-images.md.
+      - name: Sign and attest
+        if: github.event_name != 'pull_request'
+        env:
+          TAG: ${{ matrix.image.tag }}
+          REGISTRY: ${{ steps.meta.outputs.registry }}
+          DIGEST: ${{ steps.push.outputs.digest }}
+          SIGN_IDENTITY: ${{ github.server_url }}/${{ github.workflow_ref }}
+        run: scripts/sign.sh "$REGISTRY" "$DIGEST" "$TAG" "$RUNNER_TEMP/supply-chain"
+
+      # The scan report, SARIF and SBOMs of every build (pull requests too), kept 90 days.
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ !cancelled() && steps.scan.outcome != 'skipped' }}
+        with:
+          name: supply-chain-${{ matrix.image.tag }}
+          path: ${{ runner.temp }}/supply-chain/
+          if-no-files-found: warn
+          retention-days: 90
