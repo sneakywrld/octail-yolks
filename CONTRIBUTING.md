@@ -43,14 +43,19 @@ applied there by hand and come back with the next publish, so your commit may ar
 Run these before opening a pull request (CI runs the same):
 
 ```bash
-test/run.sh                                               # entrypoint and hook tests, also runs check-images.sh
+test/run.sh                                               # all tests, also runs check-images.sh and check-workflows.sh
 test/check-images.sh                                      # images.json <-> folders, smoke, bases, README rows, dependabot.yml
+test/check-workflows.sh                                   # actions pinned by SHA (# vX.Y.Z), downloads by sha256, .trivyignore
 shellcheck -x common/*.sh common/hooks/*.sh scripts/*.sh test/*.sh
 hadolint --config .hadolint.yaml images/*/Dockerfile
 actionlint                                                # when you change a workflow
 scripts/build.sh <tag>                                    # needs Docker Buildx
 scripts/smoke.sh ghcr.io/sneakywrld/octail-yolks:<tag> <tag>   # the boot test CI runs before the push
 ```
+
+A new action in a workflow is pinned to its full commit SHA with the version as a comment
+(`uses: owner/action@<40 hex> # v1.2.3`), never a tag; a downloaded tool gets a pinned sha256. A fixable CRITICAL
+vulnerability in what your image adds fails CI's scan (README: [Supply chain](README.md#supply-chain-scans-sboms-signatures)).
 
 Then, better still, run a server of an egg that uses it on an Octail test node, and say in the pull request what you ran.
 
