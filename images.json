@@ -290,7 +290,8 @@
         "the-isle",
         "unturned",
         "valheim",
-        "valheim-bepinex"
+        "valheim-bepinex",
+        "wurm-unlimited"
       ]
     },
     {
@@ -399,11 +400,13 @@
       "eggs": [
         "aska",
         "empyrion",
+        "ground-branch",
         "icarus",
         "myth-of-empires",
         "night-of-the-dead",
         "pixark",
         "return-to-moria",
+        "risk-of-rain-2",
         "sons-of-the-forest",
         "space-engineers",
         "stormworks",
@@ -418,7 +421,7 @@
       "smoke": "command -v rcon && wine --version | grep -i staging && test -f \"${WINEPREFIX}/system.reg\"",
       "description": "Windows servers through WineHQ staging (V Rising), otherwise like wine",
       "replaces": ["ghcr.io/parkervcp/yolks:wine_staging"],
-      "eggs": ["empyrion", "stormworks", "v-rising"]
+      "eggs": ["empyrion", "ground-branch", "stormworks", "v-rising"]
     },
     {
       "tag": "mono",
@@ -478,6 +481,7 @@
         "fistful-of-frags",
         "garrysmod",
         "go-app",
+        "ground-branch",
         "half-life-2-deathmatch",
         "half-life-deathmatch",
         "holdfast",
@@ -510,6 +514,7 @@
         "red-eclipse",
         "return-to-moria",
         "rising-world",
+        "risk-of-rain-2",
         "rust",
         "satisfactory",
         "scp-secret-laboratory",
@@ -540,6 +545,7 @@
         "valheim",
         "valheim-bepinex",
         "vintage-story",
+        "wurm-unlimited",
         "xonotic"
       ]
     },
