@@ -15,7 +15,7 @@ parkervcp images or scripts, and CI fails a Dockerfile that tries.
 - [Tags](#tags): [runtimes](#runtimes) · [SteamCMD and game images](#steamcmd-and-game-images) ·
   [Wine and Proton](#wine-and-proton) · [installers](#installers)
 - [Using an image in an egg](#using-an-image-in-an-egg) · [Building locally](#building-locally) ·
-  [How updates work](#how-updates-work)
+  [How updates work](#how-updates-work) · [Supply chain: scans, SBOMs, signatures](#supply-chain-scans-sboms-signatures)
 - Reference: [what every runtime image does](#what-every-runtime-image-does) ·
   [hooks and their variables](#hooks-and-their-variables) · [Proton notes](#proton-notes) · [layout](#layout)
 - [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Licence](#licence)
@@ -165,8 +165,9 @@ image.
 
 `.github/workflows/build.yml`:
 
-- **test**: shellcheck, hadolint, `test/check-images.sh` (`images.json` matches the `images/` folders, bases only
-  from `bases.txt`, every tag has a `smoke` command, generated files in sync), `test/run.sh`.
+- **test**: shellcheck, hadolint, actionlint, `test/check-images.sh` (`images.json` matches the `images/` folders,
+  bases only from `bases.txt`, every tag has a `smoke` command, generated files in sync), `test/check-workflows.sh`
+  (actions pinned by SHA, tool downloads by sha256, the scan and sign steps in place), `test/run.sh`.
 - **plan**: picks the images (`scripts/select-images.sh`): on a push to `main`, those whose folder changed (all of them
   when `common/`, `images.json` or the workflow changed); weekly (Monday 04:17 UTC) and on a manual run without input,
   all; a manual run can name tags (`java_21,wine`).
@@ -176,7 +177,9 @@ image.
   package links to it. Pull requests build without pushing. Before the push, the job builds the `linux/amd64` image
   with `--load` (the multi-arch build then reuses its layers) and boot-tests it with `scripts/smoke.sh`; a failed
   boot test ends the job, so neither `:<tag>` nor `:<tag>-<yyyymmdd>` moves. The job summary shows each tag's size
-  (uncompressed, amd64) and boot-test result, with the output's tail when it failed.
+  (uncompressed, amd64) and boot-test result, with the output's tail when it failed. After the boot test the image is
+  scanned (`scripts/scan.sh`, a fixable CRITICAL in our own layers stops the push), and after the push it is signed
+  and gets its SBOM attestations (`scripts/sign.sh`); see [Supply chain](#supply-chain-scans-sboms-signatures).
 
 ### Boot tests
 
@@ -200,6 +203,34 @@ Tentacle does and runs the tag's `smoke` command from `images.json`:
 The test passes when the container exits 0 within `SMOKE_TIMEOUT` seconds (600); nothing is downloaded. A new tag
 needs a `smoke` command (`test/check-images.sh` fails without one): keep it fast and offline, and make it fail when
 what the image exists for is missing (`grep` the version, `test -f` what a hook should have made).
+
+### Supply chain: scans, SBOMs, signatures
+
+- **Vulnerability scan** before every push: [Trivy](https://trivy.dev) on the boot-tested amd64 image
+  (`scripts/scan.sh`). HIGH and CRITICAL findings go to the job summary (per tag: counts, and a table with package,
+  versions and whether the finding is in the base image's layers or ours) and, as SARIF, to code scanning (needs
+  GitHub Advanced Security on a private repository; otherwise that upload is skipped with a warning).
+- **Policy**: the build fails only on a **CRITICAL** finding that **has a fix** and is in **a layer we added**.
+  Findings in the official base's own layers and findings without a fix are reported, never fatal: the base's
+  publisher fixes them and the weekly rebuild picks the fix up. Exceptions go into `.trivyignore`, each with a comment
+  line saying why and an expiry date (`CVE-2026-12345 exp:2026-12-31`).
+- **SBOM** (CycloneDX) per platform, made from the pushed image, kept with the Trivy report and SARIF as the
+  `supply-chain-<tag>` build artifact (90 days) and attached to each platform image as a signed attestation.
+- **Signature**: `cosign sign` keyless with the workflow's GitHub OIDC identity (Sigstore Fulcio + the public Rekor
+  log), recursively over the index and its platform images (`scripts/sign.sh`). Verify on any host (cosign v3+):
+
+  ```bash
+  cosign verify ghcr.io/sneakywrld/octail-yolks:java_21 \
+    --certificate-identity https://github.com/sneakywrld/octail-yolks/.github/workflows/build.yml@refs/heads/main \
+    --certificate-oidc-issuer https://token.actions.githubusercontent.com
+  ```
+
+  The SBOM: `cosign verify-attestation --type cyclonedx` with the same two flags, on a platform image's digest
+  (`docker buildx imagetools inspect --raw <image>` lists them).
+- **Pinning**: every third-party action is pinned to a full commit SHA with its version as a comment (Dependabot keeps
+  both current); hadolint, shellcheck and actionlint downloads are checked against pinned sha256 sums; Trivy and
+  cosign are installed at exact versions (`TRIVY_VERSION`, `COSIGN_VERSION`, bumped by hand). `test/check-workflows.sh`
+  fails a workflow that breaks any of this.
 
 ### Making the images pullable by the nodes
 
@@ -314,8 +345,13 @@ scripts/select-images.sh    CI matrix
 scripts/build.sh            local build
 scripts/dependabot.sh       prints .github/dependabot.yml from images.json
 scripts/smoke.sh            boot test of a built image (CI runs it before every push)
-test/run.sh                 entrypoint and smoke.sh tests (also runs check-images.sh)
+scripts/scan.sh             Trivy scan + SBOM of a built image, the vulnerability policy (before every push)
+scripts/sign.sh             cosign signature + SBOM attestations of a pushed image (after every push)
+.trivyignore                accepted vulnerability findings (reason + expiry each)
+test/run.sh                 entrypoint, smoke.sh and supply-chain tests (also runs check-images.sh, check-workflows.sh)
 test/check-images.sh        images.json <-> folders, smoke commands, base-image allowlist, generated files in sync
+test/check-workflows.sh     actions pinned by SHA, downloads by sha256, scan/sign steps, .trivyignore, actionlint
+test/supply-chain.sh        tests of check-workflows.sh, scan.sh and sign.sh (sourced by test/run.sh)
 ```
 
 ## Where the images come from

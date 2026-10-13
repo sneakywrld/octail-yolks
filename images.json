@@ -112,9 +112,10 @@
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
       "smoke": "java -version",
-      "description": "Java 25 (Eclipse Temurin JDK, Ubuntu 24.04): newest Minecraft",
+      "description": "Java 25 (Eclipse Temurin JDK, Ubuntu 24.04): newest Minecraft, Hytale",
       "replaces": ["ghcr.io/pelican-eggs/yolks:java_25"],
       "eggs": [
+        "hytale",
         "java-jar",
         "minecraft-bungeecord",
         "minecraft-fabric",
@@ -295,7 +296,8 @@
         "the-isle",
         "unturned",
         "valheim",
-        "valheim-bepinex"
+        "valheim-bepinex",
+        "wurm-unlimited"
       ]
     },
     {
@@ -358,7 +360,9 @@
         "source-engine",
         "sven-co-op",
         "team-fortress-2",
-        "team-fortress-classic"
+        "team-fortress-2-classified",
+        "team-fortress-classic",
+        "zombie-panic-source"
       ]
     },
     {
@@ -404,11 +408,13 @@
       "eggs": [
         "aska",
         "empyrion",
+        "ground-branch",
         "icarus",
         "myth-of-empires",
         "night-of-the-dead",
         "pixark",
         "return-to-moria",
+        "risk-of-rain-2",
         "sons-of-the-forest",
         "space-engineers",
         "stormworks",
@@ -423,7 +429,7 @@
       "smoke": "command -v rcon && wine --version | grep -i staging && test -f \"${WINEPREFIX}/system.reg\"",
       "description": "Windows servers through WineHQ staging (V Rising), otherwise like wine",
       "replaces": ["ghcr.io/parkervcp/yolks:wine_staging"],
-      "eggs": ["empyrion", "stormworks", "v-rising"]
+      "eggs": ["empyrion", "ground-branch", "stormworks", "v-rising"]
     },
     {
       "tag": "mono",
@@ -483,6 +489,7 @@
         "fistful-of-frags",
         "garrysmod",
         "go-app",
+        "ground-branch",
         "half-life-2-deathmatch",
         "half-life-deathmatch",
         "holdfast",
@@ -515,6 +522,7 @@
         "red-eclipse",
         "return-to-moria",
         "rising-world",
+        "risk-of-rain-2",
         "rust",
         "satisfactory",
         "scp-secret-laboratory",
@@ -531,6 +539,7 @@
         "stormworks",
         "sven-co-op",
         "team-fortress-2",
+        "team-fortress-2-classified",
         "team-fortress-classic",
         "teamspeak",
         "terraria-tmodloader",
@@ -545,7 +554,9 @@
         "valheim",
         "valheim-bepinex",
         "vintage-story",
-        "xonotic"
+        "wurm-unlimited",
+        "xonotic",
+        "zombie-panic-source"
       ]
     },
     {
@@ -561,6 +572,7 @@
         "ghcr.io/pterodactyl/installers:alpine"
       ],
       "eggs": [
+        "hytale",
         "luanti",
         "minecraft-arclight",
         "minecraft-bungeecord",
