@@ -35,7 +35,9 @@ octail_rust_framework() {
 	esac
 	tmp=$(mktemp -d /tmp/octail-rust.XXXXXX) || return 0
 	echo "octail: installing ${fw} from ${url}"
-	if curl -fsSL --retry 3 -o "${tmp}/framework" "${url}"; then
+	# Oxide/Carbon publish no checksum for these release assets, so there is nothing to pin here beyond
+	# the already-fixed owner/repo in the URL above; --proto '=https' at least refuses a downgrade.
+	if curl -fsSL --proto '=https' --retry 3 -o "${tmp}/framework" "${url}"; then
 		case "${url}" in
 		*.zip) unzip -oq "${tmp}/framework" -d "${OCTAIL_HOME}" || echo "octail: could not unpack ${fw}." ;;
 		*) tar -xzf "${tmp}/framework" -C "${OCTAIL_HOME}" || echo "octail: could not unpack ${fw}." ;;
