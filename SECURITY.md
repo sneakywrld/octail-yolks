@@ -6,6 +6,7 @@ Please report security problems privately, not in a public issue or pull request
 
 Use GitHub's private vulnerability reporting: the **Security** tab of this repository →
 **Report a vulnerability** ([direct link](https://github.com/sneakywrld/octail-yolks/security/advisories/new)).
+If you can't see this repository's Security tab (it's private), email security@octail.net instead.
 Include the tag (and the dated tag or image digest if you have it), what an attacker can do, and how to reproduce it.
 
 > **For the owner:** private vulnerability reporting is off by default and must be switched on once: repository
