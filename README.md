@@ -17,6 +17,7 @@ parkervcp images or scripts, and CI fails a Dockerfile that tries.
 - [Using an image in an egg](#using-an-image-in-an-egg) · [Building locally](#building-locally) ·
   [How updates work](#how-updates-work) · [Supply chain: scans, SBOMs, signatures](#supply-chain-scans-sboms-signatures)
 - Reference: [what every runtime image does](#what-every-runtime-image-does) ·
+  [pre-start scripts of a server](#pre-start-scripts-of-a-server) · [debugging a startup](#debugging-a-startup) ·
   [hooks and their variables](#hooks-and-their-variables) · [Java memory and jemalloc](#java-memory-and-jemalloc) ·
   [Proton notes](#proton-notes) · [layout](#layout)
 - [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Licence](#licence)
@@ -149,7 +150,7 @@ Boot test of a built image, the one CI runs before every push (see [Boot tests](
 Checks, without Docker: `test/check-images.sh` (folders, allowed bases, every tag with a `smoke` command,
 `.github/dependabot.yml` and this README's tag table in sync with `images.json`), `test/run.sh` (that,
 `scripts/smoke.sh` against a fake `docker`, entrypoint behaviour: `{{VAR}}`/`${VAR}`, masking, values
-never re-evaluated, exit codes, hooks, the SteamCMD retry with a fake `steamcmd.sh`, SIGINT reaching a foreground server
+never re-evaluated, exit codes, banner, TZ check, pre-start scripts, `OCTAIL_DEBUG`, hooks, the SteamCMD retry with a fake `steamcmd.sh`, SIGINT reaching a foreground server
 and an egg-style trapped background server; uses `tini` when installed),
 `shellcheck -x common/*.sh common/hooks/*.sh scripts/*.sh test/*.sh` and
 `hadolint --config .hadolint.yaml images/*/Dockerfile`. [CONTRIBUTING.md](CONTRIBUTING.md) has the steps for a new
@@ -296,20 +297,58 @@ image → tag map is in `images.json` (`replaces`) and in Octail's `scripts/eggs
   (`trap "kill -INT $PID; wait $PID" INT TERM`). Wine's own server process survives SIGINT (it only stops accepting new
   clients), so the forwarded signal reaches the game.
 - `/entrypoint.sh` (`common/entrypoint.sh`):
-  1. `cd /home/container`, export `INTERNAL_IP` (the address `ip route get` picks).
-  2. Source the image's hooks from `/etc/octail/entrypoint.d/*.sh` (below).
-  3. Turn `{{VAR}}` / `{{ VAR }}` into `${VAR}`. Tentacle already sends `${VAR}`; eggs imported from elsewhere may not.
+  1. `cd /home/container`, export `INTERNAL_IP` (the address `ip route get` picks), `LANG=C.UTF-8` if the image or
+     egg left `LANG` empty. An empty `STARTUP` stops here (before any SteamCMD update).
+  2. Print a banner (`OCTAIL_BANNER=0`: off), no variable values in it:
+     `octail: image java_21-20261023 on Ubuntu 24.04.3 LTS, user container (uid 988), TZ UTC, umask 0022` and
+     `octail: limits: memory 4710 MiB (server 4096 MiB), CPU 250%, threads 512, open files 1048576, /tmp 100 MiB`
+     (the container's cgroup limits; memory is the plan plus Tentacle's JVM overhead). The image part comes from
+     `OCTAIL_IMAGE` or the first line of `/etc/octail/image` when the image has one, else `(no build info)`. A `TZ`
+     the image has no zone file for gets one warning line (the C library silently uses UTC then).
+  3. Source the image's hooks from `/etc/octail/entrypoint.d/*.sh` (below).
+  4. Run the server owner's [pre-start scripts](#pre-start-scripts-of-a-server), if the server has any.
+  5. Turn `{{VAR}}` / `{{ VAR }}` into `${VAR}`. Tentacle already sends `${VAR}`; eggs imported from elsewhere may not.
      Anything else between `{{ }}` stays as written.
-  4. Print `container~ <startup>` with every `${VAR}` filled in, except that values of names containing PASS, PWD,
+  6. Print `container~ <startup>` with every `${VAR}` filled in, except that values of names containing PASS, PWD,
      SECRET, TOKEN, KEY, AUTH, GSLT, STEAM_ACC or a `PW` part (`SRV_PW`) show as `********`. Extra names:
-     `OCTAIL_SECRET_VARS=NAME1,NAME2`. This line is built as text; nothing in it is run.
-  5. `eval` the startup once. A variable's value is expanded as a parameter (word-split like any unquoted `${VAR}`),
+     `OCTAIL_SECRET_VARS=NAME1,NAME2` (the panel sends the egg's secret and hidden variables). Those values (4
+     characters or longer) are also masked where they appear inside another value or the startup's own text
+     (`JAVA_OPTS=-Drcon.password=...`). This line is built as text; nothing in it is run.
+  7. `eval` the startup once. A variable's value is expanded as a parameter (word-split like any unquoted `${VAR}`),
      never parsed as shell again, so `; rm -rf ~` or `$(...)` in a customer's value is only text — the behaviour
      Tentacle's `test/startup-injection.test.js` checks. The startup's own `$(...)` runs once. Unlike Pterodactyl's
      images there is no `echo -e` pass, so backslashes mean what the startup's quoting says, and newlines are kept.
-  6. The container exits with the startup's exit code.
-- Locale `en_US.UTF-8` (Alpine and sniper: `C.UTF-8`), `tzdata` (Tentacle's `TZ` works), `curl`, `jq`, `envsubst`,
-  `tar`/`unzip`/`xz`, `ip`.
+  8. The container exits with the startup's exit code. The entrypoint stays the startup's parent (a startup may be
+     several commands, so no `exec`); with a foreground server, bash lets the server handle the SIGINT and exits with
+     its code. Tentacle doesn't pass `--init`: tini in the image is PID 1 and reaps zombies.
+- The umask is the engine's default (`0022`); the entrypoint doesn't change it.
+- Locale `en_US.UTF-8` (Alpine and sniper: `C.UTF-8`), `tzdata` (Tentacle's `TZ` works; the panel sends `TZ=UTC`),
+  `curl`, `jq`, `envsubst`, `tar`/`unzip`/`xz`, `ip`.
+
+### Pre-start scripts of a server
+
+A server owner can run their own shell scripts before every start, without changing the egg: put them in
+`.octail/hooks/pre-start.d/` in the server's files (file manager or SFTP), named `*.sh` (other files are ignored).
+They run after the image's hooks (so after the SteamCMD update: a script can patch a config the update reset) and
+before the `container~` line, in name order (`10-config.sh`, `20-mods.sh`), each with its own `bash`, in
+`/home/container`, with the server's variables in the environment and no console input. Each is announced as
+`octail: running .octail/hooks/pre-start.d/10-config.sh`. A script that exits non-zero stops the start: the console
+says which one, the container exits with its code, and the server isn't started (fix or delete the script).
+
+- Nothing runs unless the folder exists; no shipped egg or image creates it.
+- The scripts run as the server does (same user, same container, same limits), so they can do nothing the server's
+  own files couldn't. Anyone allowed to write the server's files could already change what the server runs (a
+  plugin, a mod, the jar); hosts that want to keep pre-start scripts off anyway set `OCTAIL_USER_HOOKS=0` (Tentacle
+  or an egg variable).
+- A script can't change the server's environment (it runs in its own process); write a file the startup reads
+  instead. A stop request while a script runs stops the script and the container.
+
+### Debugging a startup
+
+`OCTAIL_DEBUG=1`, or simply a file named `.octail/debug` in the server's files (no egg change needed; `OCTAIL_DEBUG=0`
+wins over it), adds `octail: debug: ...` lines before the `container~` line: the startup as the panel sent it, how
+long each image hook and pre-start script took, and every environment variable the server gets (sorted), with
+secret values masked the same way as in the `container~` line. Delete the file to turn it off again.
 
 ### Hooks and their variables
 
@@ -384,6 +423,7 @@ scripts/scan.sh             Trivy scan + SBOM of a built image, the vulnerabilit
 scripts/sign.sh             cosign signature + SBOM attestations of a pushed image (after every push)
 .trivyignore                accepted vulnerability findings (reason + expiry each)
 test/run.sh                 entrypoint, smoke.sh and supply-chain tests (also runs check-images.sh, check-workflows.sh)
+test/entrypoint.sh          entrypoint banner, TZ check, pre-start scripts, OCTAIL_DEBUG (sourced by run.sh; runs alone without jq)
 test/check-images.sh        images.json <-> folders, smoke commands, base-image allowlist, generated files in sync
 test/check-workflows.sh     actions pinned by SHA, downloads by sha256, scan/sign steps, .trivyignore, actionlint
 test/supply-chain.sh        tests of check-workflows.sh, scan.sh and sign.sh (sourced by test/run.sh)

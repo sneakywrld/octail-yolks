@@ -36,7 +36,19 @@ applied there by hand and come back with the next publish, so your commit may ar
    `<a name="<tag>"></a>` and the tag (other repositories link to that anchor), and hook variables in
    [Hooks and their variables](README.md#hooks-and-their-variables) if you add a hook.
 5. **Dependabot**: `scripts/dependabot.sh > .github/dependabot.yml`.
-6. **Tests**: behaviour that runs without Docker (a hook, the entrypoint) gets a case in `test/run.sh`.
+6. **Tests**: behaviour that runs without Docker (a hook, the entrypoint) gets a case in `test/run.sh`
+   (entrypoint features that need neither jq nor python go in `test/entrypoint.sh`, which also runs on its own,
+   e.g. in Git Bash on Windows).
+7. **Build info** (optional): `ENV OCTAIL_IMAGE=<tag>-<yyyymmdd>` or a one-line `/etc/octail/image` shows in the
+   entrypoint's banner; without it the banner says `(no build info)`.
+
+## Changing the entrypoint
+
+`common/entrypoint.sh` runs every live server of every runtime image, so a change must keep each egg's startup
+working as before: `{{VAR}}`/`${VAR}`, one `eval`, values never parsed as shell, masking, the exit code, signals.
+New behaviour is opt-in or prints only `octail: ...` lines before `container~`. Names starting with `OCTAIL_` are
+the entrypoint's and Tentacle's; the server folder's `.octail/` is the place for per-server switches (pre-start
+scripts, `.octail/debug`). Hooks are sourced at the top level, so a hook's `declare` stays global.
 
 ## Checks
 
