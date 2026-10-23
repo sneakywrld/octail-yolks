@@ -148,7 +148,7 @@ octail_cgroup() {
 # The banner: which image, OS and user, the time zone, and the limits the server gets (what a host asks for first
 # when a server runs out of memory or threads). Nothing secret: no variable values.
 octail_banner() {
-	local image=${OCTAIL_IMAGE-} file=${OCTAIL_IMAGE_FILE:-/etc/octail/image} os= key value line limits=()
+	local image=${OCTAIL_IMAGE-} file=${OCTAIL_IMAGE_FILE:-/etc/octail/image} os='' key value line limits=()
 	if [ -z "${image}" ] && [ -r "${file}" ]; then
 		IFS= read -r image <"${file}"
 	fi
