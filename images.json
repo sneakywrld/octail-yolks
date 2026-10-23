@@ -175,7 +175,7 @@
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
       "smoke": "node -v | grep '^v20[.]'",
-      "description": "Node.js 20 (Debian 12) with git and native-module build tools",
+      "description": "Node.js 20 (Debian 12) with git and native-module build tools; deprecated (end of life April 2026), still built",
       "replaces": [],
       "eggs": ["nodejs-app"]
     },
@@ -190,6 +190,16 @@
       "eggs": ["nodejs-app"]
     },
     {
+      "tag": "nodejs_24",
+      "folder": "images/nodejs_24",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "runtime",
+      "smoke": "node -v | grep '^v24[.]'",
+      "description": "Node.js 24 LTS (Debian 12) with git and native-module build tools",
+      "replaces": [],
+      "eggs": ["nodejs-app"]
+    },
+    {
       "tag": "python_3.12",
       "folder": "images/python_3.12",
       "platforms": ["linux/amd64", "linux/arm64"],
@@ -200,14 +210,74 @@
       "eggs": ["python-app"]
     },
     {
+      "tag": "python_3.13",
+      "folder": "images/python_3.13",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "runtime",
+      "smoke": "python3 -V | grep -F 'Python 3.13.'",
+      "description": "Python 3.13 (Debian 12) with git and a C compiler for wheels",
+      "replaces": [],
+      "eggs": ["python-app"]
+    },
+    {
+      "tag": "python_3.14",
+      "folder": "images/python_3.14",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "runtime",
+      "smoke": "python3 -V | grep -F 'Python 3.14.'",
+      "description": "Python 3.14 (Debian 12) with git and a C compiler for wheels",
+      "replaces": [],
+      "eggs": ["python-app"]
+    },
+    {
       "tag": "go_1.23",
       "folder": "images/go_1.23",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
       "smoke": "go version | grep -F 'go1.23'",
-      "description": "Go 1.23 (Debian 12), Go caches in the server folder",
+      "description": "Go 1.23 (Debian 12), Go caches in the server folder; deprecated (end of life August 2025), still built",
       "replaces": [],
       "eggs": ["go-app"]
+    },
+    {
+      "tag": "go_1.26",
+      "folder": "images/go_1.26",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "runtime",
+      "smoke": "go version | grep -F 'go1.26'",
+      "description": "Go 1.26 (Debian 12), Go caches in the server folder",
+      "replaces": [],
+      "eggs": ["go-app"]
+    },
+    {
+      "tag": "go_1.27",
+      "folder": "images/go_1.27",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "runtime",
+      "smoke": "go version | grep -F 'go1.27'",
+      "description": "Go 1.27 (Debian 12), Go caches in the server folder",
+      "replaces": [],
+      "eggs": ["go-app"]
+    },
+    {
+      "tag": "bun_1",
+      "folder": "images/bun_1",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "runtime",
+      "smoke": "bun --version | grep '^1[.]' && bun -e 'console.log(Bun.version)'",
+      "description": "Bun 1 (Debian 12, the release binary checked against a pinned sha256) with git and native-module build tools",
+      "replaces": [],
+      "eggs": ["bun-app"]
+    },
+    {
+      "tag": "deno_2",
+      "folder": "images/deno_2",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "runtime",
+      "smoke": "deno --version | grep '^deno 2[.]' && deno eval 'console.log(Deno.version.deno)'",
+      "description": "Deno 2 (Debian 12, the release binary checked against a pinned sha256), DENO_DIR in the server folder",
+      "replaces": [],
+      "eggs": ["deno-app"]
     },
     {
       "tag": "debian",
@@ -476,6 +546,7 @@
         "barotrauma",
         "beammp",
         "black-mesa",
+        "bun-app",
         "conan-exiles",
         "core-keeper",
         "counter-strike-16",
@@ -489,6 +560,7 @@
         "dayz",
         "ddnet",
         "deathmatch-classic",
+        "deno-app",
         "dont-starve-together",
         "eco",
         "empyrion",
