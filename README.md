@@ -19,6 +19,7 @@ parkervcp images or scripts, and CI fails a Dockerfile that tries.
 - Reference: [what every runtime image does](#what-every-runtime-image-does) ·
   [hooks and their variables](#hooks-and-their-variables) · [Proton notes](#proton-notes) · [layout](#layout)
 - [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Licence](#licence)
+- [History: why these images exist, every image and the eggs using it, the full changelog](yolks.md)
 
 ## Tags
 
