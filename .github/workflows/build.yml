@@ -1,15 +1,21 @@
 # Lints and tests the images' scripts, then builds every image that needs it and pushes it to
-# ghcr.io/sneakywrld/octail-yolks:<tag> (and :<tag>-<yyyymmdd>):
+# ghcr.io/sneakywrld/octail-yolks:<tag> (and :<tag>-<yyyymmdd>), for every platform its `platforms` in images.json
+# lists (linux/arm64 through QEMU next to linux/amd64; SteamCMD, Source, Proton and Wine images are amd64 only):
 #   push to main      the images whose folder changed (all of them when common/, images.json or this file did)
 #   weekly schedule   all images, so they pick up their base images' security fixes
-#   manual run        all images, or the tags given (comma-separated)
+#   manual run        all images, or the tags given (comma-separated; scripts/select-images.sh), optionally forced
 #   pull request      lint, tests, builds and boot tests, nothing pushed
+# Rebuild policy: a build only pushes when the image's content changed (scripts/content-check.sh: the fingerprint of
+# its inputs, its bases' digests and its packages, compared with the label on the published image), so the weekly
+# rebuild moves a tag only when a base or a package actually moved. A manual run with `force` pushes anyway.
+# After the builds, the report job merges every image's facts into stats/images.json on the `stats` branch.
 # Every image is boot-tested before its push (scripts/smoke.sh, the `smoke` command in images.json): a build that
 # succeeds but can't start (no tini, wrong user, a broken hook, a missing runtime) is never pushed.
 # Supply chain (docs/dev/yolks.md, "Supply chain"): every image is scanned with Trivy before its push
 # (scripts/scan.sh: HIGH/CRITICAL in the job summary and code scanning; only a fixable CRITICAL in our own layers
 # fails), gets a CycloneDX SBOM (a build artifact, and a signed attestation on the pushed image) and a keyless cosign
-# signature (scripts/sign.sh). Every third-party action is pinned to a commit SHA (Dependabot updates the pins), and
+# signature (scripts/sign.sh); BuildKit adds an SBOM and an SLSA provenance (mode=max) attestation to every push,
+# and sign.sh attests that provenance with cosign too. Every third-party action is pinned to a commit SHA (Dependabot updates the pins), and
 # every downloaded tool is checked against a pinned sha256 (test/check-workflows.sh enforces both).
 name: build
 
@@ -39,6 +45,11 @@ on:
         description: "Tags to build, comma-separated (or all)"
         required: false
         default: all
+      force:
+        description: "Push even when the content is unchanged"
+        type: boolean
+        required: false
+        default: false
 
 concurrency:
   group: build-${{ github.ref }}-${{ github.event_name }}
@@ -232,15 +243,31 @@ jobs:
           sarif_file: ${{ runner.temp }}/supply-chain/${{ matrix.image.tag }}.sarif
           category: octail-yolks-${{ matrix.image.tag }}
 
+      # Rebuild policy: push only when the content changed (scripts/content-check.sh). The fingerprint goes into the
+      # image as the org.octail.yolks.fingerprint label, which the next run compares against. Pull requests never push.
+      - name: Content check
+        id: check
+        if: github.event_name != 'pull_request'
+        env:
+          TAG: ${{ matrix.image.tag }}
+          FORCE: ${{ github.event.inputs.force == 'true' && '1' || '0' }}
+        run: scripts/content-check.sh "${TAG}" "$RUNNER_TEMP/supply-chain/${TAG}.cdx.json" "$RUNNER_TEMP/supply-chain"
+
+      # Every platform in images.json (arm64 through QEMU, from the amd64 build's cache where layers match), with
+      # BuildKit's SBOM and SLSA provenance (mode=max: the build's inputs, args and steps) as in-registry attestations.
+      # On pull requests this checks that every platform builds; skipped when the content check found nothing new.
       - name: Build and push
         id: push
+        if: github.event_name == 'pull_request' || steps.check.outputs.push == 'true'
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: ${{ matrix.image.folder }}/Dockerfile
           platforms: ${{ matrix.image.platforms }}
           pull: true
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name != 'pull_request' && steps.check.outputs.push == 'true' }}
+          provenance: mode=max
+          sbom: true
           tags: |
             ${{ steps.meta.outputs.registry }}:${{ matrix.image.tag }}
             ${{ steps.meta.outputs.registry }}:${{ matrix.image.tag }}-${{ steps.meta.outputs.date }}
@@ -251,26 +278,45 @@ jobs:
             org.opencontainers.image.version=${{ matrix.image.tag }}
             org.opencontainers.image.title=octail-yolks:${{ matrix.image.tag }}
             org.opencontainers.image.description=${{ steps.meta.outputs.description }}
+            org.octail.yolks.fingerprint=${{ steps.check.outputs.fingerprint }}
           annotations: ${{ steps.meta.outputs.annotations }}
           cache-from: type=gha,scope=${{ matrix.image.tag }}
           cache-to: type=gha,mode=max,scope=${{ matrix.image.tag }}
 
       - uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && steps.check.outputs.push == 'true'
         with:
           cosign-release: ${{ env.COSIGN_VERSION }}
 
       # Keyless signature of the pushed index and every platform image (the workflow's OIDC identity, recorded in
-      # Sigstore's public transparency log), plus a signed CycloneDX SBOM attestation per platform. Hosts verify with
-      # the `cosign verify` command in docs/staff/admin/runtime-images.md.
+      # Sigstore's public transparency log), plus a signed CycloneDX SBOM and SLSA provenance attestation per platform.
+      # Hosts verify with the `cosign verify` command in docs/staff/admin/runtime-images.md.
       - name: Sign and attest
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && steps.check.outputs.push == 'true'
         env:
           TAG: ${{ matrix.image.tag }}
           REGISTRY: ${{ steps.meta.outputs.registry }}
           DIGEST: ${{ steps.push.outputs.digest }}
           SIGN_IDENTITY: ${{ github.server_url }}/${{ github.workflow_ref }}
         run: scripts/sign.sh "$REGISTRY" "$DIGEST" "$TAG" "$RUNNER_TEMP/supply-chain"
+
+      # The image's facts for stats/images.json (scripts/report.sh fact: digest, compressed sizes, build date from the
+      # registry; CVE counts from this run's scan), also when the push was skipped (fresh CVE counts for the published
+      # image). The report job below merges them.
+      - name: Build report
+        if: github.event_name != 'pull_request' && steps.scan.outcome == 'success' && steps.check.outcome == 'success'
+        env:
+          TAG: ${{ matrix.image.tag }}
+          PUSHED: ${{ steps.check.outputs.push == 'true' && '1' || '0' }}
+        run: scripts/report.sh fact "${TAG}" "$RUNNER_TEMP/stats"
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: github.event_name != 'pull_request' && steps.scan.outcome == 'success' && steps.check.outcome == 'success'
+        with:
+          name: stats-${{ matrix.image.tag }}
+          path: ${{ runner.temp }}/stats/${{ matrix.image.tag }}.stats.json
+          if-no-files-found: warn
+          retention-days: 7
 
       # The scan report, SARIF and SBOMs of every build (pull requests too), kept 90 days.
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -280,3 +326,38 @@ jobs:
           path: ${{ runner.temp }}/supply-chain/
           if-no-files-found: warn
           retention-days: 90
+
+  # stats/images.json: every image's facts (schema: README.md, "Build report"), merged into the file on the `stats`
+  # branch and pushed there (never to main, which is published from the monorepo). Runs after the builds, also when
+  # some failed (their previous entries are kept), never for pull requests.
+  report:
+    needs: [plan, build]
+    if: ${{ !cancelled() && github.event_name != 'pull_request' && needs.plan.outputs.matrix != '[]' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write # push the stats branch (the only job that can write to the repository)
+    concurrency:
+      group: build-report
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: true # scripts/report.sh pushes the stats branch with the job's token
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        continue-on-error: true # no facts (every build failed before its scan): the report stays as it is
+        with:
+          pattern: stats-*
+          merge-multiple: true
+          path: ${{ runner.temp }}/stats
+
+      - name: Publish the build report
+        env:
+          STATS_OUT: ${{ runner.temp }}/report.json
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/stats"
+          scripts/report.sh publish "$RUNNER_TEMP/stats"
+          jq -r '"| Image | Digest | Size (amd64) | CRITICAL | HIGH | Pushed |", "| --- | --- | --- | --- | --- | --- |",
+            (.images[] | "| `\(.tag)` | `\((.digest // "-")[0:19])` | \(((.compressedSize["linux/amd64"] // 0) / 1048576) | floor) MiB | \(.vulnerabilities.critical // "-") | \(.vulnerabilities.high // "-") | \(.pushed) |")' \
+            "$RUNNER_TEMP/report.json" >> "$GITHUB_STEP_SUMMARY"

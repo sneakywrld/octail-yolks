@@ -6,8 +6,10 @@
 #   - every workflow sets top-level `permissions:` (the GITHUB_TOKEN is read-only unless a job asks for more);
 #   - every tool a workflow downloads with curl from a release page is checked against a pinned sha256
 #     (every `${<NAME>_VERSION}` a curl line uses needs a `<NAME>_SHA256` env, and a `sha256sum -c` must run);
-#   - build.yml keeps the supply-chain steps in order: boot test, vulnerability scan, SARIF upload, push, signing,
-#     with Trivy and cosign at pinned versions and the permissions they need;
+#   - build.yml keeps the supply-chain steps in order: boot test, vulnerability scan, SARIF upload, content check,
+#     push, signing, build report, with Trivy and cosign at pinned versions and the permissions they need; the push
+#     carries BuildKit's SBOM and SLSA provenance and only happens when the content check says so; the weekly
+#     schedule and the manual run (image filter, force) stay; only the report job may write to the repository;
 #   - .github/dependabot.yml updates the github-actions ecosystem;
 #   - every entry in .trivyignore has a reason (a comment line right above it) and an expiry date (exp:YYYY-MM-DD);
 #   - actionlint, when it is on PATH (or ACTIONLINT names it), finds nothing (it runs shellcheck on `run:` blocks
@@ -80,7 +82,8 @@ done
 build="${root}/.github/workflows/build.yml"
 if [ -f "${build}" ]; then
 	line_of() { grep -nE "$1" "${build}" | head -n 1 | cut -d: -f1; }
-	order=('name: Boot test' 'name: Vulnerability scan' 'upload-sarif@' 'name: Build and push' 'name: Sign')
+	order=('name: Boot test' 'name: Vulnerability scan' 'upload-sarif@' 'name: Content check' 'name: Build and push'
+		'name: Sign' 'name: Build report' '^  report:')
 	prev=0
 	prev_name=''
 	for step in "${order[@]}"; do
@@ -94,8 +97,13 @@ if [ -f "${build}" ]; then
 		fi
 		prev_name=${step}
 	done
+	# shellcheck disable=SC2016 # literal GitHub expressions (${{ … }}), not shell ones
 	for needle in 'scripts/scan.sh' 'scripts/sign.sh' 'id-token: write' 'security-events: write' \
-		'aquasecurity/setup-trivy@' 'sigstore/cosign-installer@' 'actions/upload-artifact@'; do
+		'aquasecurity/setup-trivy@' 'sigstore/cosign-installer@' 'actions/upload-artifact@' \
+		'scripts/content-check.sh' 'scripts/report.sh fact' 'scripts/report.sh publish' 'provenance: mode=max' \
+		'sbom: true' 'org.octail.yolks.fingerprint=${{ steps.check.outputs.fingerprint }}' \
+		"push: \${{ github.event_name != 'pull_request' && steps.check.outputs.push == 'true' }}" \
+		'actions/download-artifact@' 'scripts/select-images.sh' 'force:'; do
 		grep -qF "${needle}" "${build}" || err ".github/workflows/build.yml: ${needle} is missing"
 	done
 	for tool in TRIVY COSIGN; do
@@ -105,6 +113,19 @@ if [ -f "${build}" ]; then
 	# Signing and pushing never happen for pull requests.
 	if ! grep -A3 -E 'name: Sign' "${build}" | grep -qF "github.event_name != 'pull_request'"; then
 		err ".github/workflows/build.yml: the Sign step must not run for pull requests"
+	fi
+	# The weekly rebuild (base images' security fixes).
+	grep -qE '^[[:space:]]+-[[:space:]]+cron:' "${build}" || err ".github/workflows/build.yml: no weekly schedule (cron)"
+	# Least privilege: contents: write only in the report job (it pushes the stats branch, never main).
+	report_at=$(line_of '^  report:')
+	while IFS=: read -r at _; do
+		[ -n "${at}" ] || continue
+		if [ -z "${report_at}" ] || [ "${at}" -lt "${report_at}" ]; then
+			err ".github/workflows/build.yml:${at}: contents: write outside the report job"
+		fi
+	done < <(grep -nE '^[[:space:]]+contents:[[:space:]]*write' "${build}")
+	if ! grep -A1 -E '^permissions:' "${build}" | grep -qE '^[[:space:]]+contents:[[:space:]]*read'; then
+		err ".github/workflows/build.yml: the top-level permissions must be contents: read"
 	fi
 fi
 

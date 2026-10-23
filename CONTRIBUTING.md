@@ -26,8 +26,9 @@ applied there by hand and come back with the next publish, so your commit may ar
    into `/etc/octail/entrypoint.d/`, then `USER container`, `WORKDIR /home/container`, `STOPSIGNAL SIGINT`,
    `ENTRYPOINT ["/usr/bin/tini", "-g", "--"]` and `CMD ["/entrypoint.sh"]`. `images/java_21/Dockerfile` is a short
    example; set the `org.opencontainers.image.*` labels the same way.
-2. **`images.json`**: an entry with `tag`, `folder`, `platforms` (`linux/amd64` and, when everything inside runs on
-   it, `linux/arm64`), `kind` (`runtime` or `installer`), `smoke` (the boot test CI runs before pushing: a startup
+2. **`images.json`**: an entry with `tag`, `folder`, `platforms` (always `linux/amd64`; add `linux/arm64` when the
+   base and everything inside exist for arm64, never for SteamCMD, Source, Proton, Wine or anything that needs
+   32-bit x86 libraries; see [Platforms](README.md#platforms)), `kind` (`runtime` or `installer`), `smoke` (the boot test CI runs before pushing: a startup
    for a runtime image, a `bash -c` command run as root for an installer, fast and offline, see
    [Boot tests](README.md#boot-tests)), `description`, `replaces` (third-party images it stands in for, or `[]`) and
    `eggs` (the Octail eggs using it, or `[]`).
@@ -56,6 +57,22 @@ scripts/smoke.sh ghcr.io/sneakywrld/octail-yolks:<tag> <tag>   # the boot test C
 A new action in a workflow is pinned to its full commit SHA with the version as a comment
 (`uses: owner/action@<40 hex> # v1.2.3`), never a tag; a downloaded tool gets a pinned sha256. A fixable CRITICAL
 vulnerability in what your image adds fails CI's scan (README: [Supply chain](README.md#supply-chain-scans-sboms-signatures)).
+
+## CI changes
+
+The build workflow is `.github/workflows/build.yml` (README: [How CI publishes](README.md#how-ci-publishes)). When you
+change it or the scripts it runs:
+
+- Keep the step order `test/check-workflows.sh` enforces: boot test, vulnerability scan, SARIF upload, content check,
+  build and push, sign, build report, then the report job. Nothing is pushed, signed or reported for pull requests.
+- Permissions stay least-privilege: top-level `contents: read`, each job widens only what it needs, and only the
+  report job gets `contents: write` (it pushes the `stats` branch, never `main`).
+- Logic goes into `scripts/*.sh` with a fake-tool test in `test/supply-chain.sh` (fake `docker`, `trivy`, `cosign`;
+  `report.sh publish` is tested against a local bare repository), not into long `run:` blocks.
+- `stats/images.json` is a public interface: add fields freely, but a renamed or removed field bumps `schema` and is
+  documented in README ([Build report](README.md#build-report-statsimagesjson)).
+- To rebuild by hand: Actions → build → Run workflow, with tags (`java_21,wine`, or `all`) and **force** when the tag
+  should move even though its content is unchanged (for example after a label change you want published).
 
 Then, better still, run a server of an egg that uses it on an Octail test node, and say in the pull request what you ran.
 
