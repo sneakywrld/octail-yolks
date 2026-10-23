@@ -161,6 +161,35 @@ An egg that offers several images (the Minecraft Java eggs offer Java 8 to 25) i
 Newest first. Dates are when the work landed in the Octail monorepo, where this repository's folder lives; "round" is
 the batch of parallel work it came in.
 
+### 2026-10-23: new runtimes, smaller Wine, signed build records (round 30)
+
+- **New tags**: `nodejs_24` (the current LTS), `python_3.13`, `python_3.14`, `go_1.26`, `go_1.27`, `bun_1` and
+  `deno_2` (Bun and Deno from their official release binaries, SHA-256 checked for amd64 and arm64), and
+  `installer_java_17` (NeoForge 1.20.1 and Spigot BuildTools for 1.17 to 1.20.4). `nodejs_20` and `go_1.23` are past
+  their end of life: marked deprecated, still built so existing servers keep working.
+- **Java images**: DejaVu fonts for map renderers, and an opt-in jemalloc (`JEMALLOC=1`, a new hook that falls back
+  to glibc with a console line when the library can't load) for Minecraft servers whose native memory keeps growing.
+  Boot tests check the Java major version, the fonts and the hook.
+- **SteamCMD, Wine and Proton**: Wine is installed without recommended packages, with the libraries servers use listed
+  one by one (roughly 200 to 400 MB smaller per Wine image); the rcon tool is built with a supported Go release (the
+  old one kept failing the vulnerability scan) and stripped; Proton servers with auto-update off get Steam's
+  `steamclient.so` copied in; Wine prefixes are made without the menu helper they used to wait for; Alpine moved to
+  3.24; the 64-bit Source servers get `libncurses5`/`libtinfo5`. GE-Proton stays on 10-34: version 11 needs a newer
+  glibc than Debian 12 has.
+- **The shared entrypoint**: a two-line banner at every start (image, OS, user, time zone and the container's memory,
+  CPU, thread and `/tmp` limits; never variable values), a warning for an unknown time zone, `C.UTF-8` when no locale
+  is set, owner pre-start scripts in `.octail/hooks/pre-start.d/` (opt out with `OCTAIL_USER_HOOKS=0`), a debug mode
+  (`OCTAIL_DEBUG=1` or a `.octail/debug` file) that prints the startup and the environment with secrets masked, and
+  two masking fixes (the working directory was hidden as if it were a secret). 69 new shell tests.
+- **CI**: every image declares its platforms and the checks enforce it (the SteamCMD, Source, Rust, Wine and Proton
+  families are amd64 only); pushes carry BuildKit's SBOM and SLSA provenance, which are signed with cosign too; the
+  weekly rebuild only pushes an image whose content fingerprint changed (its files, its base image digests and its
+  packages); and each build writes per-image facts (digest, size, platforms, CVE counts) to `stats/images.json` on a
+  `stats` branch.
+- **Statistics**: the README opens with generated statistics (`scripts/stats.mjs`: images per family, bases, which eggs
+  use each image and how many of them passed a real run), and `docs/index.html` shows the same as a page for GitHub
+  Pages.
+
 ### 2026-10-20: security re-audit
 
 - The Rust framework hook downloads Oxide and Carbon with `curl --proto '=https'`, so a redirect can't downgrade the
@@ -235,7 +264,3 @@ Octail's first eggs ran on Pterodactyl, Pelican and parkervcp images. What we le
 Octail turns `{{VAR}}` into `${VAR}` itself since a 2026-10-08 security review found that pasting values into the
 startup let a subuser run commands through the upstream entrypoint's `eval`; a 2026-10-09 bisection traced Valheim's
 crash for non-root users to the upstream images' `nss_wrapper`; and Rust's upstream image ran its startup twice.
-
-## This round (2026-10-23)
-
-_Filled in after this round's merge._
