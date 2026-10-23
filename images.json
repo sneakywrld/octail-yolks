@@ -61,6 +61,7 @@
       ],
       "eggs": [
         "java-jar",
+        "lavalink",
         "mindustry",
         "minecraft-arclight",
         "minecraft-bungeecord",
@@ -89,6 +90,7 @@
       "replaces": ["ghcr.io/pelican-eggs/yolks:java_21"],
       "eggs": [
         "java-jar",
+        "lavalink",
         "mindustry",
         "minecraft-arclight",
         "minecraft-bungeecord",
@@ -121,6 +123,7 @@
       "eggs": [
         "hytale",
         "java-jar",
+        "lavalink",
         "minecraft-bungeecord",
         "minecraft-fabric",
         "minecraft-folia",
@@ -192,7 +195,7 @@
       "smoke": "node -v | grep '^v22[.]'",
       "description": "Node.js 22 (Debian 12) with git and native-module build tools",
       "replaces": [],
-      "eggs": ["nodejs-app"]
+      "eggs": ["nodejs-app", "uptime-kuma"]
     },
     {
       "tag": "nodejs_24",
@@ -301,6 +304,7 @@
         "ddnet",
         "et-legacy",
         "factorio",
+        "mariadb",
         "minecraft-bedrock",
         "minecraft-pocketmine",
         "mumble",
@@ -308,6 +312,8 @@
         "openra",
         "openrct2",
         "openttd",
+        "postgresql",
+        "red-discordbot",
         "red-eclipse",
         "supertuxkart",
         "teamspeak",
@@ -318,6 +324,7 @@
         "unreal-tournament-99",
         "unvanquished",
         "urban-terror",
+        "valkey",
         "xonotic"
       ]
     },
@@ -602,8 +609,10 @@
         "java-jar",
         "killing-floor",
         "killing-floor-2",
+        "lavalink",
         "left-4-dead",
         "left-4-dead-2",
+        "mariadb",
         "mindustry",
         "minecraft-bedrock",
         "mordhau",
@@ -622,9 +631,11 @@
         "palworld",
         "pavlov-vr",
         "pixark",
+        "postgresql",
         "project-zomboid",
         "python-app",
         "quake-live",
+        "red-discordbot",
         "red-eclipse",
         "return-to-moria",
         "rising-world",
@@ -663,10 +674,12 @@
         "unreal-tournament-99",
         "unturned",
         "unvanquished",
+        "uptime-kuma",
         "urban-terror",
         "v-rising",
         "valheim",
         "valheim-bepinex",
+        "valkey",
         "vein",
         "vintage-story",
         "warfork",
