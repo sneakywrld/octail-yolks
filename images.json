@@ -284,12 +284,15 @@
         "mordhau",
         "natural-selection-2",
         "necesse",
+        "nightingale",
         "palworld",
         "project-zomboid",
         "quake-live",
         "rising-world",
+        "runescape-dragonwilds",
         "satisfactory",
         "scp-secret-laboratory",
+        "smalland",
         "soulmask",
         "squad",
         "squad-44",
@@ -300,6 +303,7 @@
         "unturned",
         "valheim",
         "valheim-bepinex",
+        "vein",
         "wurm-unlimited"
       ]
     },
@@ -394,7 +398,8 @@
         "ark-survival-ascended",
         "astroneer",
         "enshrouded",
-        "steamcmd-generic"
+        "steamcmd-generic",
+        "windrose"
       ]
     },
     {
@@ -411,6 +416,7 @@
       "eggs": [
         "aska",
         "empyrion",
+        "foundry",
         "ground-branch",
         "icarus",
         "myth-of-empires",
@@ -490,6 +496,7 @@
         "euro-truck-simulator-2",
         "factorio",
         "fistful-of-frags",
+        "foundry",
         "garrysmod",
         "go-app",
         "ground-branch",
@@ -513,6 +520,7 @@
         "natural-selection-2",
         "necesse",
         "night-of-the-dead",
+        "nightingale",
         "no-more-room-in-hell",
         "nodejs-app",
         "openarena",
@@ -527,9 +535,11 @@
         "return-to-moria",
         "rising-world",
         "risk-of-rain-2",
+        "runescape-dragonwilds",
         "rust",
         "satisfactory",
         "scp-secret-laboratory",
+        "smalland",
         "sons-of-the-forest",
         "soulmask",
         "source-engine",
@@ -559,7 +569,9 @@
         "v-rising",
         "valheim",
         "valheim-bepinex",
+        "vein",
         "vintage-story",
+        "windrose",
         "wurm-unlimited",
         "xonotic",
         "zombie-panic-source"
