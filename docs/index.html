@@ -1,0 +1,496 @@
+<!doctype html>
+<!--
+  Octail yolks statistics: a static page for GitHub Pages (Settings -> Pages -> Deploy from a branch -> main, /docs).
+  No build step and no external scripts: the data is stats.js next to this file, which scripts/stats.mjs writes
+  (window.OCTAIL_YOLKS_STATS). Opening the file locally works too.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Octail yolks stats</title>
+    <meta
+      name="description"
+      content="The container images Octail game servers run in: families, bases, the eggs using each one."
+    />
+    <style>
+      :root {
+        --bg: #f7f8fa;
+        --panel: #ffffff;
+        --text: #1d2330;
+        --muted: #5d6677;
+        --line: #e2e6ee;
+        --accent: #3b6fe0;
+        --pass: #1f9d55;
+        --fail: #d64545;
+        --blocked: #d08b12;
+        --untested: #9aa3b2;
+        color-scheme: light;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0f1218;
+          --panel: #171b23;
+          --text: #e6e9ef;
+          --muted: #98a1b3;
+          --line: #2a303c;
+          --accent: #7aa2ff;
+          --pass: #3ccf7f;
+          --fail: #ff6b6b;
+          --blocked: #f0b43c;
+          --untested: #6b7385;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg: #0f1218;
+        --panel: #171b23;
+        --text: #e6e9ef;
+        --muted: #98a1b3;
+        --line: #2a303c;
+        --accent: #7aa2ff;
+        --pass: #3ccf7f;
+        --fail: #ff6b6b;
+        --blocked: #f0b43c;
+        --untested: #6b7385;
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font:
+          15px/1.5 system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      main {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 24px 16px 48px;
+      }
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: baseline;
+        justify-content: space-between;
+      }
+      h1 {
+        font-size: 1.6rem;
+        margin: 0;
+      }
+      h2 {
+        font-size: 1.15rem;
+        margin: 32px 0 12px;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+        color: inherit;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 6px 10px;
+      }
+      button {
+        cursor: pointer;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 12px;
+        margin-top: 20px;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 14px 16px;
+      }
+      .card .value {
+        font-size: 1.7rem;
+        white-space: nowrap;
+        font-weight: 650;
+        font-variant-numeric: tabular-nums;
+      }
+      .card .label {
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+      .bar {
+        display: flex;
+        height: 10px;
+        border-radius: 5px;
+        overflow: hidden;
+        background: var(--line);
+        min-width: 80px;
+      }
+      .bar span {
+        display: block;
+        height: 100%;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 8px;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      .dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 5px;
+        vertical-align: -1px;
+      }
+      .table-wrap {
+        overflow-x: auto;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.92rem;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 8px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        color: var(--muted);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      td.num,
+      th.num {
+        text-align: right;
+        white-space: nowrap;
+        font-variant-numeric: tabular-nums;
+      }
+      code {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 0.86em;
+      }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .filters input {
+        flex: 1 1 220px;
+      }
+      .status-pass {
+        color: var(--pass);
+      }
+      .status-fail {
+        color: var(--fail);
+      }
+      .status-blocked {
+        color: var(--blocked);
+      }
+      .status-untested {
+        color: var(--muted);
+      }
+      footer {
+        margin-top: 32px;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+      details summary {
+        cursor: pointer;
+        white-space: nowrap;
+        color: var(--accent);
+      }
+      details ul {
+        margin: 6px 0 0;
+        padding-left: 18px;
+        columns: 2 180px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <h1>Octail yolks</h1>
+          <div class="muted" id="subtitle">Loading…</div>
+        </div>
+        <button
+          id="theme"
+          type="button"
+          aria-label="Switch between light and dark"
+        >
+          Theme
+        </button>
+      </header>
+      <section class="cards" id="cards"></section>
+      <h2>Families</h2>
+      <section class="cards" id="families" style="margin-top: 0"></section>
+      <h2 id="images-title">Images</h2>
+      <div class="filters">
+        <input
+          id="q"
+          type="search"
+          placeholder="Search a tag, base, distribution or egg"
+          aria-label="Search"
+        />
+        <select id="f-family" aria-label="Family">
+          <option value="">Every family</option>
+        </select>
+      </div>
+      <div class="table-wrap"><table id="images"></table></div>
+      <footer id="footer"></footer>
+    </main>
+    <script src="stats.js"></script>
+    <script>
+      (function () {
+        var REPO = "https://github.com/sneakywrld/octail-yolks";
+        var root = document.documentElement;
+        try {
+          var saved = localStorage.getItem("octail-theme");
+          if (saved) root.setAttribute("data-theme", saved);
+        } catch (e) {}
+        document.getElementById("theme").addEventListener("click", function () {
+          var dark =
+            root.getAttribute("data-theme") === "dark" ||
+            (!root.getAttribute("data-theme") &&
+              matchMedia("(prefers-color-scheme: dark)").matches);
+          var next = dark ? "light" : "dark";
+          root.setAttribute("data-theme", next);
+          try {
+            localStorage.setItem("octail-theme", next);
+          } catch (e) {}
+        });
+        function esc(s) {
+          return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+            return {
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[c];
+          });
+        }
+        function size(v) {
+          if (typeof v === "string") return v;
+          if (typeof v !== "number") return "–";
+          var m = v / 1048576;
+          return m >= 1024
+            ? (m / 1024).toFixed(1) + " GiB"
+            : Math.round(m) + " MiB";
+        }
+        function cves(c) {
+          if (!c) return "–";
+          if (c.critical != null || c.high != null)
+            return (c.critical || 0) + " critical, " + (c.high || 0) + " high";
+          return c.total != null ? String(c.total) : "–";
+        }
+
+        var s = window.OCTAIL_YOLKS_STATS;
+        if (!s) {
+          document.getElementById("subtitle").textContent =
+            "stats.js is missing: run node scripts/stats.mjs (it writes docs/stats.js).";
+          return;
+        }
+        document.getElementById("subtitle").innerHTML =
+          "The runtime and installer images Octail game servers run in, published as <code>" +
+          esc(s.registry) +
+          ':&lt;tag&gt;</code>. Source: <a href="' +
+          REPO +
+          '">octail-yolks</a>.';
+        var cards = [
+          [s.images, "images"],
+          [s.runtime, "runtime images"],
+          [s.installers, "installer images"],
+          [s.multi_arch, "built for amd64 + arm64"],
+        ];
+        if (s.eggs_total != null) cards.push([s.eggs_total, "eggs use them"]);
+        if (s.eggs_tested)
+          cards.push([s.eggs_tested.pass, "of those passed a real run"]);
+        document.getElementById("cards").innerHTML = cards
+          .map(function (c) {
+            return (
+              '<div class="card"><div class="value">' +
+              esc(c[0]) +
+              '</div><div class="label">' +
+              esc(c[1]) +
+              "</div></div>"
+            );
+          })
+          .join("");
+        document.getElementById("families").innerHTML = s.families
+          .map(function (f) {
+            return (
+              '<div class="card"><div class="value">' +
+              f.images.length +
+              '</div><div class="label">' +
+              esc(f.title) +
+              (f.eggs ? " · " + f.eggs + " eggs" : "") +
+              "</div></div>"
+            );
+          })
+          .join("");
+        var famSelect = document.getElementById("f-family");
+        s.families.forEach(function (f) {
+          var o = document.createElement("option");
+          o.value = f.id;
+          o.textContent = f.title;
+          famSelect.appendChild(o);
+        });
+        var titles = {};
+        s.families.forEach(function (f) {
+          titles[f.id] = f.title;
+        });
+        var hasCi = s.rows.some(function (r) {
+          return r.ci;
+        });
+        function eggsCell(r) {
+          if (!r.eggs.length) return '<span class="muted">–</span>';
+          var items = r.eggs.map(function (id) {
+            var e = s.eggs[id];
+            var mark = e
+              ? { pass: " ✅", fail: " ❌", blocked: " ⚠️" }[e.result] || ""
+              : "";
+            var name = e ? e.name : id;
+            return e && e.path
+              ? '<li><a href="' +
+                  esc(s.eggs_repo) +
+                  "/blob/main/" +
+                  esc(e.path) +
+                  '">' +
+                  esc(name) +
+                  "</a>" +
+                  mark +
+                  "</li>"
+              : "<li>" + esc(name) + mark + "</li>";
+          });
+          return (
+            "<details><summary>" +
+            r.eggs.length +
+            " egg" +
+            (r.eggs.length === 1 ? "" : "s") +
+            "</summary><ul>" +
+            items.join("") +
+            "</ul></details>"
+          );
+        }
+        var q = document.getElementById("q");
+        function render() {
+          var needle = q.value.trim().toLowerCase();
+          var rows = s.rows.filter(function (r) {
+            if (famSelect.value && r.family !== famSelect.value) return false;
+            if (!needle) return true;
+            var names = r.eggs.map(function (id) {
+              return id + " " + (s.eggs[id] ? s.eggs[id].name : "");
+            });
+            return (
+              [r.tag, r.base, r.distro, r.description]
+                .concat(names)
+                .join(" ")
+                .toLowerCase()
+                .indexOf(needle) >= 0
+            );
+          });
+          document.getElementById("images-title").textContent =
+            "Images (" + rows.length + " of " + s.rows.length + ")";
+          var head =
+            "<thead><tr><th>Tag</th><th>Family</th><th>Base</th><th>Platforms</th><th>Eggs</th>" +
+            (s.eggs_tested ? '<th class="num">Passed</th>' : "") +
+            (hasCi
+              ? '<th class="num">Size</th><th>Built</th><th>CVEs</th>'
+              : "") +
+            "</tr></thead><tbody>";
+          document.getElementById("images").innerHTML =
+            head +
+            rows
+              .map(function (r) {
+                return (
+                  '<tr><td><a href="' +
+                  REPO +
+                  "#" +
+                  esc(r.tag) +
+                  '"><code>' +
+                  esc(r.tag) +
+                  '</code></a><div class="muted">' +
+                  esc(r.description) +
+                  "</div></td><td>" +
+                  esc(titles[r.family] || r.family) +
+                  "</td><td>" +
+                  esc(r.distro || "?") +
+                  (r.base
+                    ? '<div class="muted"><code>' +
+                      esc(r.base) +
+                      "</code></div>"
+                    : "") +
+                  "</td><td>" +
+                  esc(r.platforms.join(", ")) +
+                  "</td><td>" +
+                  eggsCell(r) +
+                  "</td>" +
+                  (s.eggs_tested
+                    ? '<td class="num">' +
+                      (r.eggs.length
+                        ? r.tested.pass + " / " + r.eggs.length
+                        : "–") +
+                      "</td>"
+                    : "") +
+                  (hasCi
+                    ? '<td class="num">' +
+                      esc(size(r.ci && r.ci.size)) +
+                      "</td><td>" +
+                      esc((r.ci && r.ci.built) || "–") +
+                      "</td><td>" +
+                      esc(cves(r.ci && r.ci.cves)) +
+                      "</td>"
+                    : "") +
+                  "</tr>"
+                );
+              })
+              .join("") +
+            "</tbody>";
+        }
+        q.addEventListener("input", render);
+        famSelect.addEventListener("input", render);
+        render();
+        document.getElementById("footer").innerHTML =
+          "Generated by <code>scripts/stats.mjs</code> (schema " +
+          esc(s.schema) +
+          ") from images.json, the Dockerfiles, " +
+          "<code>stats/eggs-usage.json</code>" +
+          (hasCi
+            ? " and the last CI build (<code>stats/images.json</code>)"
+            : "") +
+          ".";
+      })();
+    </script>
+  </body>
+</html>

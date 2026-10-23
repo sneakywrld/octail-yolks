@@ -47,6 +47,12 @@ run_ep() {
 check="${here}/check-images.sh"
 if out=$("${check}" 2>&1); then ok 'the repository passes check-images.sh'; else not_ok 'the repository passes check-images.sh' "${out}"; fi
 
+# --- the README's generated Stats section and docs/stats.js (scripts/stats.mjs) ---------------------------
+# --no-eggs: compare with the committed stats/eggs-usage.json (the monorepo's tests check that file against the eggs).
+if command -v node >/dev/null 2>&1; then
+	if out=$(node "${root}/scripts/stats.mjs" --check --no-eggs 2>&1); then ok 'the Stats section is up to date'; else not_ok 'the Stats section is up to date' "${out}"; fi
+fi
+
 # A small fake tree per case: images.json + images/<tag>/Dockerfile.
 fake_tree() { # tag dockerfile-content
 	rm -rf "${work:?}/tree"
