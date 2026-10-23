@@ -7,7 +7,7 @@
       "folder": "images/java_8",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
-      "smoke": "java -version",
+      "smoke": "java -version 2>&1 | grep -F 'version \"1.8.' && fc-list | grep -qi dejavu && JEMALLOC=1 . /etc/octail/entrypoint.d/15-jemalloc.sh | grep -F 'jemalloc on'",
       "description": "Java 8 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft up to 1.16",
       "replaces": ["ghcr.io/pelican-eggs/yolks:java_8"],
       "eggs": [
@@ -29,7 +29,7 @@
       "folder": "images/java_11",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
-      "smoke": "java -version",
+      "smoke": "java -version 2>&1 | grep -E 'version \"11[.\"]' && fc-list | grep -qi dejavu && JEMALLOC=1 . /etc/octail/entrypoint.d/15-jemalloc.sh | grep -F 'jemalloc on'",
       "description": "Java 11 (Eclipse Temurin JDK, Ubuntu 24.04)",
       "replaces": ["ghcr.io/pelican-eggs/yolks:java_11"],
       "eggs": [
@@ -51,7 +51,7 @@
       "folder": "images/java_17",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
-      "smoke": "java -version",
+      "smoke": "java -version 2>&1 | grep -E 'version \"17[.\"]' && fc-list | grep -qi dejavu && JEMALLOC=1 . /etc/octail/entrypoint.d/15-jemalloc.sh | grep -F 'jemalloc on'",
       "description": "Java 17 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft 1.17-1.20.4, Mindustry",
       "replaces": [
         "ghcr.io/pelican-eggs/yolks:java_16",
@@ -81,7 +81,7 @@
       "folder": "images/java_21",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
-      "smoke": "java -version",
+      "smoke": "java -version 2>&1 | grep -E 'version \"21[.\"]' && fc-list | grep -qi dejavu && JEMALLOC=1 . /etc/octail/entrypoint.d/15-jemalloc.sh | grep -F 'jemalloc on'",
       "description": "Java 21 (Eclipse Temurin JDK, Ubuntu 24.04): Minecraft 1.20.5+, Mindustry",
       "replaces": ["ghcr.io/pelican-eggs/yolks:java_21"],
       "eggs": [
@@ -111,7 +111,7 @@
       "folder": "images/java_25",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
-      "smoke": "java -version",
+      "smoke": "java -version 2>&1 | grep -E 'version \"25[.\"]' && fc-list | grep -qi dejavu && JEMALLOC=1 . /etc/octail/entrypoint.d/15-jemalloc.sh | grep -F 'jemalloc on'",
       "description": "Java 25 (Eclipse Temurin JDK, Ubuntu 24.04): newest Minecraft, Hytale",
       "replaces": ["ghcr.io/pelican-eggs/yolks:java_25"],
       "eggs": [
@@ -602,7 +602,7 @@
       "folder": "images/installer_java_8",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "installer",
-      "smoke": "curl --version && jq --version && java -version",
+      "smoke": "curl --version && jq --version && java -version 2>&1 | grep -F 'version \"1.8.'",
       "description": "Install scripts that run Java 8 (Forge installers)",
       "replaces": ["ghcr.io/pelican-eggs/installers:java_8"],
       "eggs": ["minecraft-forge"]
@@ -612,17 +612,27 @@
       "folder": "images/installer_java_11",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "installer",
-      "smoke": "curl --version && jq --version && java -version",
+      "smoke": "curl --version && jq --version && java -version 2>&1 | grep -E 'version \"11[.\"]'",
       "description": "Install scripts that run Java 11 (Fabric installer)",
       "replaces": ["ghcr.io/pelican-eggs/installers:java_11"],
       "eggs": ["minecraft-fabric"]
+    },
+    {
+      "tag": "installer_java_17",
+      "folder": "images/installer_java_17",
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "kind": "installer",
+      "smoke": "curl --version && jq --version && java -version 2>&1 | grep -E 'version \"17[.\"]'",
+      "description": "Install scripts that run Java 17 (NeoForge 1.20.1, Spigot BuildTools for 1.17-1.20.4)",
+      "replaces": [],
+      "eggs": []
     },
     {
       "tag": "installer_java_21",
       "folder": "images/installer_java_21",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "installer",
-      "smoke": "curl --version && jq --version && java -version",
+      "smoke": "curl --version && jq --version && java -version 2>&1 | grep -E 'version \"21[.\"]'",
       "description": "Install scripts that run Java 21 (NeoForge installers, Quilt installer)",
       "replaces": [],
       "eggs": ["minecraft-neoforge", "minecraft-quilt"]

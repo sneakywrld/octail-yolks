@@ -442,6 +442,36 @@ if [ $((SECONDS - started)) -lt 10 ]; then ok 'the watch ends with the startup';
 out=$(run_ep "${watch_env[@]}" OCTAIL_PROTON_WATCH=0 STARTUP='sleep 2')
 expect_not_contains 'OCTAIL_PROTON_WATCH=0 turns the watch off' "${out}" 'no game port is open'
 
+# jemalloc hook (Java images): off unless JEMALLOC=1; a library that doesn't load leaves glibc's malloc and says why.
+fresh
+cp "${root}/common/hooks/15-jemalloc.sh" "${work}/hooks/"
+printf 'not a library\n' >"${work}/not-a-lib.so"
+out=$(run_ep OCTAIL_JEMALLOC_LIB="${work}/not-a-lib.so" STARTUP='echo "preload=[${LD_PRELOAD-}]"')
+expect_contains 'jemalloc is off by default' "${out}" 'preload=[]'
+expect_not_contains 'jemalloc off: no message' "${out}" 'jemalloc'
+out=$(run_ep JEMALLOC=1 OCTAIL_JEMALLOC_LIB="${work}/missing.so" STARTUP='echo "preload=[${LD_PRELOAD-}]"')
+expect_contains 'jemalloc missing: glibc stays' "${out}" 'has no jemalloc; using glibc malloc'
+expect_contains 'jemalloc missing: nothing preloaded' "${out}" 'preload=[]'
+out=$(run_ep JEMALLOC=1 OCTAIL_JEMALLOC_LIB="${work}/not-a-lib.so" STARTUP='echo "preload=[${LD_PRELOAD-}]"')
+expect_contains 'jemalloc that does not load: glibc stays' "${out}" 'does not load here; using glibc malloc'
+expect_contains 'jemalloc that does not load: nothing preloaded' "${out}" 'preload=[]'
+# A library that does load: the system's libm stands in for jemalloc.
+loadable=''
+for lib in /lib/x86_64-linux-gnu/libm.so.6 /usr/lib/x86_64-linux-gnu/libm.so.6 /lib/aarch64-linux-gnu/libm.so.6 \
+	/usr/lib/aarch64-linux-gnu/libm.so.6 /lib64/libm.so.6 /usr/lib64/libm.so.6; do
+	if [ -f "${lib}" ]; then
+		loadable=${lib}
+		break
+	fi
+done
+if [ -n "${loadable}" ]; then
+	out=$(run_ep JEMALLOC=1 OCTAIL_JEMALLOC_LIB="${loadable}" STARTUP='echo "preload=[${LD_PRELOAD-}]"')
+	expect_contains 'JEMALLOC=1 preloads the library for the server' "${out}" "preload=[${loadable}]"
+	expect_contains 'JEMALLOC=1 says so in the console' "${out}" "jemalloc on (${loadable})"
+else
+	ok 'JEMALLOC=1 preloads the library for the server (skipped: no libm.so.6 to stand in for jemalloc)'
+fi
+
 # Rust hook: the server's own libraries on LD_LIBRARY_PATH; vanilla downloads nothing.
 fresh
 cp "${root}/common/hooks/60-rust-framework.sh" "${work}/hooks/"

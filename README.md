@@ -17,7 +17,8 @@ parkervcp images or scripts, and CI fails a Dockerfile that tries.
 - [Using an image in an egg](#using-an-image-in-an-egg) · [Building locally](#building-locally) ·
   [How updates work](#how-updates-work) · [Supply chain: scans, SBOMs, signatures](#supply-chain-scans-sboms-signatures)
 - Reference: [what every runtime image does](#what-every-runtime-image-does) ·
-  [hooks and their variables](#hooks-and-their-variables) · [Proton notes](#proton-notes) · [layout](#layout)
+  [hooks and their variables](#hooks-and-their-variables) · [Java memory and jemalloc](#java-memory-and-jemalloc) ·
+  [Proton notes](#proton-notes) · [layout](#layout)
 - [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Licence](#licence)
 - [History: why these images exist, every image and the eggs using it, the full changelog](yolks.md)
 
@@ -52,6 +53,13 @@ images each tag stands in for, and the shipped eggs that use it); the tables bel
 
 Node.js 20 and Go 1.23 are past their upstream end of life; they are here because eggs ask for them.
 
+The Java images (`java_*`) are Eclipse Temurin JDKs on Ubuntu 24.04 (a JDK, not a JRE: profilers such as spark use
+its attach tools), each on a floating major-version base tag, so every weekly rebuild carries the newest Temurin patch
+release. Besides what every runtime image has they ship fontconfig, DejaVu fonts and FreeType (map renderers such as
+Dynmap, BlueMap and squaremap draw text through AWT), `git`, `sqlite3`, `openssl` and jemalloc (off unless
+`JEMALLOC=1`, see [Java memory and jemalloc](#java-memory-and-jemalloc)). They set no heap size and no JVM flags
+(`JAVA_TOOL_OPTIONS` stays unset): the egg's startup gives `-Xmx` or `-XX:MaxRAMPercentage`.
+
 ### SteamCMD and game images
 
 | Tag | Platforms | Contents | Octail eggs using it |
@@ -84,6 +92,7 @@ Images for egg install scripts: no entrypoint, run as root (see [below](#what-ev
 | <a name="installer_alpine"></a>`installer_alpine` | amd64, arm64 | Install scripts (root): Alpine with bash, curl, wget, jq, unzip, git | minecraft-paper, minecraft-velocity, openttd, test-game |
 | <a name="installer_java_8"></a>`installer_java_8` | amd64, arm64 | Install scripts that run Java 8 (Temurin JDK + the installer tools): Forge, whose installers (up to 26.x) are Java 8 code | minecraft-forge |
 | <a name="installer_java_11"></a>`installer_java_11` | amd64, arm64 | The same with Java 11 | minecraft-fabric |
+| <a name="installer_java_17"></a>`installer_java_17` | amd64, arm64 | The same with Java 17: installers and build tools for Minecraft 1.17–1.20.4 that want Java 17 (NeoForge 1.20.1, Spigot's BuildTools for those versions) | – |
 | <a name="installer_java_21"></a>`installer_java_21` | amd64, arm64 | The same with Java 21: NeoForge (no OpenJDK from apt at every install), the Quilt installer | minecraft-neoforge, minecraft-quilt |
 | <a name="installer_java_25"></a>`installer_java_25` | amd64, arm64 | The same with Java 25: Spigot's BuildTools, whose current Minecraft builds (1.21.8 and newer, 26.x) run on Java 25 (older ones download a fitting Temurin JDK at install) | minecraft-spigot |
 
@@ -279,7 +288,8 @@ image → tag map is in `images.json` (`replaces`) and in Octail's `scripts/eggs
 
 - Runs as the non-root user `container`, `HOME=/home/container`, `WORKDIR /home/container`, `STOPSIGNAL SIGINT`.
   Tentacle runs the container as the node's server user and mounts an `/etc/passwd` naming it `container`, so there is no
-  nss_wrapper and no `LD_PRELOAD` (nss_wrapper made Valheim's PlayFab logger crash).
+  nss_wrapper and no `LD_PRELOAD` (nss_wrapper made Valheim's PlayFab logger crash; the only preload is jemalloc in
+  the Java images, and only when a server sets `JEMALLOC=1`).
 - PID 1 is `tini -g`: a stop signal (Ctrl+C = SIGINT from Tentacle) goes to the server's whole process group, as Ctrl+C
   in a terminal would, so servers run in the foreground of the startup get it directly. Servers started in the background
   (`proton run ... & PID=$!`) ignore SIGINT as background jobs of a script do; their eggs trap INT/TERM and forward it
@@ -306,11 +316,35 @@ image → tag map is in `images.json` (`replaces`) and in Octail's `scripts/eggs
 | Hook | Images | Variables |
 | --- | --- | --- |
 | `10-java-info.sh` | java_* | prints `java -version` |
+| `15-jemalloc.sh` | java_* | `JEMALLOC=1` preloads the image's jemalloc (`LD_PRELOAD`) for the server instead of glibc's malloc, after a test run shows it loads on this host (else a console line says why and glibc stays); `MALLOC_CONF` tunes it. Off by default, see [Java memory and jemalloc](#java-memory-and-jemalloc) |
 | `20-display.sh` | proton, wine* | `XVFB=1` starts Xvfb on `DISPLAY` (`:0`), `DISPLAY_WIDTH`/`HEIGHT`/`DEPTH` (1024×768×16). Unset: the image's `OCTAIL_XVFB_DEFAULT`, on in the Wine images (eggs written for other Wine images expect a display), off in proton |
 | `30-wine.sh` | wine* | `WINEPREFIX` (`~/.wine`), `WINEDEBUG` (`-all`), `WINEARCH` (`win64`), `WINEDLLOVERRIDES` exported even when empty (so `WINEDLLOVERRIDES="winhttp=n,b"; wine ...` in a startup reaches Wine); creates the prefix (Mono/Gecko from the image); `WINETRICKS_RUN="vcrun2022 corefonts ..."` installs each verb once (marker in `$WINEPREFIX/.octail-winetricks/`, failures retried next start); `mono` / `gecko` install the baked MSIs |
 | `30-proton.sh` | proton | `STEAM_COMPAT_DATA_PATH` (`~/.proton`), `STEAM_COMPAT_CLIENT_INSTALL_PATH` (`~/.steam/steam`), `SteamAppId`/`SteamGameId` from `SRCDS_APPID`, `PROTON_LOG=1`. A prefix left by another Proton image in `~/.steam/steam/steamapps/compatdata/<SRCDS_APPID>` is used while `~/.proton` doesn't exist. Start watch: when the container has no open port (a listening TCP socket or an unconnected UDP one) `OCTAIL_PROTON_WATCH` seconds after the start (300; `0` = off), prints one report: threads against the pids limit and how often it was hit, memory and OOM kills, open-files limit, `/tmp` and `/dev/shm` use, each process's state, threads, memory, CPU, kernel wait channel and command line, with the same secret values masked as in the `container~` line (see "Proton notes") |
 | `50-steamcmd-update.sh` | steamcmd_*, source, rust, proton, wine* | Runs when `AUTO_UPDATE=1` (unset: the image default, on for `source` and `rust`; unlike the Pelican/parkervcp images, an unset `AUTO_UPDATE` does not update elsewhere, so eggs carry the variable) and `SRCDS_APPID` is a number, with the SteamCMD the installer left in `./steamcmd`: `SRCDS_BETAID`, `SRCDS_BETAPASS`, `WINDOWS_INSTALL=1`, `STEAM_SDK=1` (app 1007 too; unset: the image's `OCTAIL_STEAM_SDK_DEFAULT`, on in wine* and proton, whose Windows servers take `steamclient64.dll` from it), `HLDS_GAME` (GoldSrc, app 90: `+app_set_config 90 mod <game>` before `app_update`), `VALIDATE=1`, `STEAM_USER`/`STEAM_PASS`/`STEAM_AUTH` (else anonymous). With a Steam account Tentacle sends `STEAM_USER` and an empty `STEAM_PASS` plus `STEAM_LOGIN_CACHE` (the account's saved login, as for the install); the hook links `./steamcmd/config` to it if the installer didn't, so `+login <user>` uses the saved token (a Steam Guard prompt here makes Tentacle stop the server: reinstall to log in again). `app_update` is tried up to 3 times (SteamCMD's first run fails with "Missing configuration"); passwords are masked in the console; `~/.steam/sdk32|64/steamclient.so` are refreshed afterwards. A failed update starts the installed files. |
 | `60-rust-framework.sh` | rust | Puts `RustDedicated_Data/Plugins/x86_64` and the server folder on `LD_LIBRARY_PATH`. `FRAMEWORK=vanilla` (default), `oxide`/`umod`, `carbon`, `carbon-edge`, `carbon-staging`: downloaded and unpacked after the update; Carbon's Doorstop variables are set |
+
+### Java memory and jemalloc
+
+The JVM reads the container's memory and CPU limits itself (cgroup v1 and v2; the Temurin builds in these images are
+all container-aware), so `-XX:MaxRAMPercentage=…` in a startup is a share of the server's memory limit, and the JVM
+sizes its GC and JIT threads to the CPU limit. The heap flags don't cover native memory: metaspace, thread stacks, the
+JIT's code cache and everything allocated through `malloc` (Netty's buffers, zlib/zstd chunk and packet compression).
+glibc's malloc keeps up to 8 arenas per CPU and hands freed memory back to the kernel late, so a busy Minecraft
+server's memory use often creeps hundreds of MB above heap + metaspace over hours, until the container's limit
+OOM-kills it although the heap is fine.
+
+- `JEMALLOC=1` (a server variable; an egg can offer it) makes the `15-jemalloc.sh` hook preload Ubuntu's
+  `libjemalloc2` for the startup. jemalloc keeps native memory more compact and returns it sooner. It changes nothing
+  for the Java heap itself, only for what the JVM and native libraries `malloc`. Tune it with `MALLOC_CONF` (for
+  example `MALLOC_CONF=background_thread:true,dirty_decay_ms:5000` returns freed pages from a background thread).
+- Without jemalloc, `MALLOC_ARENA_MAX=2` (a plain environment variable glibc reads) caps the arenas and gets part of
+  the same effect.
+- Measure before keeping it: the same world and plugins, a few hours each way, then compare the container's memory
+  use (the panel's memory graph, `podman stats` / `docker stats`, or `memory.current` of the server's cgroup); for a
+  closer look add `-XX:NativeMemoryTracking=summary` to the startup and run `jcmd <pid> VM.native_memory summary` (the
+  JDK's own tool, in the image). If memory use doesn't drop, turn it off again; leaving it unset costs nothing.
+- Kernels with larger pages than jemalloc was built for (some 64K-page arm64 kernels) can't load it; the hook tries a
+  load first and stays on glibc there.
 
 ### Proton notes
 
