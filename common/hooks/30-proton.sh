@@ -24,6 +24,22 @@ if [ -n "${SRCDS_APPID:-}" ]; then
 	export SteamAppId=${SteamAppId:-${SRCDS_APPID}}
 	export SteamGameId=${SteamGameId:-${SRCDS_APPID}}
 fi
+# Proton's lsteamclient (the bridge behind the Windows steam_api64.dll) loads the Linux client library from
+# ~/.steam/sdk64/steamclient.so (sdk32 for 32-bit games). 50-steamcmd-update.sh refreshes it after an update; with
+# AUTO_UPDATE off, a fresh server folder has none, SteamAPI_Init / SteamGameServer_Init fail and some servers stop
+# or never list. Copy it from the SteamCMD the installer left, once, when it is missing.
+octail_proton_steamclient() {
+	local home=${HOME:-/home/container} bits
+	for bits in 64 32; do
+		[ -f "${home}/.steam/sdk${bits}/steamclient.so" ] && continue
+		[ -f "${OCTAIL_HOME:-${home}}/steamcmd/linux${bits}/steamclient.so" ] || continue
+		mkdir -p "${home}/.steam/sdk${bits}" &&
+			cp -f "${OCTAIL_HOME:-${home}}/steamcmd/linux${bits}/steamclient.so" "${home}/.steam/sdk${bits}/steamclient.so"
+	done
+	return 0
+}
+octail_proton_steamclient
+
 if [ "${PROTON_LOG:-0}" != 1 ]; then
 	unset PROTON_LOG
 else

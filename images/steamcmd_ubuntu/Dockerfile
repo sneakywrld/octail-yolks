@@ -1,8 +1,9 @@
 # syntax=docker/dockerfile:1
 # gorcon/rcon-cli (MIT), built from source: `rcon -a host:port -p password command`, used by eggs' stop traps.
-FROM golang:1.23-bookworm AS rcon
+# Built with a supported Go release: the binary carries that Go's standard library, which the image scan checks.
+FROM golang:1.27-bookworm AS rcon
 ARG RCON_CLI_VERSION=v0.10.3
-RUN CGO_ENABLED=0 GOBIN=/out go install "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
+RUN CGO_ENABLED=0 GOBIN=/out go install -trimpath -ldflags="-s -w" "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
 
 # SteamCMD servers that need a newer glibc/libstdc++ or libc++ (Insurgency: Sandstorm, Pavlov VR, Stationeers).
 FROM ubuntu:24.04
@@ -27,16 +28,19 @@ RUN --mount=type=bind,source=common,target=/tmp/octail \
         libsqlite3-0 \
         libc++1 \
         libc++abi1 \
-        libc++-dev \
         xvfb \
         xauth \
         sqlite3 \
         file \
         netcat-openbsd \
         telnet
-# Pavlov VR dlopen()s libc++.so, which Ubuntu ships as a linker script (INPUT(...)) that dlopen can't load.
+# Pavlov VR dlopen()s the unversioned libc++.so. Ubuntu's libc++-dev ships that name as a linker script
+# (INPUT(...)) dlopen can't load, so instead of the -dev package (headers and static libraries, tens of MB) the
+# unversioned names point straight at the runtime libraries.
 RUN test -e /usr/lib/x86_64-linux-gnu/libc++.so.1 \
-    && ln -sf libc++.so.1 /usr/lib/x86_64-linux-gnu/libc++.so
+    && test -e /usr/lib/x86_64-linux-gnu/libc++abi.so.1 \
+    && ln -sf libc++.so.1 /usr/lib/x86_64-linux-gnu/libc++.so \
+    && ln -sf libc++abi.so.1 /usr/lib/x86_64-linux-gnu/libc++abi.so
 COPY --from=rcon /out/gorcon /usr/local/bin/rcon
 
 COPY --chmod=0755 common/entrypoint.sh /entrypoint.sh

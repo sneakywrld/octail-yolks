@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Small generic runtime (Alpine, musl): scripts and statically linked servers.
-FROM alpine:3.22
+FROM alpine:3.24
 LABEL org.opencontainers.image.source="https://github.com/sneakywrld/octail-yolks" \
       org.opencontainers.image.title="octail-yolks" \
       org.opencontainers.image.description="Octail runtime: small generic Alpine Linux"

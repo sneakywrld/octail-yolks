@@ -1,14 +1,16 @@
 # syntax=docker/dockerfile:1
 # gorcon/rcon-cli (MIT), built from source: `rcon -a host:port -p password command`, used by eggs' stop traps.
-FROM golang:1.23-bookworm AS rcon
+# Built with a supported Go release: the binary carries that Go's standard library, which the image scan checks.
+FROM golang:1.27-bookworm AS rcon
 ARG RCON_CLI_VERSION=v0.10.3
-RUN CGO_ENABLED=0 GOBIN=/out go install "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
+RUN CGO_ENABLED=0 GOBIN=/out go install -trimpath -ldflags="-s -w" "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
 
 # Windows-only servers through GE-Proton: `proton run ./Server.exe`. XVFB=1 starts a virtual display. The
 # SteamCMD update also updates app 1007 (the Windows Steam client libraries) unless STEAM_SDK=0.
 # GE-Proton stays on 10-34 for now: other hosts report GE-Proton 11 (11-1 to 11-7) hanging ARK: Survival Ascended
 # before its engine writes a line and keeping Astroneer from starting, both fine on 10-34. GE-Proton 11 also needs
-# glibc 2.38, newer than Debian 12's 2.36; install-proton.sh refuses a GE-Proton the base can't load.
+# glibc 2.38, newer than Debian 12's 2.36; install-proton.sh refuses a GE-Proton the base can't load. 10-34 is the
+# last 10.x release (checked 2026-10-23, newest GE-Proton11-11), so it is still the current pin for this base.
 # PROTON_USE_XALIA=0: no Xalia (Proton's gamepad UI helper, a .NET program that fails without a display).
 FROM debian:bookworm-slim
 ARG GE_PROTON_VERSION=GE-Proton10-34

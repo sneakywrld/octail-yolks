@@ -39,7 +39,9 @@ octail_wine_setup() {
 	if [ ! -f "${WINEPREFIX}/system.reg" ]; then
 		echo "octail: creating the Wine prefix in ${WINEPREFIX} (first start takes a while)"
 		mkdir -p "${WINEPREFIX}"
-		octail_with_display wineboot --init
+		# winemenubuilder (started by wineboot to write desktop menus and file associations) has nothing to do in a
+		# container, and the prefix creation waits for it (wineserver -w); it is turned off for this one run.
+		WINEDLLOVERRIDES="winemenubuilder.exe=d${WINEDLLOVERRIDES:+;${WINEDLLOVERRIDES}}" octail_with_display wineboot --init
 		wineserver -w
 	fi
 	[ -n "${WINETRICKS_RUN:-}" ] || return 0

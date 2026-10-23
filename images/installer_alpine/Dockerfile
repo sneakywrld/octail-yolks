@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 # Small installer (runs as root) for scripts written for ash/bash on Alpine.
-FROM alpine:3.22
+FROM alpine:3.24
 LABEL org.opencontainers.image.source="https://github.com/sneakywrld/octail-yolks" \
       org.opencontainers.image.title="octail-yolks" \
       org.opencontainers.image.description="Octail installer: Alpine Linux with the usual install-script tools"
