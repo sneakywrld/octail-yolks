@@ -27,6 +27,7 @@ updates:
       - /images/installer_alpine
       - /images/installer_debian
       - /images/installer_java_11
+      - /images/installer_java_17
       - /images/installer_java_21
       - /images/installer_java_25
       - /images/installer_java_8
