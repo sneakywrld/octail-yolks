@@ -1,0 +1,8 @@
+{
+  "$comment": "Placeholder. The live build report is this same path on the `stats` branch, written by the build workflow's report job (scripts/report.sh); schema: README.md, \"Build report\".",
+  "schema": 1,
+  "registry": "ghcr.io/sneakywrld/octail-yolks",
+  "generatedAt": null,
+  "source": null,
+  "images": []
+}

@@ -6,6 +6,8 @@
 #   <tag>.trivy.json    Trivy's full report (vulnerabilities of every severity, after .trivyignore)
 #   <tag>.sarif         HIGH and CRITICAL only, for GitHub code scanning
 #   <tag>.cdx.json      the image's SBOM (CycloneDX)
+#   <tag>.scan.json     the counts per severity (all, and with a fix), the base and the policy result, for the build
+#                       report (scripts/report.sh -> stats/images.json)
 # and prints (and, with GITHUB_STEP_SUMMARY set, adds to the job summary) a table of the HIGH and CRITICAL findings.
 #
 # The policy (docs/dev/yolks.md, "Vulnerability scans"): the scan fails only on a CRITICAL vulnerability that has a
@@ -130,6 +132,21 @@ if [ "${gate_n}" = 0 ]; then
 else
 	verdict="FAILED: ${gate_n} fixable CRITICAL finding(s) in our layers"
 fi
+
+# <tag>.scan.json: the counts per severity (every severity, deduplicated like the table), for the build report
+# (scripts/report.sh -> stats/images.json).
+jq --arg tag "${tag}" --arg platform "${platform}" --arg base "${base}" --argjson blocking "${gate_n}" \
+	--arg scanner "trivy ${TRIVY_VERSION:-}" '
+	[.Results[]? | .Target as $target | .Vulnerabilities[]?
+		| {id: .VulnerabilityID, sev: (.Severity // "UNKNOWN" | ascii_downcase), pkg: .PkgName,
+			installed: (.InstalledVersion // ""), fixed: (.FixedVersion // ""), target: $target}]
+	| unique_by([.sev, .id, .pkg, .installed, .target]) as $all
+	| def counts($rows): reduce ("critical", "high", "medium", "low", "unknown") as $s ({};
+		.[$s] = ([$rows[] | select(.sev == $s)] | length));
+	{tag: $tag, platform: $platform, base: $base, scanner: ($scanner | sub(" $"; "")),
+		vulnerabilities: counts($all), fixable: counts([$all[] | select(.fixed != "")]),
+		policy: {passed: ($blocking == 0), blocking: $blocking}}
+' "${report}" >"${out}/${tag}.scan.json" || echo "scan: could not write ${tag}.scan.json" >&2
 echo "scan: ${tag} (${platform})"
 table
 echo "scan: ${tag} ${verdict}"

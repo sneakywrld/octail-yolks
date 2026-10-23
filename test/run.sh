@@ -58,7 +58,7 @@ fake_tree() { # tag dockerfile-content
 	rm -rf "${work:?}/tree"
 	mkdir -p "${work}/tree/images/$1"
 	printf '%s\n' "$2" >"${work}/tree/images/$1/Dockerfile"
-	printf '{"images":[{"tag":"%s","folder":"images/%s","kind":"runtime","smoke":"true"}]}\n' "$1" "$1" >"${work}/tree/images.json"
+	printf '{"images":[{"tag":"%s","folder":"images/%s","platforms":["linux/amd64"],"kind":"runtime","smoke":"true"}]}\n' "$1" "$1" >"${work}/tree/images.json"
 }
 expect_check() { # name pass|fail [needle]
 	local out rc
@@ -90,15 +90,40 @@ fake_tree ok 'FROM alpine:3.22'
 mkdir -p "${work}/tree/images/extra"
 expect_check 'a folder missing from images.json fails' fail 'images/extra is not in images.json'
 fake_tree ok 'FROM alpine:3.22'
-printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"runtime","smoke":"true"},{"tag":"gone","folder":"images/gone","kind":"runtime","smoke":"true"}]}\n' >"${work}/tree/images.json"
+printf '{"images":[{"tag":"ok","folder":"images/ok","platforms":["linux/amd64"],"kind":"runtime","smoke":"true"},{"tag":"gone","folder":"images/gone","platforms":["linux/amd64"],"kind":"runtime","smoke":"true"}]}\n' >"${work}/tree/images.json"
 expect_check 'an images.json entry without a folder fails' fail 'images/gone, which does not exist'
 fake_tree ok 'FROM alpine:3.22'
-printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"runtime"}]}\n' >"${work}/tree/images.json"
+printf '{"images":[{"tag":"ok","folder":"images/ok","platforms":["linux/amd64"],"kind":"runtime"}]}\n' >"${work}/tree/images.json"
 expect_check 'a tag without a smoke command fails' fail 'ok has no smoke command'
-printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"runtime","smoke":"  "}]}\n' >"${work}/tree/images.json"
+printf '{"images":[{"tag":"ok","folder":"images/ok","platforms":["linux/amd64"],"kind":"runtime","smoke":"  "}]}\n' >"${work}/tree/images.json"
 expect_check 'a blank smoke command fails' fail 'ok has no smoke command'
-printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"server","smoke":"true"}]}\n' >"${work}/tree/images.json"
+printf '{"images":[{"tag":"ok","folder":"images/ok","platforms":["linux/amd64"],"kind":"server","smoke":"true"}]}\n' >"${work}/tree/images.json"
 expect_check 'an unknown kind fails' fail "kind 'server'"
+# platforms: what CI builds (multi-arch), checked against what the image can run on.
+plat_tree() { # tag platforms-json [dockerfile-content]
+	fake_tree "$1" "${3:-FROM alpine:3.22}"
+	printf '{"images":[{"tag":"%s","folder":"images/%s","platforms":%s,"kind":"runtime","smoke":"true"}]}\n' "$1" "$1" "$2" >"${work}/tree/images.json"
+}
+plat_tree ok '["linux/amd64","linux/arm64"]'
+expect_check 'platforms: amd64 and arm64 pass' pass
+printf '{"images":[{"tag":"ok","folder":"images/ok","kind":"runtime","smoke":"true"}]}\n' >"${work}/tree/images.json"
+expect_check 'platforms: a tag without platforms fails' fail 'ok needs "platforms"'
+plat_tree ok '[]'
+expect_check 'platforms: an empty list fails' fail 'ok needs "platforms"'
+plat_tree ok '["linux/arm64"]'
+expect_check 'platforms: arm64 without amd64 fails (the boot test runs on amd64)' fail 'must include linux/amd64'
+plat_tree ok '["linux/amd64","linux/riscv64"]'
+expect_check 'platforms: an unknown platform fails' fail "platform 'linux/riscv64'"
+plat_tree ok '["linux/amd64","linux/amd64"]'
+expect_check 'platforms: a platform listed twice fails' fail 'lists a platform twice'
+plat_tree steamcmd_x '["linux/amd64","linux/arm64"]'
+expect_check 'platforms: a SteamCMD image with arm64 fails' fail 'steamcmd_x must be linux/amd64 only'
+plat_tree wine_x '["linux/amd64"]'
+expect_check 'platforms: a Wine image on amd64 only passes' pass
+plat_tree game '["linux/amd64","linux/arm64"]' $'FROM debian:bookworm-slim\nRUN apt-get install -y lib32gcc-s1:i386'
+expect_check 'platforms: unguarded i386 packages with arm64 fail' fail 'installs i386 packages'
+plat_tree game '["linux/amd64","linux/arm64"]' $'FROM debian:bookworm-slim\nARG TARGETARCH\nRUN [ "$TARGETARCH" != amd64 ] || apt-get install -y lib32gcc-s1:i386'
+expect_check 'platforms: i386 packages behind a TARGETARCH guard pass with arm64' pass
 
 # --- libraries the eggs' native servers link (no Docker: the package lists in the Dockerfiles) ----------
 # apt_packages <folder>: the packages a Dockerfile hands to setup-apt.sh, one per line.

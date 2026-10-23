@@ -7,6 +7,10 @@
 #      the multi-arch index and every platform's image get a signature.
 #   2. Per platform: Trivy writes the image's SBOM (CycloneDX) from the registry to <output folder>/<tag>-<os>-<arch>.cdx.json
 #      and `cosign attest --type cyclonedx` attaches it, signed, to that platform's image digest.
+#   3. Per platform: the SLSA provenance BuildKit attached to the push (build-push-action `provenance: mode=max`, an
+#      unsigned in-registry attestation) is read back to <output folder>/<tag>-<os>-<arch>.provenance.json and
+#      `cosign attest --type slsaprovenance` attaches it, signed, to the same digest. An image without BuildKit
+#      provenance (an older push) is noted, not failed.
 # With GITHUB_STEP_SUMMARY set, the digests and the hosts' verify command go into the job summary.
 #
 # Environment: COSIGN, DOCKER, TRIVY (defaults cosign, docker, trivy; the tests use fakes), SIGN_IDENTITY (the
@@ -50,6 +54,10 @@ else
 	platforms="$(jq -r '"\(.os // "linux")/\(.architecture // "amd64")"' <<<"${config}") ${digest}"
 fi
 
+# BuildKit's provenance: {"SLSA": …} for a single-platform push, {"<os/arch>": {"SLSA": …}, …} for a multi-arch one.
+provenance=$("${docker}" buildx imagetools inspect --format '{{json .Provenance}}' "${ref}" 2>/dev/null) || provenance=''
+jq -e 'type == "object"' <<<"${provenance}" >/dev/null 2>&1 || provenance='{}'
+
 failed=0
 summary=()
 while read -r platform pdigest; do
@@ -66,8 +74,22 @@ while read -r platform pdigest; do
 		failed=1
 		continue
 	fi
-	echo "sign: ${tag} ${platform} ${pdigest}: signed, SBOM attested"
-	summary+=("| ${platform} | \`${pdigest}\` | signed, CycloneDX SBOM attested |")
+	status='signed, CycloneDX SBOM attested'
+	slsa="${out}/${tag}-${platform//\//-}.provenance.json"
+	if jq -e --arg p "${platform}" '(if has("SLSA") then .SLSA else .[$p].SLSA end) // empty' <<<"${provenance}" >"${slsa}" 2>/dev/null; then
+		if ! "${cosign}" attest --yes --type slsaprovenance --predicate "${slsa}" "${repo}@${pdigest}"; then
+			echo "sign: cosign could not attest the provenance of ${platform}" >&2
+			failed=1
+			continue
+		fi
+		status="${status}, SLSA provenance attested"
+	else
+		rm -f "${slsa}"
+		echo "sign: ${platform} has no BuildKit provenance, none attested"
+		status="${status}, no provenance"
+	fi
+	echo "sign: ${tag} ${platform} ${pdigest}: ${status}"
+	summary+=("| ${platform} | \`${pdigest}\` | ${status} |")
 done <<<"${platforms}"
 
 if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
@@ -81,6 +103,9 @@ if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
 		echo
 		echo '```bash'
 		echo "cosign verify ${repo}:${tag} \\"
+		echo "  --certificate-identity '${identity:-<workflow identity>}' \\"
+		echo "  --certificate-oidc-issuer ${issuer}"
+		echo "cosign verify-attestation --type slsaprovenance ${repo}:${tag} \\"
 		echo "  --certificate-identity '${identity:-<workflow identity>}' \\"
 		echo "  --certificate-oidc-issuer ${issuer}"
 		echo '```'

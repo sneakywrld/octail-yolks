@@ -228,7 +228,9 @@ image.
 ## How updates work
 
 - **Weekly rebuild**: every Monday at 04:17 UTC CI rebuilds every image from its (floating) base tag, so the images
-  pick up their bases' security fixes without a commit here.
+  pick up their bases' security fixes without a commit here. A rebuild only **pushes** when the image's content
+  changed (a new base digest, a package upgrade, a changed input; see [Rebuild policy](#rebuild-policy)), so tags and
+  dated tags don't move for nothing.
 - **Dated tags**: each build pushes `<tag>` and `<tag>-<yyyymmdd>`. The plain tag always points at the newest build;
   dated tags stay, so a node or egg can pin one and roll back to an earlier one.
 - **Changes**: a push to `main` rebuilds the images whose folder changed (all of them when `common/`, `images.json` or
@@ -252,7 +254,8 @@ image.
   (actions pinned by SHA, tool downloads by sha256, the scan and sign steps in place), `test/run.sh`.
 - **plan**: picks the images (`scripts/select-images.sh`): on a push to `main`, those whose folder changed (all of them
   when `common/`, `images.json` or the workflow changed); weekly (Monday 04:17 UTC) and on a manual run without input,
-  all; a manual run can name tags (`java_21,wine`).
+  all; a manual run (Actions → build → Run workflow) can name tags (`java_21,wine`) and tick **force** to push even
+  when the content is unchanged.
 - **build**: one job per image, Buildx (+ QEMU for arm64), pushed with the workflow's `GITHUB_TOKEN`
   (`packages: write`) as `ghcr.io/sneakywrld/octail-yolks:<tag>` and `:<tag>-<yyyymmdd>`, with the
   `org.opencontainers.image.source` label (and index annotation for multi-arch) pointing at this repository so the
@@ -260,8 +263,42 @@ image.
   with `--load` (the multi-arch build then reuses its layers) and boot-tests it with `scripts/smoke.sh`; a failed
   boot test ends the job, so neither `:<tag>` nor `:<tag>-<yyyymmdd>` moves. The job summary shows each tag's size
   (uncompressed, amd64) and boot-test result, with the output's tail when it failed. After the boot test the image is
-  scanned (`scripts/scan.sh`, a fixable CRITICAL in our own layers stops the push), and after the push it is signed
-  and gets its SBOM attestations (`scripts/sign.sh`); see [Supply chain](#supply-chain-scans-sboms-signatures).
+  scanned (`scripts/scan.sh`, a fixable CRITICAL in our own layers stops the push), the content check decides whether
+  anything changed (`scripts/content-check.sh`, [Rebuild policy](#rebuild-policy)), then every platform in
+  `images.json` is built and pushed with BuildKit's SBOM and SLSA provenance attestations, signed and attested with
+  cosign (`scripts/sign.sh`; see [Supply chain](#supply-chain-scans-sboms-signatures)), and the image's facts are
+  collected for the build report (`scripts/report.sh fact`).
+- **report**: after all builds (also when some failed; never for pull requests), merges the facts into
+  `stats/images.json` on the `stats` branch ([Build report](#build-report-statsimagesjson)). It is the only job with
+  `contents: write`; every other job has a read-only token plus exactly what it needs (`packages: write`,
+  `id-token: write`, `security-events: write` in build).
+
+### Platforms
+
+Each tag lists its platforms in `images.json` and CI builds exactly those (Buildx, arm64 through QEMU on the amd64
+runner; the boot test and the scan run on the amd64 image). `linux/arm64` is built for every image whose base and
+contents exist for arm64: the Java, .NET, Node.js, Python, Go, Mono, Debian and Alpine runtimes and every installer
+(`installer_debian` adds its 32-bit SteamCMD libraries on amd64 only, behind a `TARGETARCH` check). The SteamCMD
+family (`steamcmd_*`, `source`, `rust`) and `proton`/`wine*` are **linux/amd64 only**: SteamCMD, the Source engine and
+Wine/Proton's Windows binaries are x86 (32-bit libraries included). `test/check-images.sh` enforces this: every tag
+lists `linux/amd64` (plus optionally `linux/arm64`), and those families, or a Dockerfile installing `:i386` packages
+without a `TARGETARCH` guard, can't list arm64.
+
+### Rebuild policy
+
+`scripts/content-check.sh` runs after the scan and before the push. It computes the image's **content fingerprint**,
+the sha256 of:
+
+- the build inputs: every file in the image's folder and in `common/` (by content) and its `images.json` entry
+  (`tag`, `folder`, `kind`, `platforms`, `description`; `eggs`/`replaces` don't go into the image);
+- the digest of every image a `FROM` pulls (index digests, so a new arm64 base counts too);
+- the packages in the freshly built amd64 image's SBOM (package URLs with versions, and the OS release).
+
+The pushed image carries it as the label `org.octail.yolks.fingerprint`. When the published `:<tag>` has the same
+fingerprint, the job skips the multi-arch build, push and signing (the summary says "no push" and why), but still
+reports the fresh CVE counts. It pushes when the fingerprint differs, when nothing with a fingerprint is published
+yet, when something could not be read (better a needless push than a missed fix), and when a manual run asks for
+**force**. Timestamps, the build date and the commit are not part of the fingerprint.
 
 ### Boot tests
 
@@ -298,7 +335,13 @@ what the image exists for is missing (`grep` the version, `test -f` what a hook 
   publisher fixes them and the weekly rebuild picks the fix up. Exceptions go into `.trivyignore`, each with a comment
   line saying why and an expiry date (`CVE-2026-12345 exp:2026-12-31`).
 - **SBOM** (CycloneDX) per platform, made from the pushed image, kept with the Trivy report and SARIF as the
-  `supply-chain-<tag>` build artifact (90 days) and attached to each platform image as a signed attestation.
+  `supply-chain-<tag>` build artifact (90 days) and attached to each platform image as a signed attestation. BuildKit
+  also attaches its own SBOM (`sbom: true`) as an in-registry attestation.
+- **Provenance**: BuildKit's SLSA provenance (`provenance: mode=max`: the source, the build's parameters and steps) is
+  attached to every push as an in-registry attestation, and `scripts/sign.sh` attests the same provenance per platform
+  with cosign, so it is signed with the workflow identity (`cosign verify-attestation --type slsaprovenance`, same
+  flags as below). GitHub's own artifact attestations (`actions/attest-build-provenance`) are not used: they need
+  GitHub Enterprise Cloud on a private repository, and the cosign attestation gives the same guarantee anywhere.
 - **Signature**: `cosign sign` keyless with the workflow's GitHub OIDC identity (Sigstore Fulcio + the public Rekor
   log), recursively over the index and its platform images (`scripts/sign.sh`). Verify on any host (cosign v3+):
 
@@ -309,11 +352,66 @@ what the image exists for is missing (`grep` the version, `test -f` what a hook 
   ```
 
   The SBOM: `cosign verify-attestation --type cyclonedx` with the same two flags, on a platform image's digest
-  (`docker buildx imagetools inspect --raw <image>` lists them).
+  (`docker buildx imagetools inspect --raw <image>` lists them); the provenance: `--type slsaprovenance`.
 - **Pinning**: every third-party action is pinned to a full commit SHA with its version as a comment (Dependabot keeps
   both current); hadolint, shellcheck and actionlint downloads are checked against pinned sha256 sums; Trivy and
   cosign are installed at exact versions (`TRIVY_VERSION`, `COSIGN_VERSION`, bumped by hand). `test/check-workflows.sh`
-  fails a workflow that breaks any of this.
+  fails a workflow that breaks any of this (and checks the step order, the content-gated push, the attestations, the
+  weekly schedule and that only the report job can write to the repository).
+
+### Build report (stats/images.json)
+
+After every build on `main`, the weekly rebuild and manual runs, the **report** job writes `stats/images.json` on the
+**`stats` branch** of this repository (not `main`: `main` is published from the Octail monorepo, a CI commit there
+would break the next publish). `stats/images.json` on `main` is a placeholder with the same shape and no images.
+Read the live file with `gh api 'repos/sneakywrld/octail-yolks/contents/stats/images.json?ref=stats' -H 'Accept:
+application/vnd.github.raw'` (or, once the repository is public,
+`https://raw.githubusercontent.com/sneakywrld/octail-yolks/stats/stats/images.json`). Each image's entry is replaced
+when it is built again (also when the push was skipped: fresh CVE counts for the published image); images that
+weren't built keep their last entry; tags removed from `images.json` disappear.
+
+```jsonc
+{
+  "schema": 1,                                  // bumped on incompatible changes
+  "registry": "ghcr.io/sneakywrld/octail-yolks",
+  "generatedAt": "2026-10-26T04:41:09Z",        // when this file was written (UTC)
+  "source": "https://github.com/sneakywrld/octail-yolks/actions/runs/123",  // the run, or null
+  "images": [                                   // in images.json order
+    {
+      "tag": "java_21",
+      "image": "ghcr.io/sneakywrld/octail-yolks:java_21",
+      "kind": "runtime",                        // or "installer"
+      "digest": "sha256:…",                     // the published :<tag> (multi-arch index), null if not readable
+      "platforms": ["linux/amd64", "linux/arm64"],
+      "compressedSize": { "linux/amd64": 201326592, "linux/arm64": 197132288 },  // bytes pulled: layers + config
+      "base": "eclipse-temurin:21-jdk-noble",   // the final stage's FROM
+      "builtAt": "2026-10-26T04:22:51Z",        // org.opencontainers.image.created of the published image
+      "revision": "0123abc…",                   // the commit it was built from
+      "fingerprint": "…",                       // content fingerprint (Rebuild policy)
+      "pushed": true,                           // false: this run found the content unchanged and pushed nothing
+      "checkedAt": "2026-10-26T04:25:02Z",      // when this entry was written
+      "vulnerabilities": { "critical": 0, "high": 3, "medium": 21, "low": 40, "unknown": 0 },  // Trivy, amd64
+      "fixable": { "critical": 0, "high": 1, "medium": 4, "low": 0, "unknown": 0 },          // of those, with a fix
+      "scan": { "platform": "linux/amd64", "scanner": "trivy v0.74.0",
+                "policy": { "passed": true, "blocking": 0 } }   // blocking: fixable CRITICAL in our layers
+    }
+  ]
+}
+```
+
+Counts are deduplicated per vulnerability, package, version and target, after `.trivyignore`. Fields may be `null`
+when the source wasn't readable (an image not yet published, a failed scan). New fields can be added without bumping
+`schema`; readers should ignore what they don't know.
+
+### What the owner sets in GitHub
+
+- **Settings → Actions → General → Workflow permissions**: "Read repository contents" is enough (each job asks for
+  what it needs); keep "Allow GitHub Actions to create and approve pull requests" off.
+- **The `stats` branch** must accept pushes from the workflow's `GITHUB_TOKEN`: no branch protection or ruleset on
+  `stats` (or one that lets GitHub Actions bypass). Protect `main` as you like; CI never pushes to it.
+- **Code scanning** (SARIF upload) needs GitHub Advanced Security on a private repository; without it the upload
+  step warns and the findings stay in the job summary and artifacts.
+- **Package visibility**: see [Making the images pullable by the nodes](#making-the-images-pullable-by-the-nodes).
 
 ### Making the images pullable by the nodes
 
@@ -499,17 +597,19 @@ scripts/build.sh            local build
 scripts/dependabot.sh       prints .github/dependabot.yml from images.json
 scripts/smoke.sh            boot test of a built image (CI runs it before every push)
 scripts/scan.sh             Trivy scan + SBOM of a built image, the vulnerability policy (before every push)
-scripts/sign.sh             cosign signature + SBOM attestations of a pushed image (after every push)
+scripts/sign.sh             cosign signature + SBOM and provenance attestations of a pushed image (after every push)
+scripts/content-check.sh    content fingerprint: push only when the image changed (rebuild policy)
+scripts/report.sh           build report: per-image facts, merged into stats/images.json on the stats branch
 scripts/stats.mjs           the README's Stats section and docs/stats.js (`--check`: fail when stale; test/run.sh)
 stats/eggs-usage.json       which Octail eggs use each image (generated in the Octail monorepo from its eggs)
-stats/images.json           optional per-image facts from CI (size, platforms, build date, CVEs); read by stats.mjs
+stats/images.json           build report placeholder (the live file is on the stats branch); read by stats.mjs
 docs/index.html             a static stats page for GitHub Pages (Settings -> Pages -> main, /docs); data: docs/stats.js
 .trivyignore                accepted vulnerability findings (reason + expiry each)
 test/run.sh                 entrypoint, smoke.sh and supply-chain tests (also runs check-images.sh, check-workflows.sh)
 test/entrypoint.sh          entrypoint banner, TZ check, pre-start scripts, OCTAIL_DEBUG (sourced by run.sh; runs alone without jq)
 test/check-images.sh        images.json <-> folders, smoke commands, base-image allowlist, generated files in sync
 test/check-workflows.sh     actions pinned by SHA, downloads by sha256, scan/sign steps, .trivyignore, actionlint
-test/supply-chain.sh        tests of check-workflows.sh, scan.sh and sign.sh (sourced by test/run.sh)
+test/supply-chain.sh        tests of check-workflows.sh, scan.sh, sign.sh, content-check.sh, report.sh (sourced by run.sh)
 ```
 
 ### Stats and the Pages view

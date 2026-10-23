@@ -28,7 +28,8 @@ an ordinary issue is fine.
 Every image is scanned with Trivy before it is pushed; a CRITICAL vulnerability with a fix in a layer this repository
 added stops the push, while findings in the official bases' own layers are left to their publishers and the weekly
 rebuild (README: [Supply chain](README.md#supply-chain-scans-sboms-signatures)). Every pushed image is signed with
-cosign (keyless, this repository's `build.yml` on `main`) and carries a signed CycloneDX SBOM per platform. An image
+cosign (keyless, this repository's `build.yml` on `main`) and carries a signed CycloneDX SBOM and signed SLSA
+provenance per platform. An image
 that fails `cosign verify` with that identity was not built here; please report where you found it.
 
 ## Supported versions

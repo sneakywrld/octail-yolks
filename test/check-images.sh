@@ -3,6 +3,8 @@
 #   - every images/<folder> is in images.json and every images.json entry has a folder with a Dockerfile;
 #   - every tag has a kind (runtime or installer) and a `smoke` command (the boot test scripts/smoke.sh runs in CI);
 #   - tags are unique;
+#   - every tag lists its platforms (linux/amd64, plus linux/arm64 where it can run); x86-only images (SteamCMD,
+#     Source, Rust, Proton, Wine, unguarded i386 packages) are linux/amd64 only;
 #   - no Dockerfile starts from or copies from a Pterodactyl / Pelican / parkervcp / pelican-eggs image, nor
 #     from any image that isn't on the allowlist in bases.txt. Build stages of the same Dockerfile are fine; an
 #     image named through a variable (FROM ${BASE}) fails, since it can't be checked;
@@ -58,6 +60,37 @@ while IFS=$'\t' read -r tag kind smoke; do
 	*) err "images.json: ${tag} has kind '${kind}', expected runtime or installer" ;;
 	esac
 done < <(jq -r '.images[] | [.tag, (.kind // ""), ((.smoke // "") | tostring | gsub("^\\s+|\\s+$"; ""))] | @tsv' "${root}/images.json")
+
+# Platforms CI builds (multi-arch): linux/amd64 always (the boot test and the scan run on it), linux/arm64 where the
+# base and contents allow. x86-only images stay amd64: SteamCMD/Source/Rust/Proton/Wine tags, and any Dockerfile that
+# installs i386 packages without a TARGETARCH guard (32-bit x86 libraries don't exist for arm64).
+while IFS=$'\t' read -r tag folder platforms; do
+	if [ "${platforms}" = '!' ]; then
+		err "images.json: ${tag} needs \"platforms\": a list from linux/amd64, linux/arm64 (with linux/amd64)"
+		continue
+	fi
+	IFS=, read -r -a plist <<<"${platforms}"
+	for p in "${plist[@]}"; do
+		case "${p}" in
+		linux/amd64 | linux/arm64) ;;
+		*) err "images.json: ${tag} has platform '${p}', expected linux/amd64 or linux/arm64" ;;
+		esac
+	done
+	[[ ,${platforms}, == *,linux/amd64,* ]] || err "images.json: ${tag} must include linux/amd64 (boot test and scan run on it)"
+	[ "$(tr ',' '\n' <<<"${platforms}" | sort | uniq -d)" = '' ] || err "images.json: ${tag} lists a platform twice"
+	x86_only=''
+	case "${tag}" in steamcmd* | source* | rust* | proton* | wine*) x86_only="the ${tag%%_*} family is x86-only" ;; esac
+	dockerfile="${root}/${folder}/Dockerfile"
+	if [ -z "${x86_only}" ] && [ -f "${dockerfile}" ] && grep -qE -- '--i386|:i386' "${dockerfile}" &&
+		! grep -q 'TARGETARCH' "${dockerfile}"; then
+		x86_only='its Dockerfile installs i386 packages without a TARGETARCH guard'
+	fi
+	if [ -n "${x86_only}" ] && [ "${platforms}" != linux/amd64 ]; then
+		err "images.json: ${tag} must be linux/amd64 only (${x86_only})"
+	fi
+done < <(jq -r '.images[] | [.tag, (.folder // ""),
+	(if (.platforms | type) == "array" and (.platforms | length) > 0 and all(.platforms[]; type == "string")
+	 then (.platforms | join(",")) else "!" end)] | @tsv' "${root}/images.json")
 
 # --- base images ---------------------------------------------------------------------------------------
 allowed=$(grep -v '^[[:space:]]*\(#\|$\)' "${bases_file}" | tr -d '[:blank:]')
