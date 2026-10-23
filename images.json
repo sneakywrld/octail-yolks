@@ -21,7 +21,8 @@
         "minecraft-purpur",
         "minecraft-quilt",
         "minecraft-spigot",
-        "minecraft-sponge"
+        "minecraft-sponge",
+        "minecraft-vanilla"
       ]
     },
     {
@@ -43,7 +44,8 @@
         "minecraft-purpur",
         "minecraft-quilt",
         "minecraft-spigot",
-        "minecraft-sponge"
+        "minecraft-sponge",
+        "minecraft-vanilla"
       ]
     },
     {
@@ -73,6 +75,7 @@
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ]
     },
@@ -103,6 +106,7 @@
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ]
     },
@@ -131,6 +135,7 @@
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ]
     },
@@ -592,6 +597,7 @@
         "minecraft-pufferfish",
         "minecraft-purpur",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity",
         "openttd",
         "test-game"
