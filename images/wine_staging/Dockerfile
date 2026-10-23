@@ -1,8 +1,9 @@
 # syntax=docker/dockerfile:1
 # gorcon/rcon-cli (MIT), built from source: `rcon -a host:port -p password command`, used by eggs' stop traps.
-FROM golang:1.23-bookworm AS rcon
+# Built with a supported Go release: the binary carries that Go's standard library, which the image scan checks.
+FROM golang:1.27-bookworm AS rcon
 ARG RCON_CLI_VERSION=v0.10.3
-RUN CGO_ENABLED=0 GOBIN=/out go install "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
+RUN CGO_ENABLED=0 GOBIN=/out go install -trimpath -ldflags="-s -w" "github.com/gorcon/rcon-cli/cmd/gorcon@${RCON_CLI_VERSION}"
 
 # Windows-only servers through Wine (staging branch from WineHQ), winetricks, Wine Mono and Gecko.
 # Hooks: virtual display (on unless XVFB=0), the Wine prefix and WINETRICKS_RUN verbs, SteamCMD update

@@ -403,6 +403,16 @@ mkdir -p "${work}/home/.proton"
 out=$(run_ep SRCDS_APPID=2278520 STARTUP='echo "data=${STEAM_COMPAT_DATA_PATH}"')
 expect_contains 'a .proton folder wins once it exists' "${out}" "data=${work}/home/.proton"
 
+# Proton hook: a missing ~/.steam/sdk64/steamclient.so (lsteamclient loads it) comes from ./steamcmd, an existing one stays.
+mkdir -p "${work}/home/steamcmd/linux64"
+echo fresh >"${work}/home/steamcmd/linux64/steamclient.so"
+run_ep STARTUP='true' >/dev/null
+if [ "$(cat "${work}/home/.steam/sdk64/steamclient.so" 2>/dev/null)" = fresh ]; then ok 'Proton: steamclient.so is put in ~/.steam/sdk64'; else not_ok 'Proton: steamclient.so is put in ~/.steam/sdk64'; fi
+echo kept >"${work}/home/.steam/sdk64/steamclient.so"
+run_ep STARTUP='true' >/dev/null
+if [ "$(cat "${work}/home/.steam/sdk64/steamclient.so")" = kept ]; then ok 'Proton: an existing steamclient.so is left alone'; else not_ok 'Proton: an existing steamclient.so is left alone'; fi
+if [ ! -e "${work}/home/.steam/sdk32" ]; then ok 'Proton: no sdk32 without a 32-bit steamclient.so'; else not_ok 'Proton: no sdk32 without a 32-bit steamclient.so'; fi
+
 # Proton start watch: one report when no port is open after OCTAIL_PROTON_WATCH seconds, none once one is.
 mkdir -p "${work}/proc/net" "${work}/cg"
 printf '  sl  local_address rem_address   st\n   0: 0100007F:9C40 0100007F:A3B2 01 0\n' >"${work}/proc/net/tcp"

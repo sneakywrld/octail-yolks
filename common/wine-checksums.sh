@@ -3,6 +3,9 @@
 # time, pinned here, and fetch_verified, which refuses a file that doesn't match. WineHQ publishes no checksum
 # files next to the Wine Mono / Gecko installers; the values below were checked against the downloads and against
 # the GECKO_SHA / MONO_SHA that Wine's own dlls/appwiz.cpl/addons.c carries for the Wine release that wants them.
+# (Wine Mono 11.2.1, which no Wine tag asks for yet, was checked against the download and the sha256 digest GitHub
+# shows for the wine-mono/wine-mono release asset; Wine 11.0 stable wants 10.4.1, 11.10/11.11 want 11.1.0, master
+# 11.3.0, all pinned, as of 2026-10-23.)
 #
 # A new Wine release that asks for a Mono or Gecko version not listed here stops the build with the value from
 # addons.c to check and add. A new winetricks release tag needs its commit and the sha256 of src/winetricks.
@@ -24,6 +27,7 @@ addon_sha256() {
 	mono/11.0.0/x86) echo d7efede0b9bdcf52134f8cd6ced59d9fece976f70b11a400bdb47b864569cd27 ;;
 	mono/11.1.0/x86) echo deb0341431f8260b209fff6bc79ddcc5414b97f8e9236ab9fbdca4ce59e0a9b9 ;;
 	mono/11.2.0/x86) echo b4525679e7da30d4658ceb85739cbc55c771791054abbb4b3152fe96ded0b897 ;;
+	mono/11.2.1/x86) echo e38810c017ccb64d450bbd6095d41c0b50e3fd967c306f6d2c64c3a48945cc92 ;;
 	mono/11.3.0/x86) echo df2dfc1665c2511882e7cabd56eafd0c0a3d94e5a7e86f969277f6c189d418d3 ;;
 	gecko/2.47.4/x86) echo 26cecc47706b091908f7f814bddb074c61beb8063318e9efc5a7f789857793d6 ;;
 	gecko/2.47.4/x86_64) echo e590b7d988a32d6aa4cf1d8aa3aa3d33766fdd4cf4c89c2dcc2095ecb28d066f ;;
