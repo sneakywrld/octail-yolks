@@ -43,6 +43,11 @@
       "path": "steam/aska.json",
       "result": "untested"
     },
+    "assaultcube": {
+      "name": "AssaultCube",
+      "path": "standalone/assaultcube.json",
+      "result": "untested"
+    },
     "assetto-corsa": {
       "name": "Assetto Corsa",
       "path": "steam/assetto-corsa.json",
@@ -58,6 +63,11 @@
       "path": "steam/avorion.json",
       "result": "untested"
     },
+    "ballistic-overkill": {
+      "name": "Ballistic Overkill",
+      "path": "steam/ballistic-overkill.json",
+      "result": "untested"
+    },
     "barotrauma": {
       "name": "Barotrauma",
       "path": "steam/barotrauma.json",
@@ -71,6 +81,16 @@
     "black-mesa": {
       "name": "Black Mesa: Deathmatch",
       "path": "source/black-mesa.json",
+      "result": "untested"
+    },
+    "bun-app": {
+      "name": "Bun App",
+      "path": "apps/bun-app.json",
+      "result": "untested"
+    },
+    "chivalry-medieval-warfare": {
+      "name": "Chivalry: Medieval Warfare",
+      "path": "steam/chivalry-medieval-warfare.json",
       "result": "untested"
     },
     "conan-exiles": {
@@ -91,7 +111,7 @@
     "counter-strike-2": {
       "name": "Counter-Strike 2",
       "path": "source/counter-strike-2.json",
-      "result": "blocked"
+      "result": "untested"
     },
     "counter-strike-condition-zero": {
       "name": "Counter-Strike: Condition Zero",
@@ -138,6 +158,11 @@
       "path": "goldsrc/deathmatch-classic.json",
       "result": "pass"
     },
+    "deno-app": {
+      "name": "Deno App",
+      "path": "apps/deno-app.json",
+      "result": "untested"
+    },
     "dont-starve-together": {
       "name": "Don't Starve Together",
       "path": "steam/dont-starve-together.json",
@@ -158,6 +183,11 @@
       "path": "steam/enshrouded.json",
       "result": "pass"
     },
+    "et-legacy": {
+      "name": "ET: Legacy",
+      "path": "standalone/et-legacy.json",
+      "result": "untested"
+    },
     "euro-truck-simulator-2": {
       "name": "Euro Truck Simulator 2 Dedicated Server",
       "path": "steam/euro-truck-simulator-2.json",
@@ -171,6 +201,11 @@
     "fistful-of-frags": {
       "name": "Fistful of Frags",
       "path": "source/fistful-of-frags.json",
+      "result": "untested"
+    },
+    "foundry": {
+      "name": "FOUNDRY",
+      "path": "steam/foundry.json",
       "result": "untested"
     },
     "garrysmod": {
@@ -243,6 +278,11 @@
       "path": "steam/killing-floor.json",
       "result": "blocked"
     },
+    "lavalink": {
+      "name": "Lavalink",
+      "path": "apps/lavalink.json",
+      "result": "untested"
+    },
     "left-4-dead-2": {
       "name": "Left 4 Dead 2",
       "path": "source/left-4-dead-2.json",
@@ -257,6 +297,11 @@
       "name": "Luanti",
       "path": "standalone/luanti.json",
       "result": "pass"
+    },
+    "mariadb": {
+      "name": "MariaDB",
+      "path": "apps/mariadb.json",
+      "result": "untested"
     },
     "mindustry": {
       "name": "Mindustry",
@@ -353,6 +398,11 @@
       "path": "minecraft/sponge.json",
       "result": "blocked"
     },
+    "minecraft-vanilla": {
+      "name": "Vanilla Minecraft",
+      "path": "minecraft/vanilla.json",
+      "result": "untested"
+    },
     "minecraft-velocity": {
       "name": "Velocity",
       "path": "minecraft/velocity.json",
@@ -388,6 +438,11 @@
       "path": "steam/night-of-the-dead.json",
       "result": "untested"
     },
+    "nightingale": {
+      "name": "Nightingale",
+      "path": "steam/nightingale.json",
+      "result": "untested"
+    },
     "no-more-room-in-hell": {
       "name": "No More Room in Hell",
       "path": "source/no-more-room-in-hell.json",
@@ -403,6 +458,11 @@
       "path": "standalone/openarena.json",
       "result": "pass"
     },
+    "openra": {
+      "name": "OpenRA",
+      "path": "standalone/openra.json",
+      "result": "untested"
+    },
     "openrct2": {
       "name": "OpenRCT2",
       "path": "standalone/openrct2.json",
@@ -412,6 +472,11 @@
       "name": "OpenTTD",
       "path": "standalone/openttd.json",
       "result": "pass"
+    },
+    "operation-harsh-doorstop": {
+      "name": "Operation: Harsh Doorstop",
+      "path": "steam/operation-harsh-doorstop.json",
+      "result": "untested"
     },
     "palworld": {
       "name": "Palworld",
@@ -428,6 +493,11 @@
       "path": "steam/pixark.json",
       "result": "untested"
     },
+    "postgresql": {
+      "name": "PostgreSQL",
+      "path": "apps/postgresql.json",
+      "result": "untested"
+    },
     "project-zomboid": {
       "name": "Project Zomboid",
       "path": "steam/project-zomboid.json",
@@ -442,6 +512,11 @@
       "name": "Quake Live",
       "path": "steam/quake-live.json",
       "result": "pass"
+    },
+    "red-discordbot": {
+      "name": "Red-DiscordBot",
+      "path": "apps/red-discordbot.json",
+      "result": "untested"
     },
     "red-eclipse": {
       "name": "Red Eclipse 2",
@@ -463,6 +538,11 @@
       "path": "steam/risk-of-rain-2.json",
       "result": "blocked"
     },
+    "runescape-dragonwilds": {
+      "name": "RuneScape: Dragonwilds",
+      "path": "steam/runescape-dragonwilds.json",
+      "result": "untested"
+    },
     "rust": {
       "name": "Rust",
       "path": "rust/rust.json",
@@ -476,6 +556,11 @@
     "scp-secret-laboratory": {
       "name": "SCP: Secret Laboratory",
       "path": "steam/scp-secret-laboratory.json",
+      "result": "untested"
+    },
+    "smalland": {
+      "name": "Smalland: Survive the Wilds",
+      "path": "steam/smalland.json",
       "result": "untested"
     },
     "sons-of-the-forest": {
@@ -533,6 +618,11 @@
       "path": "steam/stormworks.json",
       "result": "untested"
     },
+    "supertuxkart": {
+      "name": "SuperTuxKart",
+      "path": "standalone/supertuxkart.json",
+      "result": "untested"
+    },
     "sven-co-op": {
       "name": "Sven Co-op",
       "path": "goldsrc/sven-co-op.json",
@@ -558,6 +648,11 @@
       "path": "voice/teamspeak.json",
       "result": "untested"
     },
+    "teeworlds": {
+      "name": "Teeworlds",
+      "path": "standalone/teeworlds.json",
+      "result": "untested"
+    },
     "terraria-tmodloader": {
       "name": "tModloader",
       "path": "terraria/tmodloader.json",
@@ -572,6 +667,11 @@
       "name": "Terraria Vanilla",
       "path": "terraria/vanilla.json",
       "result": "pass"
+    },
+    "tes3mp": {
+      "name": "TES3MP (Morrowind multiplayer)",
+      "path": "standalone/tes3mp.json",
+      "result": "untested"
     },
     "test-game": {
       "name": "Octail Test Game",
@@ -606,7 +706,17 @@
     "unturned": {
       "name": "Unturned",
       "path": "steam/unturned.json",
-      "result": "blocked"
+      "result": "untested"
+    },
+    "unvanquished": {
+      "name": "Unvanquished",
+      "path": "standalone/unvanquished.json",
+      "result": "untested"
+    },
+    "uptime-kuma": {
+      "name": "Uptime Kuma",
+      "path": "apps/uptime-kuma.json",
+      "result": "untested"
     },
     "urban-terror": {
       "name": "Urban Terror",
@@ -628,10 +738,30 @@
       "path": "valheim/valheim.json",
       "result": "pass"
     },
+    "valkey": {
+      "name": "Valkey (Redis-compatible)",
+      "path": "apps/valkey.json",
+      "result": "untested"
+    },
+    "vein": {
+      "name": "VEIN",
+      "path": "steam/vein.json",
+      "result": "untested"
+    },
     "vintage-story": {
       "name": "Vintage Story",
       "path": "standalone/vintage-story.json",
       "result": "pass"
+    },
+    "warfork": {
+      "name": "Warfork",
+      "path": "steam/warfork.json",
+      "result": "untested"
+    },
+    "windrose": {
+      "name": "Windrose",
+      "path": "steam/windrose.json",
+      "result": "untested"
     },
     "wurm-unlimited": {
       "name": "Wurm Unlimited",
@@ -657,24 +787,47 @@
       ],
       "installer": []
     },
+    "bun_1": {
+      "runtime": [
+        "bun-app"
+      ],
+      "installer": []
+    },
     "debian": {
       "runtime": [
+        "assaultcube",
         "beammp",
         "ddnet",
+        "et-legacy",
         "factorio",
+        "mariadb",
         "minecraft-bedrock",
         "minecraft-pocketmine",
         "mumble",
         "openarena",
+        "openra",
         "openrct2",
         "openttd",
+        "postgresql",
+        "red-discordbot",
         "red-eclipse",
+        "supertuxkart",
         "teamspeak",
+        "teeworlds",
         "terraria-vanilla",
+        "tes3mp",
         "unreal-tournament-2004",
         "unreal-tournament-99",
+        "unvanquished",
         "urban-terror",
+        "valkey",
         "xonotic"
+      ],
+      "installer": []
+    },
+    "deno_2": {
+      "runtime": [
+        "deno-app"
       ],
       "installer": []
     },
@@ -705,6 +858,18 @@
       ],
       "installer": []
     },
+    "go_1.26": {
+      "runtime": [
+        "go-app"
+      ],
+      "installer": []
+    },
+    "go_1.27": {
+      "runtime": [
+        "go-app"
+      ],
+      "installer": []
+    },
     "installer_alpine": {
       "runtime": [],
       "installer": [
@@ -722,6 +887,7 @@
         "minecraft-pufferfish",
         "minecraft-purpur",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity",
         "openttd",
         "test-game"
@@ -738,12 +904,16 @@
         "arma-3",
         "arma-reforger",
         "aska",
+        "assaultcube",
         "assetto-corsa",
         "astroneer",
         "avorion",
+        "ballistic-overkill",
         "barotrauma",
         "beammp",
         "black-mesa",
+        "bun-app",
+        "chivalry-medieval-warfare",
         "conan-exiles",
         "core-keeper",
         "counter-strike-16",
@@ -757,13 +927,16 @@
         "dayz",
         "ddnet",
         "deathmatch-classic",
+        "deno-app",
         "dont-starve-together",
         "eco",
         "empyrion",
         "enshrouded",
+        "et-legacy",
         "euro-truck-simulator-2",
         "factorio",
         "fistful-of-frags",
+        "foundry",
         "garrysmod",
         "go-app",
         "ground-branch",
@@ -777,8 +950,10 @@
         "java-jar",
         "killing-floor-2",
         "killing-floor",
+        "lavalink",
         "left-4-dead-2",
         "left-4-dead",
+        "mariadb",
         "mindustry",
         "minecraft-bedrock",
         "mordhau",
@@ -787,23 +962,30 @@
         "natural-selection-2",
         "necesse",
         "night-of-the-dead",
+        "nightingale",
         "no-more-room-in-hell",
         "nodejs-app",
         "openarena",
+        "openra",
         "openrct2",
+        "operation-harsh-doorstop",
         "palworld",
         "pavlov-vr",
         "pixark",
+        "postgresql",
         "project-zomboid",
         "python-app",
         "quake-live",
+        "red-discordbot",
         "red-eclipse",
         "return-to-moria",
         "rising-world",
         "risk-of-rain-2",
+        "runescape-dragonwilds",
         "rust",
         "satisfactory",
         "scp-secret-laboratory",
+        "smalland",
         "sons-of-the-forest",
         "soulmask",
         "source-engine",
@@ -815,25 +997,34 @@
         "stationeers",
         "steamcmd-generic",
         "stormworks",
+        "supertuxkart",
         "sven-co-op",
         "team-fortress-2-classified",
         "team-fortress-2",
         "team-fortress-classic",
         "teamspeak",
+        "teeworlds",
         "terraria-tmodloader",
         "terraria-tshock",
         "terraria-vanilla",
+        "tes3mp",
         "the-forest",
         "the-front",
         "the-isle",
         "unreal-tournament-2004",
         "unreal-tournament-99",
         "unturned",
+        "unvanquished",
+        "uptime-kuma",
         "urban-terror",
         "v-rising",
         "valheim-bepinex",
         "valheim",
+        "valkey",
+        "vein",
         "vintage-story",
+        "warfork",
+        "windrose",
         "wurm-unlimited",
         "xonotic",
         "zombie-panic-source"
@@ -876,13 +1067,15 @@
         "minecraft-purpur",
         "minecraft-quilt",
         "minecraft-spigot",
-        "minecraft-sponge"
+        "minecraft-sponge",
+        "minecraft-vanilla"
       ],
       "installer": []
     },
     "java_17": {
       "runtime": [
         "java-jar",
+        "lavalink",
         "mindustry",
         "minecraft-arclight",
         "minecraft-bungeecord",
@@ -897,6 +1090,7 @@
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ],
       "installer": []
@@ -904,6 +1098,7 @@
     "java_21": {
       "runtime": [
         "java-jar",
+        "lavalink",
         "mindustry",
         "minecraft-arclight",
         "minecraft-bungeecord",
@@ -921,6 +1116,7 @@
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ],
       "installer": []
@@ -929,6 +1125,7 @@
       "runtime": [
         "hytale",
         "java-jar",
+        "lavalink",
         "minecraft-bungeecord",
         "minecraft-fabric",
         "minecraft-folia",
@@ -943,6 +1140,7 @@
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ],
       "installer": []
@@ -959,7 +1157,8 @@
         "minecraft-purpur",
         "minecraft-quilt",
         "minecraft-spigot",
-        "minecraft-sponge"
+        "minecraft-sponge",
+        "minecraft-vanilla"
       ],
       "installer": []
     },
@@ -971,6 +1170,13 @@
     },
     "nodejs_22": {
       "runtime": [
+        "nodejs-app",
+        "uptime-kuma"
+      ],
+      "installer": []
+    },
+    "nodejs_24": {
+      "runtime": [
         "nodejs-app"
       ],
       "installer": []
@@ -981,11 +1187,24 @@
         "ark-survival-ascended",
         "astroneer",
         "enshrouded",
-        "steamcmd-generic"
+        "steamcmd-generic",
+        "windrose"
       ],
       "installer": []
     },
     "python_3.12": {
+      "runtime": [
+        "python-app"
+      ],
+      "installer": []
+    },
+    "python_3.13": {
+      "runtime": [
+        "python-app"
+      ],
+      "installer": []
+    },
+    "python_3.14": {
       "runtime": [
         "python-app"
       ],
@@ -1032,7 +1251,9 @@
         "arma-reforger",
         "assetto-corsa",
         "avorion",
+        "ballistic-overkill",
         "barotrauma",
+        "chivalry-medieval-warfare",
         "conan-exiles",
         "core-keeper",
         "counter-strike-source",
@@ -1047,12 +1268,16 @@
         "mordhau",
         "natural-selection-2",
         "necesse",
+        "nightingale",
+        "operation-harsh-doorstop",
         "palworld",
         "project-zomboid",
         "quake-live",
         "rising-world",
+        "runescape-dragonwilds",
         "satisfactory",
         "scp-secret-laboratory",
+        "smalland",
         "soulmask",
         "squad-44",
         "squad",
@@ -1063,6 +1288,8 @@
         "unturned",
         "valheim-bepinex",
         "valheim",
+        "vein",
+        "warfork",
         "wurm-unlimited"
       ],
       "installer": []
@@ -1091,6 +1318,7 @@
       "runtime": [
         "aska",
         "empyrion",
+        "foundry",
         "ground-branch",
         "icarus",
         "myth-of-empires",

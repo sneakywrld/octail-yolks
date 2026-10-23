@@ -30,50 +30,58 @@ parkervcp images or scripts, and CI fails a Dockerfile that tries.
 
 ## Stats
 
-![images: 30](https://img.shields.io/badge/images-30-2496ED) ![runtime: 24](https://img.shields.io/badge/runtime-24-blue) ![installers: 6](https://img.shields.io/badge/installers-6-blue) ![multi-arch: 21 of 30](https://img.shields.io/badge/multi--arch-21%20of%2030-informational) ![eggs using them: 129](https://img.shields.io/badge/eggs%20using%20them-129-brightgreen)
+![images: 38](https://img.shields.io/badge/images-38-2496ED) ![runtime: 31](https://img.shields.io/badge/runtime-31-blue) ![installers: 7](https://img.shields.io/badge/installers-7-blue) ![multi-arch: 29 of 38](https://img.shields.io/badge/multi--arch-29%20of%2038-informational) ![eggs using them: 155](https://img.shields.io/badge/eggs%20using%20them-155-brightgreen)
 
-**30 images**: 24 runtime images and 6 installer images, 21 of them built for amd64 and arm64. They run the 129 eggs of [octail-eggs](https://github.com/sneakywrld/octail-eggs), 59 of which passed a real run on one of our nodes.
+**38 images**: 31 runtime images and 7 installer images, 29 of them built for amd64 and arm64. They run the 155 eggs of [octail-eggs](https://github.com/sneakywrld/octail-eggs), 59 of which passed a real run on one of our nodes.
 The same numbers as a page: [docs/index.html](docs/index.html) (GitHub Pages, when switched on for `/docs`).
 
 | Family | Images | Eggs using them |
 | --- | --- | ---: |
-| Java | [`java_8`](#java_8) [`java_11`](#java_11) [`java_17`](#java_17) [`java_21`](#java_21) [`java_25`](#java_25) | 20 |
+| Java | [`java_8`](#java_8) [`java_11`](#java_11) [`java_17`](#java_17) [`java_21`](#java_21) [`java_25`](#java_25) | 22 |
 | .NET and Mono | [`dotnet_8`](#dotnet_8) [`dotnet_9`](#dotnet_9) [`dotnet_10`](#dotnet_10) [`mono`](#mono) | 4 |
-| Other runtimes | [`nodejs_20`](#nodejs_20) [`nodejs_22`](#nodejs_22) [`python_3.12`](#python_3.12) [`go_1.23`](#go_1.23) [`debian`](#debian) [`alpine`](#alpine) | 21 |
-| SteamCMD and game images | [`steamcmd_debian`](#steamcmd_debian) [`steamcmd_ubuntu`](#steamcmd_ubuntu) [`steamcmd_dotnet`](#steamcmd_dotnet) [`steamcmd_sniper`](#steamcmd_sniper) [`source`](#source) [`rust`](#rust) | 66 |
-| Wine and Proton | [`proton`](#proton) [`wine`](#wine) [`wine_staging`](#wine_staging) | 19 |
-| Installers | [`installer_debian`](#installer_debian) [`installer_alpine`](#installer_alpine) [`installer_java_8`](#installer_java_8) [`installer_java_11`](#installer_java_11) [`installer_java_21`](#installer_java_21) [`installer_java_25`](#installer_java_25) | 129 |
+| Other runtimes | [`nodejs_20`](#nodejs_20) [`nodejs_22`](#nodejs_22) [`nodejs_24`](#nodejs_24) [`python_3.12`](#python_3.12) [`python_3.13`](#python_3.13) [`python_3.14`](#python_3.14) [`go_1.23`](#go_1.23) [`go_1.26`](#go_1.26) [`go_1.27`](#go_1.27) [`bun_1`](#bun_1) [`deno_2`](#deno_2) [`debian`](#debian) [`alpine`](#alpine) | 35 |
+| SteamCMD and game images | [`steamcmd_debian`](#steamcmd_debian) [`steamcmd_ubuntu`](#steamcmd_ubuntu) [`steamcmd_dotnet`](#steamcmd_dotnet) [`steamcmd_sniper`](#steamcmd_sniper) [`source`](#source) [`rust`](#rust) | 74 |
+| Wine and Proton | [`proton`](#proton) [`wine`](#wine) [`wine_staging`](#wine_staging) | 21 |
+| Installers | [`installer_debian`](#installer_debian) [`installer_alpine`](#installer_alpine) [`installer_java_8`](#installer_java_8) [`installer_java_11`](#installer_java_11) [`installer_java_17`](#installer_java_17) [`installer_java_21`](#installer_java_21) [`installer_java_25`](#installer_java_25) | 155 |
 
 | Image | Family | Base | Platforms | Eggs | ✅ Passed |
 | --- | --- | --- | --- | --- | ---: |
-| [`java_8`](#java_8) | Java | Ubuntu 24.04 (`eclipse-temurin:8-jdk-noble`) | amd64, arm64 | 11: java-jar, minecraft-arclight, minecraft-fabric, minecraft-forge, minecraft-mohist, minecraft-neoforge, +5 more | 8 / 11 |
-| [`java_11`](#java_11) | Java | Ubuntu 24.04 (`eclipse-temurin:11-jdk-noble`) | amd64, arm64 | 11: java-jar, minecraft-arclight, minecraft-fabric, minecraft-forge, minecraft-mohist, minecraft-neoforge, +5 more | 8 / 11 |
-| [`java_17`](#java_17) | Java | Ubuntu 24.04 (`eclipse-temurin:17-jdk-noble`) | amd64, arm64 | 16: java-jar, mindustry, minecraft-arclight, minecraft-bungeecord, minecraft-fabric, minecraft-folia, +10 more | 11 / 16 |
-| [`java_21`](#java_21) | Java | Ubuntu 24.04 (`eclipse-temurin:21-jdk-noble`) | amd64, arm64 | 19: java-jar, mindustry, minecraft-arclight, minecraft-bungeecord, minecraft-fabric, minecraft-folia, +13 more | 12 / 19 |
-| [`java_25`](#java_25) | Java | Ubuntu 24.04 (`eclipse-temurin:25-jdk-noble`) | amd64, arm64 | 17: hytale, java-jar, minecraft-bungeecord, minecraft-fabric, minecraft-folia, minecraft-forge, +11 more | 9 / 17 |
+| [`java_8`](#java_8) | Java | Ubuntu 24.04 (`eclipse-temurin:8-jdk-noble`) | amd64, arm64 | 12: java-jar, minecraft-arclight, minecraft-fabric, minecraft-forge, minecraft-mohist, minecraft-neoforge, +6 more | 8 / 12 |
+| [`java_11`](#java_11) | Java | Ubuntu 24.04 (`eclipse-temurin:11-jdk-noble`) | amd64, arm64 | 12: java-jar, minecraft-arclight, minecraft-fabric, minecraft-forge, minecraft-mohist, minecraft-neoforge, +6 more | 8 / 12 |
+| [`java_17`](#java_17) | Java | Ubuntu 24.04 (`eclipse-temurin:17-jdk-noble`) | amd64, arm64 | 18: java-jar, lavalink, mindustry, minecraft-arclight, minecraft-bungeecord, minecraft-fabric, +12 more | 11 / 18 |
+| [`java_21`](#java_21) | Java | Ubuntu 24.04 (`eclipse-temurin:21-jdk-noble`) | amd64, arm64 | 21: java-jar, lavalink, mindustry, minecraft-arclight, minecraft-bungeecord, minecraft-fabric, +15 more | 12 / 21 |
+| [`java_25`](#java_25) | Java | Ubuntu 24.04 (`eclipse-temurin:25-jdk-noble`) | amd64, arm64 | 19: hytale, java-jar, lavalink, minecraft-bungeecord, minecraft-fabric, minecraft-folia, +13 more | 9 / 19 |
 | [`dotnet_8`](#dotnet_8) | .NET and Mono | Debian 12 (`mcr.microsoft.com/dotnet/runtime:8.0-bookworm-slim`) | amd64, arm64 | 2: terraria-tmodloader, vintage-story | 2 / 2 |
 | [`dotnet_9`](#dotnet_9) | .NET and Mono | Debian 12 (`mcr.microsoft.com/dotnet/runtime:9.0-bookworm-slim`) | amd64, arm64 | 1: terraria-tshock | 1 / 1 |
 | [`dotnet_10`](#dotnet_10) | .NET and Mono | Ubuntu 24.04 (`mcr.microsoft.com/dotnet/runtime:10.0-noble`) | amd64, arm64 | 3: space-station-14, terraria-tshock, vintage-story | 3 / 3 |
 | [`nodejs_20`](#nodejs_20) | Other runtimes | Debian 12 (`node:20-bookworm-slim`) | amd64, arm64 | 1: nodejs-app | 0 / 1 |
-| [`nodejs_22`](#nodejs_22) | Other runtimes | Debian 12 (`node:22-bookworm-slim`) | amd64, arm64 | 1: nodejs-app | 0 / 1 |
+| [`nodejs_22`](#nodejs_22) | Other runtimes | Debian 12 (`node:22-bookworm-slim`) | amd64, arm64 | 2: nodejs-app, uptime-kuma | 0 / 2 |
+| [`nodejs_24`](#nodejs_24) | Other runtimes | Debian 12 (`node:24-bookworm-slim`) | amd64, arm64 | 1: nodejs-app | 0 / 1 |
 | [`python_3.12`](#python_3.12) | Other runtimes | Debian 12 (`python:3.12-slim-bookworm`) | amd64, arm64 | 1: python-app | 0 / 1 |
+| [`python_3.13`](#python_3.13) | Other runtimes | Debian 12 (`python:3.13-slim-bookworm`) | amd64, arm64 | 1: python-app | 0 / 1 |
+| [`python_3.14`](#python_3.14) | Other runtimes | Debian 12 (`python:3.14-slim-bookworm`) | amd64, arm64 | 1: python-app | 0 / 1 |
 | [`go_1.23`](#go_1.23) | Other runtimes | Debian 12 (`golang:1.23-bookworm`) | amd64, arm64 | 1: go-app | 0 / 1 |
-| [`debian`](#debian) | Other runtimes | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 16: beammp, ddnet, factorio, minecraft-bedrock, minecraft-pocketmine, mumble, +10 more | 12 / 16 |
-| [`alpine`](#alpine) | Other runtimes | Alpine 3.22 (`alpine:3.22`) | amd64, arm64 | 2: luanti, test-game | 1 / 2 |
-| [`steamcmd_debian`](#steamcmd_debian) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 39: 7-days-to-die, american-truck-simulator, ark-survival-evolved, arma-3, arma-reforger, assetto-corsa, +33 more | 10 / 39 |
+| [`go_1.26`](#go_1.26) | Other runtimes | Debian 12 (`golang:1.26-bookworm`) | amd64, arm64 | 1: go-app | 0 / 1 |
+| [`go_1.27`](#go_1.27) | Other runtimes | Debian 12 (`golang:1.27-bookworm`) | amd64, arm64 | 1: go-app | 0 / 1 |
+| [`bun_1`](#bun_1) | Other runtimes | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 1: bun-app | 0 / 1 |
+| [`deno_2`](#deno_2) | Other runtimes | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 1: deno-app | 0 / 1 |
+| [`debian`](#debian) | Other runtimes | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 27: assaultcube, beammp, ddnet, et-legacy, factorio, mariadb, +21 more | 12 / 27 |
+| [`alpine`](#alpine) | Other runtimes | Alpine 3.24 (`alpine:3.24`) | amd64, arm64 | 2: luanti, test-game | 1 / 2 |
+| [`steamcmd_debian`](#steamcmd_debian) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 47: 7-days-to-die, american-truck-simulator, ark-survival-evolved, arma-3, arma-reforger, assetto-corsa, +41 more | 10 / 47 |
 | [`steamcmd_ubuntu`](#steamcmd_ubuntu) | SteamCMD and game images | Ubuntu 24.04 (`ubuntu:24.04`) | amd64 | 3: insurgency-sandstorm, pavlov-vr, stationeers | 1 / 3 |
 | [`steamcmd_dotnet`](#steamcmd_dotnet) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 1: eco | 0 / 1 |
 | [`steamcmd_sniper`](#steamcmd_sniper) | SteamCMD and game images | Steam Runtime 3 (sniper) (`registry.gitlab.steamos.cloud/steamrt/sniper/platform:latest-container-runtime-depot`) | amd64 | 1: counter-strike-2 | 0 / 1 |
 | [`source`](#source) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 21: black-mesa, counter-strike-16, counter-strike-condition-zero, day-of-defeat-source, day-of-defeat, day-of-infamy, +15 more | 10 / 21 |
 | [`rust`](#rust) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 1: rust | 1 / 1 |
-| [`proton`](#proton) | Wine and Proton | Debian 12 (`debian:bookworm-slim`) | amd64 | 5: abiotic-factor, ark-survival-ascended, astroneer, enshrouded, steamcmd-generic | 3 / 5 |
-| [`wine`](#wine) | Wine and Proton | Debian 12 (`debian:bookworm-slim`) | amd64 | 13: aska, empyrion, ground-branch, icarus, myth-of-empires, night-of-the-dead, +7 more | 4 / 13 |
+| [`proton`](#proton) | Wine and Proton | Debian 12 (`debian:bookworm-slim`) | amd64 | 6: abiotic-factor, ark-survival-ascended, astroneer, enshrouded, steamcmd-generic, windrose | 3 / 6 |
+| [`wine`](#wine) | Wine and Proton | Debian 12 (`debian:bookworm-slim`) | amd64 | 14: aska, empyrion, foundry, ground-branch, icarus, myth-of-empires, +8 more | 4 / 14 |
 | [`wine_staging`](#wine_staging) | Wine and Proton | Debian 12 (`debian:bookworm-slim`) | amd64 | 4: empyrion, ground-branch, stormworks, v-rising | 2 / 4 |
 | [`mono`](#mono) | .NET and Mono | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | – | – |
-| [`installer_debian`](#installer_debian) | Installers | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 107: 7-days-to-die, abiotic-factor, american-truck-simulator, ark-survival-ascended, ark-survival-evolved, arma-3, +101 more | 45 / 107 |
-| [`installer_alpine`](#installer_alpine) | Installers | Alpine 3.22 (`alpine:3.22`) | amd64, arm64 | 17: hytale, luanti, minecraft-arclight, minecraft-bungeecord, minecraft-folia, minecraft-geyser, +11 more | 10 / 17 |
+| [`installer_debian`](#installer_debian) | Installers | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 132: 7-days-to-die, abiotic-factor, american-truck-simulator, ark-survival-ascended, ark-survival-evolved, arma-3, +126 more | 45 / 132 |
+| [`installer_alpine`](#installer_alpine) | Installers | Alpine 3.24 (`alpine:3.24`) | amd64, arm64 | 18: hytale, luanti, minecraft-arclight, minecraft-bungeecord, minecraft-folia, minecraft-geyser, +12 more | 10 / 18 |
 | [`installer_java_8`](#installer_java_8) | Installers | Ubuntu 24.04 (`eclipse-temurin:8-jdk-noble`) | amd64, arm64 | 1: minecraft-forge | 1 / 1 |
 | [`installer_java_11`](#installer_java_11) | Installers | Ubuntu 24.04 (`eclipse-temurin:11-jdk-noble`) | amd64, arm64 | 1: minecraft-fabric | 1 / 1 |
+| [`installer_java_17`](#installer_java_17) | Installers | Ubuntu 24.04 (`eclipse-temurin:17-jdk-noble`) | amd64, arm64 | – | – |
 | [`installer_java_21`](#installer_java_21) | Installers | Ubuntu 24.04 (`eclipse-temurin:21-jdk-noble`) | amd64, arm64 | 2: minecraft-neoforge, minecraft-quilt | 2 / 2 |
 | [`installer_java_25`](#installer_java_25) | Installers | Ubuntu 24.04 (`eclipse-temurin:25-jdk-noble`) | amd64, arm64 | 1: minecraft-spigot | 0 / 1 |
 

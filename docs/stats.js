@@ -3,16 +3,16 @@ window.OCTAIL_YOLKS_STATS = {
   "schema": 1,
   "registry": "ghcr.io/sneakywrld/octail-yolks",
   "eggs_repo": "https://github.com/sneakywrld/octail-eggs",
-  "images": 30,
-  "runtime": 24,
-  "installers": 6,
-  "multi_arch": 21,
-  "eggs_total": 129,
+  "images": 38,
+  "runtime": 31,
+  "installers": 7,
+  "multi_arch": 29,
+  "eggs_total": 155,
   "eggs_tested": {
     "pass": 59,
     "fail": 4,
-    "blocked": 17,
-    "untested": 49
+    "blocked": 15,
+    "untested": 77
   },
   "ci": false,
   "families": [
@@ -26,7 +26,7 @@ window.OCTAIL_YOLKS_STATS = {
         "java_21",
         "java_25"
       ],
-      "eggs": 20
+      "eggs": 22
     },
     {
       "id": "dotnet",
@@ -45,12 +45,19 @@ window.OCTAIL_YOLKS_STATS = {
       "images": [
         "nodejs_20",
         "nodejs_22",
+        "nodejs_24",
         "python_3.12",
+        "python_3.13",
+        "python_3.14",
         "go_1.23",
+        "go_1.26",
+        "go_1.27",
+        "bun_1",
+        "deno_2",
         "debian",
         "alpine"
       ],
-      "eggs": 21
+      "eggs": 35
     },
     {
       "id": "steamcmd",
@@ -63,7 +70,7 @@ window.OCTAIL_YOLKS_STATS = {
         "source",
         "rust"
       ],
-      "eggs": 66
+      "eggs": 74
     },
     {
       "id": "wine",
@@ -73,7 +80,7 @@ window.OCTAIL_YOLKS_STATS = {
         "wine",
         "wine_staging"
       ],
-      "eggs": 19
+      "eggs": 21
     },
     {
       "id": "installers",
@@ -83,10 +90,11 @@ window.OCTAIL_YOLKS_STATS = {
         "installer_alpine",
         "installer_java_8",
         "installer_java_11",
+        "installer_java_17",
         "installer_java_21",
         "installer_java_25"
       ],
-      "eggs": 129
+      "eggs": 155
     }
   ],
   "rows": [
@@ -112,13 +120,14 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-purpur",
         "minecraft-quilt",
         "minecraft-spigot",
-        "minecraft-sponge"
+        "minecraft-sponge",
+        "minecraft-vanilla"
       ],
       "tested": {
         "pass": 8,
         "fail": 0,
         "blocked": 2,
-        "untested": 1
+        "untested": 2
       },
       "ci": null
     },
@@ -144,13 +153,14 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-purpur",
         "minecraft-quilt",
         "minecraft-spigot",
-        "minecraft-sponge"
+        "minecraft-sponge",
+        "minecraft-vanilla"
       ],
       "tested": {
         "pass": 8,
         "fail": 0,
         "blocked": 2,
-        "untested": 1
+        "untested": 2
       },
       "ci": null
     },
@@ -167,6 +177,7 @@ window.OCTAIL_YOLKS_STATS = {
       "distro": "Ubuntu 24.04",
       "eggs": [
         "java-jar",
+        "lavalink",
         "mindustry",
         "minecraft-arclight",
         "minecraft-bungeecord",
@@ -181,13 +192,14 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ],
       "tested": {
         "pass": 11,
         "fail": 0,
         "blocked": 4,
-        "untested": 1
+        "untested": 3
       },
       "ci": null
     },
@@ -204,6 +216,7 @@ window.OCTAIL_YOLKS_STATS = {
       "distro": "Ubuntu 24.04",
       "eggs": [
         "java-jar",
+        "lavalink",
         "mindustry",
         "minecraft-arclight",
         "minecraft-bungeecord",
@@ -221,13 +234,14 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ],
       "tested": {
         "pass": 12,
         "fail": 1,
         "blocked": 4,
-        "untested": 2
+        "untested": 4
       },
       "ci": null
     },
@@ -245,6 +259,7 @@ window.OCTAIL_YOLKS_STATS = {
       "eggs": [
         "hytale",
         "java-jar",
+        "lavalink",
         "minecraft-bungeecord",
         "minecraft-fabric",
         "minecraft-folia",
@@ -259,13 +274,14 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-quilt",
         "minecraft-spigot",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity"
       ],
       "tested": {
         "pass": 9,
         "fail": 1,
         "blocked": 5,
-        "untested": 2
+        "untested": 4
       },
       "ci": null
     },
@@ -342,7 +358,7 @@ window.OCTAIL_YOLKS_STATS = {
       "tag": "nodejs_20",
       "kind": "runtime",
       "family": "runtimes",
-      "description": "Node.js 20 (Debian 12) with git and native-module build tools",
+      "description": "Node.js 20 (Debian 12) with git and native-module build tools; deprecated (end of life April 2026), still built",
       "platforms": [
         "amd64",
         "arm64"
@@ -370,6 +386,29 @@ window.OCTAIL_YOLKS_STATS = {
         "arm64"
       ],
       "base": "node:22-bookworm-slim",
+      "distro": "Debian 12",
+      "eggs": [
+        "nodejs-app",
+        "uptime-kuma"
+      ],
+      "tested": {
+        "pass": 0,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 2
+      },
+      "ci": null
+    },
+    {
+      "tag": "nodejs_24",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Node.js 24 LTS (Debian 12) with git and native-module build tools",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "node:24-bookworm-slim",
       "distro": "Debian 12",
       "eggs": [
         "nodejs-app"
@@ -405,10 +444,54 @@ window.OCTAIL_YOLKS_STATS = {
       "ci": null
     },
     {
+      "tag": "python_3.13",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Python 3.13 (Debian 12) with git and a C compiler for wheels",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "python:3.13-slim-bookworm",
+      "distro": "Debian 12",
+      "eggs": [
+        "python-app"
+      ],
+      "tested": {
+        "pass": 0,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 1
+      },
+      "ci": null
+    },
+    {
+      "tag": "python_3.14",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Python 3.14 (Debian 12) with git and a C compiler for wheels",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "python:3.14-slim-bookworm",
+      "distro": "Debian 12",
+      "eggs": [
+        "python-app"
+      ],
+      "tested": {
+        "pass": 0,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 1
+      },
+      "ci": null
+    },
+    {
       "tag": "go_1.23",
       "kind": "runtime",
       "family": "runtimes",
-      "description": "Go 1.23 (Debian 12), Go caches in the server folder",
+      "description": "Go 1.23 (Debian 12), Go caches in the server folder; deprecated (end of life August 2025), still built",
       "platforms": [
         "amd64",
         "arm64"
@@ -417,6 +500,94 @@ window.OCTAIL_YOLKS_STATS = {
       "distro": "Debian 12",
       "eggs": [
         "go-app"
+      ],
+      "tested": {
+        "pass": 0,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 1
+      },
+      "ci": null
+    },
+    {
+      "tag": "go_1.26",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Go 1.26 (Debian 12), Go caches in the server folder",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "golang:1.26-bookworm",
+      "distro": "Debian 12",
+      "eggs": [
+        "go-app"
+      ],
+      "tested": {
+        "pass": 0,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 1
+      },
+      "ci": null
+    },
+    {
+      "tag": "go_1.27",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Go 1.27 (Debian 12), Go caches in the server folder",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "golang:1.27-bookworm",
+      "distro": "Debian 12",
+      "eggs": [
+        "go-app"
+      ],
+      "tested": {
+        "pass": 0,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 1
+      },
+      "ci": null
+    },
+    {
+      "tag": "bun_1",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Bun 1 (Debian 12, the release binary checked against a pinned sha256) with git and native-module build tools",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "debian:bookworm-slim",
+      "distro": "Debian 12",
+      "eggs": [
+        "bun-app"
+      ],
+      "tested": {
+        "pass": 0,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 1
+      },
+      "ci": null
+    },
+    {
+      "tag": "deno_2",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Deno 2 (Debian 12, the release binary checked against a pinned sha256), DENO_DIR in the server folder",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "debian:bookworm-slim",
+      "distro": "Debian 12",
+      "eggs": [
+        "deno-app"
       ],
       "tested": {
         "pass": 0,
@@ -438,28 +609,39 @@ window.OCTAIL_YOLKS_STATS = {
       "base": "debian:bookworm-slim",
       "distro": "Debian 12",
       "eggs": [
+        "assaultcube",
         "beammp",
         "ddnet",
+        "et-legacy",
         "factorio",
+        "mariadb",
         "minecraft-bedrock",
         "minecraft-pocketmine",
         "mumble",
         "openarena",
+        "openra",
         "openrct2",
         "openttd",
+        "postgresql",
+        "red-discordbot",
         "red-eclipse",
+        "supertuxkart",
         "teamspeak",
+        "teeworlds",
         "terraria-vanilla",
+        "tes3mp",
         "unreal-tournament-2004",
         "unreal-tournament-99",
+        "unvanquished",
         "urban-terror",
+        "valkey",
         "xonotic"
       ],
       "tested": {
         "pass": 12,
         "fail": 0,
         "blocked": 2,
-        "untested": 2
+        "untested": 13
       },
       "ci": null
     },
@@ -472,8 +654,8 @@ window.OCTAIL_YOLKS_STATS = {
         "amd64",
         "arm64"
       ],
-      "base": "alpine:3.22",
-      "distro": "Alpine 3.22",
+      "base": "alpine:3.24",
+      "distro": "Alpine 3.24",
       "eggs": [
         "luanti",
         "test-game"
@@ -504,7 +686,9 @@ window.OCTAIL_YOLKS_STATS = {
         "arma-reforger",
         "assetto-corsa",
         "avorion",
+        "ballistic-overkill",
         "barotrauma",
+        "chivalry-medieval-warfare",
         "conan-exiles",
         "core-keeper",
         "counter-strike-source",
@@ -519,12 +703,16 @@ window.OCTAIL_YOLKS_STATS = {
         "mordhau",
         "natural-selection-2",
         "necesse",
+        "nightingale",
+        "operation-harsh-doorstop",
         "palworld",
         "project-zomboid",
         "quake-live",
         "rising-world",
+        "runescape-dragonwilds",
         "satisfactory",
         "scp-secret-laboratory",
+        "smalland",
         "soulmask",
         "squad-44",
         "squad",
@@ -535,13 +723,15 @@ window.OCTAIL_YOLKS_STATS = {
         "unturned",
         "valheim-bepinex",
         "valheim",
+        "vein",
+        "warfork",
         "wurm-unlimited"
       ],
       "tested": {
         "pass": 10,
         "fail": 1,
-        "blocked": 7,
-        "untested": 21
+        "blocked": 6,
+        "untested": 30
       },
       "ci": null
     },
@@ -605,8 +795,8 @@ window.OCTAIL_YOLKS_STATS = {
       "tested": {
         "pass": 0,
         "fail": 0,
-        "blocked": 1,
-        "untested": 0
+        "blocked": 0,
+        "untested": 1
       },
       "ci": null
     },
@@ -687,13 +877,14 @@ window.OCTAIL_YOLKS_STATS = {
         "ark-survival-ascended",
         "astroneer",
         "enshrouded",
-        "steamcmd-generic"
+        "steamcmd-generic",
+        "windrose"
       ],
       "tested": {
         "pass": 3,
         "fail": 1,
         "blocked": 0,
-        "untested": 1
+        "untested": 2
       },
       "ci": null
     },
@@ -710,6 +901,7 @@ window.OCTAIL_YOLKS_STATS = {
       "eggs": [
         "aska",
         "empyrion",
+        "foundry",
         "ground-branch",
         "icarus",
         "myth-of-empires",
@@ -726,7 +918,7 @@ window.OCTAIL_YOLKS_STATS = {
         "pass": 4,
         "fail": 0,
         "blocked": 1,
-        "untested": 8
+        "untested": 9
       },
       "ci": null
     },
@@ -794,12 +986,16 @@ window.OCTAIL_YOLKS_STATS = {
         "arma-3",
         "arma-reforger",
         "aska",
+        "assaultcube",
         "assetto-corsa",
         "astroneer",
         "avorion",
+        "ballistic-overkill",
         "barotrauma",
         "beammp",
         "black-mesa",
+        "bun-app",
+        "chivalry-medieval-warfare",
         "conan-exiles",
         "core-keeper",
         "counter-strike-16",
@@ -813,13 +1009,16 @@ window.OCTAIL_YOLKS_STATS = {
         "dayz",
         "ddnet",
         "deathmatch-classic",
+        "deno-app",
         "dont-starve-together",
         "eco",
         "empyrion",
         "enshrouded",
+        "et-legacy",
         "euro-truck-simulator-2",
         "factorio",
         "fistful-of-frags",
+        "foundry",
         "garrysmod",
         "go-app",
         "ground-branch",
@@ -833,8 +1032,10 @@ window.OCTAIL_YOLKS_STATS = {
         "java-jar",
         "killing-floor-2",
         "killing-floor",
+        "lavalink",
         "left-4-dead-2",
         "left-4-dead",
+        "mariadb",
         "mindustry",
         "minecraft-bedrock",
         "mordhau",
@@ -843,23 +1044,30 @@ window.OCTAIL_YOLKS_STATS = {
         "natural-selection-2",
         "necesse",
         "night-of-the-dead",
+        "nightingale",
         "no-more-room-in-hell",
         "nodejs-app",
         "openarena",
+        "openra",
         "openrct2",
+        "operation-harsh-doorstop",
         "palworld",
         "pavlov-vr",
         "pixark",
+        "postgresql",
         "project-zomboid",
         "python-app",
         "quake-live",
+        "red-discordbot",
         "red-eclipse",
         "return-to-moria",
         "rising-world",
         "risk-of-rain-2",
+        "runescape-dragonwilds",
         "rust",
         "satisfactory",
         "scp-secret-laboratory",
+        "smalland",
         "sons-of-the-forest",
         "soulmask",
         "source-engine",
@@ -871,25 +1079,34 @@ window.OCTAIL_YOLKS_STATS = {
         "stationeers",
         "steamcmd-generic",
         "stormworks",
+        "supertuxkart",
         "sven-co-op",
         "team-fortress-2-classified",
         "team-fortress-2",
         "team-fortress-classic",
         "teamspeak",
+        "teeworlds",
         "terraria-tmodloader",
         "terraria-tshock",
         "terraria-vanilla",
+        "tes3mp",
         "the-forest",
         "the-front",
         "the-isle",
         "unreal-tournament-2004",
         "unreal-tournament-99",
         "unturned",
+        "unvanquished",
+        "uptime-kuma",
         "urban-terror",
         "v-rising",
         "valheim-bepinex",
         "valheim",
+        "valkey",
+        "vein",
         "vintage-story",
+        "warfork",
+        "windrose",
         "wurm-unlimited",
         "xonotic",
         "zombie-panic-source"
@@ -897,8 +1114,8 @@ window.OCTAIL_YOLKS_STATS = {
       "tested": {
         "pass": 45,
         "fail": 3,
-        "blocked": 12,
-        "untested": 47
+        "blocked": 10,
+        "untested": 74
       },
       "ci": null
     },
@@ -911,8 +1128,8 @@ window.OCTAIL_YOLKS_STATS = {
         "amd64",
         "arm64"
       ],
-      "base": "alpine:3.22",
-      "distro": "Alpine 3.22",
+      "base": "alpine:3.24",
+      "distro": "Alpine 3.24",
       "eggs": [
         "hytale",
         "luanti",
@@ -928,6 +1145,7 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-pufferfish",
         "minecraft-purpur",
         "minecraft-sponge",
+        "minecraft-vanilla",
         "minecraft-velocity",
         "openttd",
         "test-game"
@@ -936,7 +1154,7 @@ window.OCTAIL_YOLKS_STATS = {
         "pass": 10,
         "fail": 1,
         "blocked": 4,
-        "untested": 2
+        "untested": 3
       },
       "ci": null
     },
@@ -978,6 +1196,26 @@ window.OCTAIL_YOLKS_STATS = {
       ],
       "tested": {
         "pass": 1,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 0
+      },
+      "ci": null
+    },
+    {
+      "tag": "installer_java_17",
+      "kind": "installer",
+      "family": "installers",
+      "description": "Install scripts that run Java 17 (NeoForge 1.20.1, Spigot BuildTools for 1.17-1.20.4)",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "eclipse-temurin:17-jdk-noble",
+      "distro": "Ubuntu 24.04",
+      "eggs": [],
+      "tested": {
+        "pass": 0,
         "fail": 0,
         "blocked": 0,
         "untested": 0
@@ -1071,6 +1309,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "steam/aska.json",
       "result": "untested"
     },
+    "assaultcube": {
+      "name": "AssaultCube",
+      "path": "standalone/assaultcube.json",
+      "result": "untested"
+    },
     "assetto-corsa": {
       "name": "Assetto Corsa",
       "path": "steam/assetto-corsa.json",
@@ -1086,6 +1329,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "steam/avorion.json",
       "result": "untested"
     },
+    "ballistic-overkill": {
+      "name": "Ballistic Overkill",
+      "path": "steam/ballistic-overkill.json",
+      "result": "untested"
+    },
     "barotrauma": {
       "name": "Barotrauma",
       "path": "steam/barotrauma.json",
@@ -1099,6 +1347,16 @@ window.OCTAIL_YOLKS_STATS = {
     "black-mesa": {
       "name": "Black Mesa: Deathmatch",
       "path": "source/black-mesa.json",
+      "result": "untested"
+    },
+    "bun-app": {
+      "name": "Bun App",
+      "path": "apps/bun-app.json",
+      "result": "untested"
+    },
+    "chivalry-medieval-warfare": {
+      "name": "Chivalry: Medieval Warfare",
+      "path": "steam/chivalry-medieval-warfare.json",
       "result": "untested"
     },
     "conan-exiles": {
@@ -1119,7 +1377,7 @@ window.OCTAIL_YOLKS_STATS = {
     "counter-strike-2": {
       "name": "Counter-Strike 2",
       "path": "source/counter-strike-2.json",
-      "result": "blocked"
+      "result": "untested"
     },
     "counter-strike-condition-zero": {
       "name": "Counter-Strike: Condition Zero",
@@ -1166,6 +1424,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "goldsrc/deathmatch-classic.json",
       "result": "pass"
     },
+    "deno-app": {
+      "name": "Deno App",
+      "path": "apps/deno-app.json",
+      "result": "untested"
+    },
     "dont-starve-together": {
       "name": "Don't Starve Together",
       "path": "steam/dont-starve-together.json",
@@ -1186,6 +1449,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "steam/enshrouded.json",
       "result": "pass"
     },
+    "et-legacy": {
+      "name": "ET: Legacy",
+      "path": "standalone/et-legacy.json",
+      "result": "untested"
+    },
     "euro-truck-simulator-2": {
       "name": "Euro Truck Simulator 2 Dedicated Server",
       "path": "steam/euro-truck-simulator-2.json",
@@ -1199,6 +1467,11 @@ window.OCTAIL_YOLKS_STATS = {
     "fistful-of-frags": {
       "name": "Fistful of Frags",
       "path": "source/fistful-of-frags.json",
+      "result": "untested"
+    },
+    "foundry": {
+      "name": "FOUNDRY",
+      "path": "steam/foundry.json",
       "result": "untested"
     },
     "garrysmod": {
@@ -1271,6 +1544,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "steam/killing-floor.json",
       "result": "blocked"
     },
+    "lavalink": {
+      "name": "Lavalink",
+      "path": "apps/lavalink.json",
+      "result": "untested"
+    },
     "left-4-dead-2": {
       "name": "Left 4 Dead 2",
       "path": "source/left-4-dead-2.json",
@@ -1285,6 +1563,11 @@ window.OCTAIL_YOLKS_STATS = {
       "name": "Luanti",
       "path": "standalone/luanti.json",
       "result": "pass"
+    },
+    "mariadb": {
+      "name": "MariaDB",
+      "path": "apps/mariadb.json",
+      "result": "untested"
     },
     "mindustry": {
       "name": "Mindustry",
@@ -1381,6 +1664,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "minecraft/sponge.json",
       "result": "blocked"
     },
+    "minecraft-vanilla": {
+      "name": "Vanilla Minecraft",
+      "path": "minecraft/vanilla.json",
+      "result": "untested"
+    },
     "minecraft-velocity": {
       "name": "Velocity",
       "path": "minecraft/velocity.json",
@@ -1416,6 +1704,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "steam/night-of-the-dead.json",
       "result": "untested"
     },
+    "nightingale": {
+      "name": "Nightingale",
+      "path": "steam/nightingale.json",
+      "result": "untested"
+    },
     "no-more-room-in-hell": {
       "name": "No More Room in Hell",
       "path": "source/no-more-room-in-hell.json",
@@ -1431,6 +1724,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "standalone/openarena.json",
       "result": "pass"
     },
+    "openra": {
+      "name": "OpenRA",
+      "path": "standalone/openra.json",
+      "result": "untested"
+    },
     "openrct2": {
       "name": "OpenRCT2",
       "path": "standalone/openrct2.json",
@@ -1440,6 +1738,11 @@ window.OCTAIL_YOLKS_STATS = {
       "name": "OpenTTD",
       "path": "standalone/openttd.json",
       "result": "pass"
+    },
+    "operation-harsh-doorstop": {
+      "name": "Operation: Harsh Doorstop",
+      "path": "steam/operation-harsh-doorstop.json",
+      "result": "untested"
     },
     "palworld": {
       "name": "Palworld",
@@ -1456,6 +1759,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "steam/pixark.json",
       "result": "untested"
     },
+    "postgresql": {
+      "name": "PostgreSQL",
+      "path": "apps/postgresql.json",
+      "result": "untested"
+    },
     "project-zomboid": {
       "name": "Project Zomboid",
       "path": "steam/project-zomboid.json",
@@ -1470,6 +1778,11 @@ window.OCTAIL_YOLKS_STATS = {
       "name": "Quake Live",
       "path": "steam/quake-live.json",
       "result": "pass"
+    },
+    "red-discordbot": {
+      "name": "Red-DiscordBot",
+      "path": "apps/red-discordbot.json",
+      "result": "untested"
     },
     "red-eclipse": {
       "name": "Red Eclipse 2",
@@ -1491,6 +1804,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "steam/risk-of-rain-2.json",
       "result": "blocked"
     },
+    "runescape-dragonwilds": {
+      "name": "RuneScape: Dragonwilds",
+      "path": "steam/runescape-dragonwilds.json",
+      "result": "untested"
+    },
     "rust": {
       "name": "Rust",
       "path": "rust/rust.json",
@@ -1504,6 +1822,11 @@ window.OCTAIL_YOLKS_STATS = {
     "scp-secret-laboratory": {
       "name": "SCP: Secret Laboratory",
       "path": "steam/scp-secret-laboratory.json",
+      "result": "untested"
+    },
+    "smalland": {
+      "name": "Smalland: Survive the Wilds",
+      "path": "steam/smalland.json",
       "result": "untested"
     },
     "sons-of-the-forest": {
@@ -1561,6 +1884,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "steam/stormworks.json",
       "result": "untested"
     },
+    "supertuxkart": {
+      "name": "SuperTuxKart",
+      "path": "standalone/supertuxkart.json",
+      "result": "untested"
+    },
     "sven-co-op": {
       "name": "Sven Co-op",
       "path": "goldsrc/sven-co-op.json",
@@ -1586,6 +1914,11 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "voice/teamspeak.json",
       "result": "untested"
     },
+    "teeworlds": {
+      "name": "Teeworlds",
+      "path": "standalone/teeworlds.json",
+      "result": "untested"
+    },
     "terraria-tmodloader": {
       "name": "tModloader",
       "path": "terraria/tmodloader.json",
@@ -1600,6 +1933,11 @@ window.OCTAIL_YOLKS_STATS = {
       "name": "Terraria Vanilla",
       "path": "terraria/vanilla.json",
       "result": "pass"
+    },
+    "tes3mp": {
+      "name": "TES3MP (Morrowind multiplayer)",
+      "path": "standalone/tes3mp.json",
+      "result": "untested"
     },
     "test-game": {
       "name": "Octail Test Game",
@@ -1634,7 +1972,17 @@ window.OCTAIL_YOLKS_STATS = {
     "unturned": {
       "name": "Unturned",
       "path": "steam/unturned.json",
-      "result": "blocked"
+      "result": "untested"
+    },
+    "unvanquished": {
+      "name": "Unvanquished",
+      "path": "standalone/unvanquished.json",
+      "result": "untested"
+    },
+    "uptime-kuma": {
+      "name": "Uptime Kuma",
+      "path": "apps/uptime-kuma.json",
+      "result": "untested"
     },
     "urban-terror": {
       "name": "Urban Terror",
@@ -1656,10 +2004,30 @@ window.OCTAIL_YOLKS_STATS = {
       "path": "valheim/valheim.json",
       "result": "pass"
     },
+    "valkey": {
+      "name": "Valkey (Redis-compatible)",
+      "path": "apps/valkey.json",
+      "result": "untested"
+    },
+    "vein": {
+      "name": "VEIN",
+      "path": "steam/vein.json",
+      "result": "untested"
+    },
     "vintage-story": {
       "name": "Vintage Story",
       "path": "standalone/vintage-story.json",
       "result": "pass"
+    },
+    "warfork": {
+      "name": "Warfork",
+      "path": "steam/warfork.json",
+      "result": "untested"
+    },
+    "windrose": {
+      "name": "Windrose",
+      "path": "steam/windrose.json",
+      "result": "untested"
     },
     "wurm-unlimited": {
       "name": "Wurm Unlimited",
