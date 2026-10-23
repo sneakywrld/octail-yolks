@@ -287,6 +287,10 @@ expect_contains 'runs in the server folder' "${out}" "${work}/home"
 expect_contains 'INTERNAL_IP is exported' "${out}" $'\n1\n'
 expect_contains 'no LD_PRELOAD (nss_wrapper) is set' "${out}" 'pre=[]'
 
+# Banner, TZ check, locale, the owner's pre-start scripts, OCTAIL_DEBUG (test/entrypoint.sh, also runs alone).
+# shellcheck source=test/entrypoint.sh
+. "${here}/entrypoint.sh"
+
 # --- hooks ---------------------------------------------------------------------------------------------
 fresh
 printf 'export FROM_HOOK=hooked\ncd /\n' >"${work}/hooks/10-a.sh"
