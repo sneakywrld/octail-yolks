@@ -26,7 +26,7 @@
     "ark-survival-evolved": {
       "name": "Ark: Survival Evolved",
       "path": "ark/survival-evolved.json",
-      "result": "untested"
+      "result": "pass"
     },
     "arma-3": {
       "name": "Arma 3",
@@ -41,7 +41,7 @@
     "aska": {
       "name": "ASKA",
       "path": "steam/aska.json",
-      "result": "untested"
+      "result": "blocked"
     },
     "assaultcube": {
       "name": "AssaultCube",
@@ -81,7 +81,7 @@
     "black-mesa": {
       "name": "Black Mesa: Deathmatch",
       "path": "source/black-mesa.json",
-      "result": "untested"
+      "result": "pass"
     },
     "bun-app": {
       "name": "Bun App",
@@ -176,7 +176,7 @@
     "empyrion": {
       "name": "Empyrion - Galactic Survival",
       "path": "steam/empyrion.json",
-      "result": "untested"
+      "result": "pass"
     },
     "enshrouded": {
       "name": "Enshrouded",
@@ -206,7 +206,7 @@
     "foundry": {
       "name": "FOUNDRY",
       "path": "steam/foundry.json",
-      "result": "untested"
+      "result": "pass"
     },
     "garrysmod": {
       "name": "Garry's Mod",
@@ -236,7 +236,7 @@
     "holdfast": {
       "name": "Holdfast: Nations At War",
       "path": "steam/holdfast.json",
-      "result": "untested"
+      "result": "pass"
     },
     "hurtworld": {
       "name": "Hurtworld",
@@ -256,7 +256,7 @@
     "insurgency-sandstorm": {
       "name": "Insurgency: Sandstorm",
       "path": "steam/insurgency-sandstorm.json",
-      "result": "untested"
+      "result": "pass"
     },
     "insurgency": {
       "name": "Insurgency (2014)",
@@ -266,7 +266,7 @@
     "java-jar": {
       "name": "Java App (JAR)",
       "path": "apps/java-jar.json",
-      "result": "untested"
+      "result": "pass"
     },
     "killing-floor-2": {
       "name": "Killing Floor 2",
@@ -351,7 +351,7 @@
     "minecraft-geyser": {
       "name": "Geyser Standalone",
       "path": "minecraft/geyser.json",
-      "result": "untested"
+      "result": "pass"
     },
     "minecraft-leaf": {
       "name": "Leaf",
@@ -416,7 +416,7 @@
     "minecraft-vanilla": {
       "name": "Vanilla Minecraft",
       "path": "minecraft/vanilla.json",
-      "result": "untested"
+      "result": "pass"
     },
     "minecraft-velocity": {
       "name": "Velocity",
@@ -426,7 +426,7 @@
     "mordhau": {
       "name": "Mordhau",
       "path": "steam/mordhau.json",
-      "result": "untested"
+      "result": "pass"
     },
     "mumble": {
       "name": "Mumble Server",
@@ -436,7 +436,7 @@
     "myth-of-empires": {
       "name": "Myth of Empires",
       "path": "steam/myth-of-empires.json",
-      "result": "untested"
+      "result": "pass"
     },
     "natural-selection-2": {
       "name": "Natural Selection 2",
@@ -451,12 +451,12 @@
     "night-of-the-dead": {
       "name": "Night of the Dead",
       "path": "steam/night-of-the-dead.json",
-      "result": "untested"
+      "result": "pass"
     },
     "nightingale": {
       "name": "Nightingale",
       "path": "steam/nightingale.json",
-      "result": "untested"
+      "result": "pass"
     },
     "no-more-room-in-hell": {
       "name": "No More Room in Hell",
@@ -491,7 +491,7 @@
     "operation-harsh-doorstop": {
       "name": "Operation: Harsh Doorstop",
       "path": "steam/operation-harsh-doorstop.json",
-      "result": "untested"
+      "result": "pass"
     },
     "palworld": {
       "name": "Palworld",
@@ -506,7 +506,7 @@
     "pixark": {
       "name": "PixARK",
       "path": "steam/pixark.json",
-      "result": "untested"
+      "result": "pass"
     },
     "postgresql": {
       "name": "PostgreSQL",
@@ -531,7 +531,7 @@
     "red-discordbot": {
       "name": "Red-DiscordBot",
       "path": "apps/red-discordbot.json",
-      "result": "untested"
+      "result": "blocked"
     },
     "red-eclipse": {
       "name": "Red Eclipse 2",
@@ -541,7 +541,7 @@
     "return-to-moria": {
       "name": "The Lord of the Rings: Return to Moria",
       "path": "steam/return-to-moria.json",
-      "result": "untested"
+      "result": "pass"
     },
     "rising-world": {
       "name": "Rising World",
@@ -556,7 +556,7 @@
     "runescape-dragonwilds": {
       "name": "RuneScape: Dragonwilds",
       "path": "steam/runescape-dragonwilds.json",
-      "result": "untested"
+      "result": "blocked"
     },
     "rust": {
       "name": "Rust",
@@ -586,12 +586,12 @@
     "soulmask": {
       "name": "Soulmask",
       "path": "steam/soulmask.json",
-      "result": "untested"
+      "result": "pass"
     },
     "source-engine": {
       "name": "Source Engine Game (SRCDS)",
       "path": "source/generic.json",
-      "result": "untested"
+      "result": "pass"
     },
     "space-engineers": {
       "name": "Space Engineers",
@@ -606,7 +606,7 @@
     "squad-44": {
       "name": "Squad 44",
       "path": "steam/squad-44.json",
-      "result": "untested"
+      "result": "pass"
     },
     "squad": {
       "name": "Squad",
@@ -626,12 +626,12 @@
     "steamcmd-generic": {
       "name": "Generic SteamCMD game",
       "path": "steamcmd/generic.json",
-      "result": "untested"
+      "result": "pass"
     },
     "stormworks": {
       "name": "Stormworks: Build and Rescue",
       "path": "steam/stormworks.json",
-      "result": "untested"
+      "result": "blocked"
     },
     "supertuxkart": {
       "name": "SuperTuxKart",
@@ -646,12 +646,12 @@
     "team-fortress-2-classified": {
       "name": "Team Fortress 2 Classified",
       "path": "source/team-fortress-2-classified.json",
-      "result": "fail"
+      "result": "pass"
     },
     "team-fortress-2": {
       "name": "Team Fortress 2",
       "path": "source/team-fortress-2.json",
-      "result": "untested"
+      "result": "pass"
     },
     "team-fortress-classic": {
       "name": "Team Fortress Classic",
@@ -661,7 +661,7 @@
     "teamspeak": {
       "name": "TeamSpeak 3 Server",
       "path": "voice/teamspeak.json",
-      "result": "untested"
+      "result": "pass"
     },
     "teeworlds": {
       "name": "Teeworlds",
@@ -691,22 +691,22 @@
     "test-game": {
       "name": "Octail Test Game",
       "path": "testing/test-game.json",
-      "result": "untested"
+      "result": "pass"
     },
     "the-forest": {
       "name": "The Forest",
       "path": "steam/the-forest.json",
-      "result": "untested"
+      "result": "pass"
     },
     "the-front": {
       "name": "The Front",
       "path": "steam/the-front.json",
-      "result": "untested"
+      "result": "pass"
     },
     "the-isle": {
       "name": "The Isle (Evrima)",
       "path": "steam/the-isle.json",
-      "result": "untested"
+      "result": "pass"
     },
     "unreal-tournament-2004": {
       "name": "Unreal Tournament 2004",
@@ -761,7 +761,7 @@
     "vein": {
       "name": "VEIN",
       "path": "steam/vein.json",
-      "result": "untested"
+      "result": "pass"
     },
     "vintage-story": {
       "name": "Vintage Story",
@@ -776,7 +776,7 @@
     "windrose": {
       "name": "Windrose",
       "path": "steam/windrose.json",
-      "result": "untested"
+      "result": "pass"
     },
     "wurm-unlimited": {
       "name": "Wurm Unlimited",

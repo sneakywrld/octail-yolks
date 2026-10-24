@@ -9,10 +9,10 @@ window.OCTAIL_YOLKS_STATS = {
   "multi_arch": 29,
   "eggs_total": 158,
   "eggs_tested": {
-    "pass": 111,
-    "fail": 1,
-    "blocked": 11,
-    "untested": 35
+    "pass": 140,
+    "fail": 0,
+    "blocked": 15,
+    "untested": 3
   },
   "ci": false,
   "families": [
@@ -124,10 +124,10 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-vanilla"
       ],
       "tested": {
-        "pass": 10,
+        "pass": 12,
         "fail": 0,
         "blocked": 0,
-        "untested": 2
+        "untested": 0
       },
       "ci": null
     },
@@ -157,10 +157,10 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-vanilla"
       ],
       "tested": {
-        "pass": 10,
+        "pass": 12,
         "fail": 0,
         "blocked": 0,
-        "untested": 2
+        "untested": 0
       },
       "ci": null
     },
@@ -196,10 +196,10 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-velocity"
       ],
       "tested": {
-        "pass": 16,
+        "pass": 18,
         "fail": 0,
         "blocked": 0,
-        "untested": 2
+        "untested": 0
       },
       "ci": null
     },
@@ -239,10 +239,10 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-velocity"
       ],
       "tested": {
-        "pass": 19,
+        "pass": 22,
         "fail": 0,
         "blocked": 0,
-        "untested": 3
+        "untested": 0
       },
       "ci": null
     },
@@ -280,10 +280,10 @@ window.OCTAIL_YOLKS_STATS = {
         "minecraft-velocity"
       ],
       "tested": {
-        "pass": 16,
+        "pass": 19,
         "fail": 0,
         "blocked": 1,
-        "untested": 3
+        "untested": 0
       },
       "ci": null
     },
@@ -642,10 +642,10 @@ window.OCTAIL_YOLKS_STATS = {
         "xonotic"
       ],
       "tested": {
-        "pass": 25,
+        "pass": 26,
         "fail": 0,
-        "blocked": 2,
-        "untested": 2
+        "blocked": 3,
+        "untested": 0
       },
       "ci": null
     },
@@ -665,10 +665,10 @@ window.OCTAIL_YOLKS_STATS = {
         "test-game"
       ],
       "tested": {
-        "pass": 1,
+        "pass": 2,
         "fail": 0,
         "blocked": 0,
-        "untested": 1
+        "untested": 0
       },
       "ci": null
     },
@@ -732,10 +732,10 @@ window.OCTAIL_YOLKS_STATS = {
         "wurm-unlimited"
       ],
       "tested": {
-        "pass": 27,
+        "pass": 38,
         "fail": 0,
-        "blocked": 6,
-        "untested": 14
+        "blocked": 7,
+        "untested": 2
       },
       "ci": null
     },
@@ -755,10 +755,10 @@ window.OCTAIL_YOLKS_STATS = {
         "stationeers"
       ],
       "tested": {
-        "pass": 1,
+        "pass": 2,
         "fail": 0,
         "blocked": 1,
-        "untested": 1
+        "untested": 0
       },
       "ci": null
     },
@@ -838,10 +838,10 @@ window.OCTAIL_YOLKS_STATS = {
         "zombie-panic-source"
       ],
       "tested": {
-        "pass": 17,
-        "fail": 1,
+        "pass": 21,
+        "fail": 0,
         "blocked": 0,
-        "untested": 3
+        "untested": 0
       },
       "ci": null
     },
@@ -885,10 +885,10 @@ window.OCTAIL_YOLKS_STATS = {
         "windrose"
       ],
       "tested": {
-        "pass": 4,
+        "pass": 6,
         "fail": 0,
         "blocked": 0,
-        "untested": 2
+        "untested": 0
       },
       "ci": null
     },
@@ -919,10 +919,10 @@ window.OCTAIL_YOLKS_STATS = {
         "the-forest"
       ],
       "tested": {
-        "pass": 4,
+        "pass": 11,
         "fail": 0,
-        "blocked": 1,
-        "untested": 9
+        "blocked": 3,
+        "untested": 0
       },
       "ci": null
     },
@@ -943,10 +943,10 @@ window.OCTAIL_YOLKS_STATS = {
         "v-rising"
       ],
       "tested": {
-        "pass": 2,
+        "pass": 3,
         "fail": 0,
-        "blocked": 0,
-        "untested": 2
+        "blocked": 1,
+        "untested": 0
       },
       "ci": null
     },
@@ -1116,10 +1116,10 @@ window.OCTAIL_YOLKS_STATS = {
         "zombie-panic-source"
       ],
       "tested": {
-        "pass": 89,
-        "fail": 1,
-        "blocked": 10,
-        "untested": 32
+        "pass": 115,
+        "fail": 0,
+        "blocked": 14,
+        "untested": 3
       },
       "ci": null
     },
@@ -1158,10 +1158,10 @@ window.OCTAIL_YOLKS_STATS = {
         "test-game"
       ],
       "tested": {
-        "pass": 17,
+        "pass": 20,
         "fail": 0,
         "blocked": 1,
-        "untested": 3
+        "untested": 0
       },
       "ci": null
     },
@@ -1299,7 +1299,7 @@ window.OCTAIL_YOLKS_STATS = {
     "ark-survival-evolved": {
       "name": "Ark: Survival Evolved",
       "path": "ark/survival-evolved.json",
-      "result": "untested"
+      "result": "pass"
     },
     "arma-3": {
       "name": "Arma 3",
@@ -1314,7 +1314,7 @@ window.OCTAIL_YOLKS_STATS = {
     "aska": {
       "name": "ASKA",
       "path": "steam/aska.json",
-      "result": "untested"
+      "result": "blocked"
     },
     "assaultcube": {
       "name": "AssaultCube",
@@ -1354,7 +1354,7 @@ window.OCTAIL_YOLKS_STATS = {
     "black-mesa": {
       "name": "Black Mesa: Deathmatch",
       "path": "source/black-mesa.json",
-      "result": "untested"
+      "result": "pass"
     },
     "bun-app": {
       "name": "Bun App",
@@ -1449,7 +1449,7 @@ window.OCTAIL_YOLKS_STATS = {
     "empyrion": {
       "name": "Empyrion - Galactic Survival",
       "path": "steam/empyrion.json",
-      "result": "untested"
+      "result": "pass"
     },
     "enshrouded": {
       "name": "Enshrouded",
@@ -1479,7 +1479,7 @@ window.OCTAIL_YOLKS_STATS = {
     "foundry": {
       "name": "FOUNDRY",
       "path": "steam/foundry.json",
-      "result": "untested"
+      "result": "pass"
     },
     "garrysmod": {
       "name": "Garry's Mod",
@@ -1509,7 +1509,7 @@ window.OCTAIL_YOLKS_STATS = {
     "holdfast": {
       "name": "Holdfast: Nations At War",
       "path": "steam/holdfast.json",
-      "result": "untested"
+      "result": "pass"
     },
     "hurtworld": {
       "name": "Hurtworld",
@@ -1529,7 +1529,7 @@ window.OCTAIL_YOLKS_STATS = {
     "insurgency-sandstorm": {
       "name": "Insurgency: Sandstorm",
       "path": "steam/insurgency-sandstorm.json",
-      "result": "untested"
+      "result": "pass"
     },
     "insurgency": {
       "name": "Insurgency (2014)",
@@ -1539,7 +1539,7 @@ window.OCTAIL_YOLKS_STATS = {
     "java-jar": {
       "name": "Java App (JAR)",
       "path": "apps/java-jar.json",
-      "result": "untested"
+      "result": "pass"
     },
     "killing-floor-2": {
       "name": "Killing Floor 2",
@@ -1624,7 +1624,7 @@ window.OCTAIL_YOLKS_STATS = {
     "minecraft-geyser": {
       "name": "Geyser Standalone",
       "path": "minecraft/geyser.json",
-      "result": "untested"
+      "result": "pass"
     },
     "minecraft-leaf": {
       "name": "Leaf",
@@ -1689,7 +1689,7 @@ window.OCTAIL_YOLKS_STATS = {
     "minecraft-vanilla": {
       "name": "Vanilla Minecraft",
       "path": "minecraft/vanilla.json",
-      "result": "untested"
+      "result": "pass"
     },
     "minecraft-velocity": {
       "name": "Velocity",
@@ -1699,7 +1699,7 @@ window.OCTAIL_YOLKS_STATS = {
     "mordhau": {
       "name": "Mordhau",
       "path": "steam/mordhau.json",
-      "result": "untested"
+      "result": "pass"
     },
     "mumble": {
       "name": "Mumble Server",
@@ -1709,7 +1709,7 @@ window.OCTAIL_YOLKS_STATS = {
     "myth-of-empires": {
       "name": "Myth of Empires",
       "path": "steam/myth-of-empires.json",
-      "result": "untested"
+      "result": "pass"
     },
     "natural-selection-2": {
       "name": "Natural Selection 2",
@@ -1724,12 +1724,12 @@ window.OCTAIL_YOLKS_STATS = {
     "night-of-the-dead": {
       "name": "Night of the Dead",
       "path": "steam/night-of-the-dead.json",
-      "result": "untested"
+      "result": "pass"
     },
     "nightingale": {
       "name": "Nightingale",
       "path": "steam/nightingale.json",
-      "result": "untested"
+      "result": "pass"
     },
     "no-more-room-in-hell": {
       "name": "No More Room in Hell",
@@ -1764,7 +1764,7 @@ window.OCTAIL_YOLKS_STATS = {
     "operation-harsh-doorstop": {
       "name": "Operation: Harsh Doorstop",
       "path": "steam/operation-harsh-doorstop.json",
-      "result": "untested"
+      "result": "pass"
     },
     "palworld": {
       "name": "Palworld",
@@ -1779,7 +1779,7 @@ window.OCTAIL_YOLKS_STATS = {
     "pixark": {
       "name": "PixARK",
       "path": "steam/pixark.json",
-      "result": "untested"
+      "result": "pass"
     },
     "postgresql": {
       "name": "PostgreSQL",
@@ -1804,7 +1804,7 @@ window.OCTAIL_YOLKS_STATS = {
     "red-discordbot": {
       "name": "Red-DiscordBot",
       "path": "apps/red-discordbot.json",
-      "result": "untested"
+      "result": "blocked"
     },
     "red-eclipse": {
       "name": "Red Eclipse 2",
@@ -1814,7 +1814,7 @@ window.OCTAIL_YOLKS_STATS = {
     "return-to-moria": {
       "name": "The Lord of the Rings: Return to Moria",
       "path": "steam/return-to-moria.json",
-      "result": "untested"
+      "result": "pass"
     },
     "rising-world": {
       "name": "Rising World",
@@ -1829,7 +1829,7 @@ window.OCTAIL_YOLKS_STATS = {
     "runescape-dragonwilds": {
       "name": "RuneScape: Dragonwilds",
       "path": "steam/runescape-dragonwilds.json",
-      "result": "untested"
+      "result": "blocked"
     },
     "rust": {
       "name": "Rust",
@@ -1859,12 +1859,12 @@ window.OCTAIL_YOLKS_STATS = {
     "soulmask": {
       "name": "Soulmask",
       "path": "steam/soulmask.json",
-      "result": "untested"
+      "result": "pass"
     },
     "source-engine": {
       "name": "Source Engine Game (SRCDS)",
       "path": "source/generic.json",
-      "result": "untested"
+      "result": "pass"
     },
     "space-engineers": {
       "name": "Space Engineers",
@@ -1879,7 +1879,7 @@ window.OCTAIL_YOLKS_STATS = {
     "squad-44": {
       "name": "Squad 44",
       "path": "steam/squad-44.json",
-      "result": "untested"
+      "result": "pass"
     },
     "squad": {
       "name": "Squad",
@@ -1899,12 +1899,12 @@ window.OCTAIL_YOLKS_STATS = {
     "steamcmd-generic": {
       "name": "Generic SteamCMD game",
       "path": "steamcmd/generic.json",
-      "result": "untested"
+      "result": "pass"
     },
     "stormworks": {
       "name": "Stormworks: Build and Rescue",
       "path": "steam/stormworks.json",
-      "result": "untested"
+      "result": "blocked"
     },
     "supertuxkart": {
       "name": "SuperTuxKart",
@@ -1919,12 +1919,12 @@ window.OCTAIL_YOLKS_STATS = {
     "team-fortress-2-classified": {
       "name": "Team Fortress 2 Classified",
       "path": "source/team-fortress-2-classified.json",
-      "result": "fail"
+      "result": "pass"
     },
     "team-fortress-2": {
       "name": "Team Fortress 2",
       "path": "source/team-fortress-2.json",
-      "result": "untested"
+      "result": "pass"
     },
     "team-fortress-classic": {
       "name": "Team Fortress Classic",
@@ -1934,7 +1934,7 @@ window.OCTAIL_YOLKS_STATS = {
     "teamspeak": {
       "name": "TeamSpeak 3 Server",
       "path": "voice/teamspeak.json",
-      "result": "untested"
+      "result": "pass"
     },
     "teeworlds": {
       "name": "Teeworlds",
@@ -1964,22 +1964,22 @@ window.OCTAIL_YOLKS_STATS = {
     "test-game": {
       "name": "Octail Test Game",
       "path": "testing/test-game.json",
-      "result": "untested"
+      "result": "pass"
     },
     "the-forest": {
       "name": "The Forest",
       "path": "steam/the-forest.json",
-      "result": "untested"
+      "result": "pass"
     },
     "the-front": {
       "name": "The Front",
       "path": "steam/the-front.json",
-      "result": "untested"
+      "result": "pass"
     },
     "the-isle": {
       "name": "The Isle (Evrima)",
       "path": "steam/the-isle.json",
-      "result": "untested"
+      "result": "pass"
     },
     "unreal-tournament-2004": {
       "name": "Unreal Tournament 2004",
@@ -2034,7 +2034,7 @@ window.OCTAIL_YOLKS_STATS = {
     "vein": {
       "name": "VEIN",
       "path": "steam/vein.json",
-      "result": "untested"
+      "result": "pass"
     },
     "vintage-story": {
       "name": "Vintage Story",
@@ -2049,7 +2049,7 @@ window.OCTAIL_YOLKS_STATS = {
     "windrose": {
       "name": "Windrose",
       "path": "steam/windrose.json",
-      "result": "untested"
+      "result": "pass"
     },
     "wurm-unlimited": {
       "name": "Wurm Unlimited",

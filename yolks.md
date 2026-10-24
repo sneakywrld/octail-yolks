@@ -180,6 +180,23 @@ several images (the Minecraft Java eggs offer Java 8 to 25) is listed under each
 Newest first. Dates are when the work landed in the Octail monorepo, where this repository's folder lives; "round" is
 the batch of parallel work it came in.
 
+### 2026-10-24: every image in use on vm1, what the runs taught
+
+No image changed. The eggs that hadn't passed ran on vm1 one at a time (see the eggs repository's eggs.md), on
+`steamcmd_debian`, `wine`, `proton`, `source`, `debian`, `alpine` and the Java images, and the usage tables above are
+regenerated from the eggs as they are now.
+
+- **Windows servers under Wine or Proton don't see Ctrl+C.** Wine doesn't turn SIGINT into a console Ctrl+C for a
+  Windows program, so Astroneer and Windrose ignore Stop; their eggs give them 30 s and then SIGTERM. Eggs for other
+  Windows servers that hang on Stop need the same trap; it is the eggs' job, the images stay as they are.
+- **Line ends matter to Windows servers.** ASKA reads its own properties file looking for CRLF; Tentacle's config
+  editors now keep a CRLF file CRLF, and eggs that write such files keep the `\r`.
+- **The Java image has to match the Minecraft version** when mods pin it (Cobblemon for 1.21.1 refuses Java 25): the
+  panel now moves a server on a `java_<n>` image to the one its Minecraft version runs on after a version change or a
+  modpack install (8 to 1.16.5, 16 for 1.17, 17 to 1.20.4, 21 to 1.21, 25 from 26.1).
+- **SteamCMD in the images and in installs** exits 0 even when an app failed to install; scripts must check its
+  `Success! App` line, as the eggs now do.
+
 ### 2026-10-23: new runtimes, smaller Wine, signed build records (round 30)
 
 - **New tags**: `nodejs_24` (the current LTS), `python_3.13`, `python_3.14`, `go_1.26`, `go_1.27`, `bun_1` and
