@@ -112,48 +112,68 @@ All of it runs in this repository's `.github/workflows/build.yml`; the README ha
 
 ## Which eggs use which image
 
-From the `docker_images` and installer containers of the 129 eggs Octail ships, as of 2026-10-23 before this round.
-An egg that offers several images (the Minecraft Java eggs offer Java 8 to 25) is listed under each.
+From the `docker_images` and installer containers of the 158 eggs Octail ships, as of 2026-10-24. An egg that offers
+several images (the Minecraft Java eggs offer Java 8 to 25) is listed under each.
 
-- `java_8` (11): Arclight, Fabric, Forge, Java App (JAR), Mohist, NeoForge, Paper, Purpur, Quilt, Spigot, SpongeVanilla.
-- `java_11` (11): the same eggs as `java_8`.
-- `java_17` (16): Arclight, BungeeCord, Fabric, Folia, Forge, Java App (JAR), Mindustry, Mohist, NeoForge, Paper,
-  Pufferfish, Purpur, Quilt, Spigot, SpongeVanilla, Velocity.
-- `java_21` (19): Arclight, BungeeCord, Fabric, Folia, Forge, Geyser Standalone, Java App (JAR), Leaf, Mindustry, Mohist,
-  NeoForge, Paper, PowerNukkitX, Pufferfish, Purpur, Quilt, Spigot, SpongeVanilla, Velocity.
-- `java_25` (17): BungeeCord, Fabric, Folia, Forge, Geyser Standalone, Hytale, Java App (JAR), Leaf, NeoForge, Paper,
-  PowerNukkitX, Pufferfish, Purpur, Quilt, Spigot, SpongeVanilla, Velocity.
-- `dotnet_8` (2): tModLoader, Vintage Story.
+- `java_8` (12): Arclight, Fabric, Forge, Java App (JAR), Mohist, NeoForge, Paper, Purpur, Quilt, Spigot, SpongeVanilla,
+  Vanilla Minecraft.
+- `java_11` (12): Arclight, Fabric, Forge, Java App (JAR), Mohist, NeoForge, Paper, Purpur, Quilt, Spigot,
+  SpongeVanilla, Vanilla Minecraft.
+- `java_17` (18): Arclight, BungeeCord, Fabric, Folia, Forge, Java App (JAR), Lavalink, Mindustry, Mohist, NeoForge,
+  Paper, Pufferfish, Purpur, Quilt, Spigot, SpongeVanilla, Vanilla Minecraft, Velocity.
+- `java_21` (22): Arclight, BungeeCord, Fabric, Folia, Forge, Geyser Standalone, Java App (JAR), Lavalink, Leaf,
+  Mindustry, Mohist, NanoLimbo, NeoForge, Paper, PowerNukkitX, Pufferfish, Purpur, Quilt, Spigot, SpongeVanilla, Vanilla
+  Minecraft, Velocity.
+- `java_25` (20): BungeeCord, Fabric, Folia, Forge, Geyser Standalone, Hytale, Java App (JAR), Lavalink, Leaf,
+  NanoLimbo, NeoForge, Paper, PowerNukkitX, Pufferfish, Purpur, Quilt, Spigot, SpongeVanilla, Vanilla Minecraft,
+  Velocity.
+- `dotnet_8` (2): tModloader, Vintage Story.
 - `dotnet_9` (1): Terraria TShock.
 - `dotnet_10` (3): Space Station 14, Terraria TShock, Vintage Story.
-- `mono`: no shipped egg.
-- `nodejs_20`, `nodejs_22`: Node.js App. `python_3.12`: Python App. `go_1.23`: Go App.
-- `debian` (16): BeamMP, DDNet, Factorio, Minecraft Bedrock, Mumble, OpenArena, OpenRCT2, OpenTTD, PocketMine-MP, Red
-  Eclipse 2, TeamSpeak 3, Terraria (vanilla), Unreal Tournament (1999), Unreal Tournament 2004, Urban Terror, Xonotic.
+- `nodejs_20` (1): Node.js App.
+- `nodejs_22` (2): Node.js App, Uptime Kuma.
+- `nodejs_24` (1): Node.js App.
+- `python_3.12` (1): Python App.
+- `python_3.13` (1): Python App.
+- `python_3.14` (1): Python App.
+- `go_1.23` (1): Go App.
+- `go_1.26` (1): Go App.
+- `go_1.27` (1): Go App.
+- `bun_1` (1): Bun App.
+- `deno_2` (1): Deno App.
+- `debian` (29): AssaultCube, BeamMP Server, Cuberite, DDraceNetwork (DDNet), ET: Legacy, Factorio, Gate, MariaDB,
+  Mumble Server, OpenArena, OpenRA, OpenRCT2, OpenTTD, PocketMine-MP, PostgreSQL, Red Eclipse 2, Red-DiscordBot,
+  SuperTuxKart, TeamSpeak 3 Server, Teeworlds, Terraria Vanilla, TES3MP (Morrowind multiplayer), Unreal Tournament
+  (1999), Unreal Tournament 2004, Unvanquished, Urban Terror, Valkey (Redis-compatible), Vanilla Bedrock, Xonotic.
 - `alpine` (2): Luanti, Octail Test Game.
-- `steamcmd_debian` (39): 7 Days to Die, American Truck Simulator, ARK: Survival Evolved, Arma 3, Arma Reforger, Assetto
-  Corsa, Avorion, Barotrauma, Conan Exiles, Core Keeper, Counter-Strike: Source, Craftopia, DayZ, Don't Starve
-  Together, Euro Truck Simulator 2, the generic SteamCMD egg, Holdfast: Nations At War, Hurtworld, Killing Floor,
-  Killing Floor 2, Mordhau, Natural Selection 2, Necesse, Palworld, Project Zomboid, Quake Live, Rising World,
-  Satisfactory, SCP: Secret Laboratory, Soulmask, Squad, Squad 44, Starbound, The Front, The Isle (Evrima), Unturned,
-  Valheim, Valheim with BepInEx, Wurm Unlimited.
+- `steamcmd_debian` (47): 7 Days To Die, American Truck Simulator Dedicated Server, Ark: Survival Evolved, Arma 3, Arma
+  Reforger, Assetto Corsa, Avorion, Ballistic Overkill, Barotrauma, Chivalry: Medieval Warfare, Conan Exiles Enhanced,
+  Core Keeper, Counter-Strike: Source, Craftopia, DayZ, Don't Starve Together, Euro Truck Simulator 2 Dedicated Server,
+  Generic SteamCMD game, Holdfast: Nations At War, Hurtworld, Killing Floor, Killing Floor 2, Mordhau, Natural Selection
+  2, Necesse, Nightingale, Operation: Harsh Doorstop, Palworld, Project Zomboid, Quake Live, Rising World, RuneScape:
+  Dragonwilds, Satisfactory, SCP: Secret Laboratory, Smalland: Survive the Wilds, Soulmask, Squad, Squad 44, Starbound,
+  The Front, The Isle (Evrima), Unturned, Valheim, Valheim BepINex, VEIN, Warfork, Wurm Unlimited.
 - `steamcmd_ubuntu` (3): Insurgency: Sandstorm, Pavlov VR, Stationeers.
 - `steamcmd_dotnet` (1): Eco.
 - `steamcmd_sniper` (1): Counter-Strike 2.
-- `source` (21): Black Mesa, Counter-Strike 1.6, Counter-Strike: Condition Zero, Day of Defeat, Day of Defeat: Source,
-  Day of Infamy, Deathmatch Classic, Fistful of Frags, Garry's Mod, Half-Life 2: Deathmatch, Half-Life Deathmatch,
-  Insurgency (2014), Left 4 Dead, Left 4 Dead 2, No More Room in Hell, the generic Source egg, Sven Co-op, Team Fortress
-  2, Team Fortress 2 Classified, Team Fortress Classic, Zombie Panic! Source.
+- `source` (21): Black Mesa: Deathmatch, Counter-Strike 1.6, Counter-Strike: Condition Zero, Day of Defeat, Day of
+  Defeat: Source, Day of Infamy, Deathmatch Classic, Fistful of Frags, Garry's Mod, Half-Life 2: Deathmatch, Half-Life
+  Deathmatch, Insurgency (2014), Left 4 Dead, Left 4 Dead 2, No More Room in Hell, Source Engine Game (SRCDS), Sven
+  Co-op, Team Fortress 2, Team Fortress 2 Classified, Team Fortress Classic, Zombie Panic! Source.
 - `rust` (1): Rust.
-- `proton` (5): Abiotic Factor, ARK: Survival Ascended, Astroneer, Enshrouded, the generic SteamCMD egg.
-- `wine` (13): ASKA, Empyrion, Ground Branch, Icarus, Myth of Empires, Night of the Dead, PixARK, Return to Moria, Risk
-  of Rain 2, Sons of the Forest, Space Engineers, Stormworks, The Forest.
-- `wine_staging` (4): Empyrion, Ground Branch, Stormworks, V Rising (BepInEx).
-- `installer_debian` (107): every egg not listed under another installer below.
-- `installer_alpine` (17): Arclight, BungeeCord, Folia, Geyser Standalone, Hytale, Leaf, Luanti, Mohist, Octail Test
-  Game, OpenTTD, Paper, PocketMine-MP, PowerNukkitX, Pufferfish, Purpur, SpongeVanilla, Velocity.
-- `installer_java_8` (1): Forge. `installer_java_11` (1): Fabric. `installer_java_21` (2): NeoForge, Quilt.
-  `installer_java_25` (1): Spigot.
+- `proton` (6): Abiotic Factor, ARK: Survival Ascended, Astroneer, Enshrouded, Generic SteamCMD game, Windrose.
+- `wine_staging` (4): Empyrion - Galactic Survival, Ground Branch, Stormworks: Build and Rescue, V Rising BepInEx.
+- `wine` (14): ASKA, Empyrion - Galactic Survival, FOUNDRY, Ground Branch, Icarus, Myth of Empires, Night of the Dead,
+  PixARK, Risk of Rain 2, Sons Of The Forest, Space Engineers, Stormworks: Build and Rescue, The Forest, The Lord of the
+  Rings: Return to Moria.
+- `installer_debian` (132): every egg not listed under another installer below.
+- `installer_alpine` (21): Arclight, BungeeCord, Cuberite, Folia, Gate, Geyser Standalone, Hytale, Leaf, Luanti, Mohist,
+  NanoLimbo, Octail Test Game, OpenTTD, Paper, PocketMine-MP, PowerNukkitX, Pufferfish, Purpur, SpongeVanilla, Vanilla
+  Minecraft, Velocity.
+- `installer_java_8` (1): Forge.
+- `installer_java_11` (1): Fabric.
+- `installer_java_21` (2): NeoForge, Quilt.
+- `installer_java_25` (1): Spigot.
 
 ## Changelog
 
