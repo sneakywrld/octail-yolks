@@ -74,7 +74,7 @@ jobs:
   test:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false # no step pushes to git
 
@@ -118,7 +118,7 @@ jobs:
     outputs:
       matrix: ${{ steps.select.outputs.matrix }}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -157,7 +157,7 @@ jobs:
         image: ${{ fromJSON(needs.plan.outputs.matrix) }}
     name: build ${{ matrix.image.tag }}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false # no step pushes to git
 
@@ -236,7 +236,7 @@ jobs:
 
       # Code scanning needs GitHub Advanced Security on a private repository; without it (or on a fork's pull request)
       # the upload fails and the job goes on: the job summary and the artifact have the same findings.
-      - uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+      - uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         if: ${{ !cancelled() && steps.scan.outcome != 'skipped' }}
         continue-on-error: true
         with:
@@ -310,7 +310,7 @@ jobs:
           PUSHED: ${{ steps.check.outputs.push == 'true' && '1' || '0' }}
         run: scripts/report.sh fact "${TAG}" "$RUNNER_TEMP/stats"
 
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: github.event_name != 'pull_request' && steps.scan.outcome == 'success' && steps.check.outcome == 'success'
         with:
           name: stats-${{ matrix.image.tag }}
@@ -319,7 +319,7 @@ jobs:
           retention-days: 7
 
       # The scan report, SARIF and SBOMs of every build (pull requests too), kept 90 days.
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: ${{ !cancelled() && steps.scan.outcome != 'skipped' }}
         with:
           name: supply-chain-${{ matrix.image.tag }}
@@ -340,7 +340,7 @@ jobs:
       group: build-report
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: true # scripts/report.sh pushes the stats branch with the job's token
 
