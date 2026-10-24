@@ -10,7 +10,6 @@ image with its base and the eggs that use it, and a changelog of all image work 
 - [The images](#the-images)
 - [Which eggs use which image](#which-eggs-use-which-image)
 - [Changelog](#changelog)
-- [This round (2026-10-23)](#this-round-2026-10-23)
 
 ## What octail-yolks is, and why
 
