@@ -16,7 +16,7 @@
     "american-truck-simulator": {
       "name": "American Truck Simulator Dedicated Server",
       "path": "steam/american-truck-simulator.json",
-      "result": "untested"
+      "result": "pass"
     },
     "ark-survival-ascended": {
       "name": "ARK: Survival Ascended",
@@ -36,7 +36,7 @@
     "arma-reforger": {
       "name": "Arma Reforger",
       "path": "steam/arma-reforger.json",
-      "result": "untested"
+      "result": "pass"
     },
     "aska": {
       "name": "ASKA",
@@ -46,7 +46,7 @@
     "assaultcube": {
       "name": "AssaultCube",
       "path": "standalone/assaultcube.json",
-      "result": "untested"
+      "result": "pass"
     },
     "assetto-corsa": {
       "name": "Assetto Corsa",
@@ -56,17 +56,17 @@
     "astroneer": {
       "name": "Astroneer",
       "path": "steam/astroneer.json",
-      "result": "fail"
+      "result": "pass"
     },
     "avorion": {
       "name": "Avorion",
       "path": "steam/avorion.json",
-      "result": "untested"
+      "result": "pass"
     },
     "ballistic-overkill": {
       "name": "Ballistic Overkill",
       "path": "steam/ballistic-overkill.json",
-      "result": "untested"
+      "result": "pass"
     },
     "barotrauma": {
       "name": "Barotrauma",
@@ -86,17 +86,17 @@
     "bun-app": {
       "name": "Bun App",
       "path": "apps/bun-app.json",
-      "result": "untested"
+      "result": "pass"
     },
     "chivalry-medieval-warfare": {
       "name": "Chivalry: Medieval Warfare",
       "path": "steam/chivalry-medieval-warfare.json",
-      "result": "untested"
+      "result": "pass"
     },
     "conan-exiles": {
       "name": "Conan Exiles Enhanced",
       "path": "steam/conan-exiles.json",
-      "result": "untested"
+      "result": "pass"
     },
     "core-keeper": {
       "name": "Core Keeper",
@@ -126,12 +126,12 @@
     "craftopia": {
       "name": "Craftopia",
       "path": "steam/craftopia.json",
-      "result": "fail"
+      "result": "pass"
     },
     "day-of-defeat-source": {
       "name": "Day of Defeat: Source",
       "path": "source/day-of-defeat-source.json",
-      "result": "untested"
+      "result": "pass"
     },
     "day-of-defeat": {
       "name": "Day of Defeat",
@@ -141,7 +141,7 @@
     "day-of-infamy": {
       "name": "Day of Infamy",
       "path": "source/day-of-infamy.json",
-      "result": "untested"
+      "result": "pass"
     },
     "dayz": {
       "name": "DayZ",
@@ -161,7 +161,7 @@
     "deno-app": {
       "name": "Deno App",
       "path": "apps/deno-app.json",
-      "result": "untested"
+      "result": "pass"
     },
     "dont-starve-together": {
       "name": "Don't Starve Together",
@@ -171,7 +171,7 @@
     "eco": {
       "name": "Eco",
       "path": "steam/eco.json",
-      "result": "untested"
+      "result": "pass"
     },
     "empyrion": {
       "name": "Empyrion - Galactic Survival",
@@ -186,12 +186,12 @@
     "et-legacy": {
       "name": "ET: Legacy",
       "path": "standalone/et-legacy.json",
-      "result": "untested"
+      "result": "pass"
     },
     "euro-truck-simulator-2": {
       "name": "Euro Truck Simulator 2 Dedicated Server",
       "path": "steam/euro-truck-simulator-2.json",
-      "result": "untested"
+      "result": "pass"
     },
     "factorio": {
       "name": "Factorio",
@@ -201,7 +201,7 @@
     "fistful-of-frags": {
       "name": "Fistful of Frags",
       "path": "source/fistful-of-frags.json",
-      "result": "untested"
+      "result": "pass"
     },
     "foundry": {
       "name": "FOUNDRY",
@@ -211,12 +211,12 @@
     "garrysmod": {
       "name": "Garry's Mod",
       "path": "source/garrysmod.json",
-      "result": "untested"
+      "result": "pass"
     },
     "go-app": {
       "name": "Go App",
       "path": "apps/go-app.json",
-      "result": "untested"
+      "result": "pass"
     },
     "ground-branch": {
       "name": "Ground Branch",
@@ -241,7 +241,7 @@
     "hurtworld": {
       "name": "Hurtworld",
       "path": "steam/hurtworld.json",
-      "result": "untested"
+      "result": "pass"
     },
     "hytale": {
       "name": "Hytale",
@@ -261,7 +261,7 @@
     "insurgency": {
       "name": "Insurgency (2014)",
       "path": "source/insurgency.json",
-      "result": "untested"
+      "result": "pass"
     },
     "java-jar": {
       "name": "Java App (JAR)",
@@ -271,7 +271,7 @@
     "killing-floor-2": {
       "name": "Killing Floor 2",
       "path": "steam/killing-floor-2.json",
-      "result": "untested"
+      "result": "pass"
     },
     "killing-floor": {
       "name": "Killing Floor",
@@ -281,12 +281,12 @@
     "lavalink": {
       "name": "Lavalink",
       "path": "apps/lavalink.json",
-      "result": "untested"
+      "result": "pass"
     },
     "left-4-dead-2": {
       "name": "Left 4 Dead 2",
       "path": "source/left-4-dead-2.json",
-      "result": "untested"
+      "result": "pass"
     },
     "left-4-dead": {
       "name": "Left 4 Dead",
@@ -301,7 +301,7 @@
     "mariadb": {
       "name": "MariaDB",
       "path": "apps/mariadb.json",
-      "result": "untested"
+      "result": "pass"
     },
     "mindustry": {
       "name": "Mindustry",
@@ -316,11 +316,16 @@
     "minecraft-bedrock": {
       "name": "Vanilla Bedrock",
       "path": "minecraft/bedrock.json",
-      "result": "untested"
+      "result": "pass"
     },
     "minecraft-bungeecord": {
       "name": "BungeeCord",
       "path": "minecraft/bungeecord.json",
+      "result": "pass"
+    },
+    "minecraft-cuberite": {
+      "name": "Cuberite",
+      "path": "minecraft/cuberite.json",
       "result": "pass"
     },
     "minecraft-fabric": {
@@ -331,11 +336,16 @@
     "minecraft-folia": {
       "name": "Folia",
       "path": "minecraft/folia.json",
-      "result": "blocked"
+      "result": "pass"
     },
     "minecraft-forge": {
       "name": "Forge",
       "path": "minecraft/forge.json",
+      "result": "pass"
+    },
+    "minecraft-gate": {
+      "name": "Gate",
+      "path": "minecraft/gate.json",
       "result": "pass"
     },
     "minecraft-geyser": {
@@ -351,6 +361,11 @@
     "minecraft-mohist": {
       "name": "Mohist",
       "path": "minecraft/mohist.json",
+      "result": "pass"
+    },
+    "minecraft-nanolimbo": {
+      "name": "NanoLimbo",
+      "path": "minecraft/nanolimbo.json",
       "result": "pass"
     },
     "minecraft-neoforge": {
@@ -371,12 +386,12 @@
     "minecraft-powernukkitx": {
       "name": "PowerNukkitX",
       "path": "minecraft/powernukkitx.json",
-      "result": "fail"
+      "result": "pass"
     },
     "minecraft-pufferfish": {
       "name": "Pufferfish",
       "path": "minecraft/pufferfish.json",
-      "result": "blocked"
+      "result": "pass"
     },
     "minecraft-purpur": {
       "name": "Purpur",
@@ -391,12 +406,12 @@
     "minecraft-spigot": {
       "name": "Spigot",
       "path": "minecraft/spigot.json",
-      "result": "blocked"
+      "result": "pass"
     },
     "minecraft-sponge": {
       "name": "SpongeVanilla",
       "path": "minecraft/sponge.json",
-      "result": "blocked"
+      "result": "pass"
     },
     "minecraft-vanilla": {
       "name": "Vanilla Minecraft",
@@ -431,7 +446,7 @@
     "necesse": {
       "name": "Necesse",
       "path": "steam/necesse.json",
-      "result": "untested"
+      "result": "pass"
     },
     "night-of-the-dead": {
       "name": "Night of the Dead",
@@ -446,12 +461,12 @@
     "no-more-room-in-hell": {
       "name": "No More Room in Hell",
       "path": "source/no-more-room-in-hell.json",
-      "result": "untested"
+      "result": "pass"
     },
     "nodejs-app": {
       "name": "Node.js App",
       "path": "apps/nodejs-app.json",
-      "result": "untested"
+      "result": "pass"
     },
     "openarena": {
       "name": "OpenArena",
@@ -461,7 +476,7 @@
     "openra": {
       "name": "OpenRA",
       "path": "standalone/openra.json",
-      "result": "untested"
+      "result": "pass"
     },
     "openrct2": {
       "name": "OpenRCT2",
@@ -496,17 +511,17 @@
     "postgresql": {
       "name": "PostgreSQL",
       "path": "apps/postgresql.json",
-      "result": "untested"
+      "result": "pass"
     },
     "project-zomboid": {
       "name": "Project Zomboid",
       "path": "steam/project-zomboid.json",
-      "result": "untested"
+      "result": "pass"
     },
     "python-app": {
       "name": "Python App",
       "path": "apps/python-app.json",
-      "result": "untested"
+      "result": "pass"
     },
     "quake-live": {
       "name": "Quake Live",
@@ -556,12 +571,12 @@
     "scp-secret-laboratory": {
       "name": "SCP: Secret Laboratory",
       "path": "steam/scp-secret-laboratory.json",
-      "result": "untested"
+      "result": "pass"
     },
     "smalland": {
       "name": "Smalland: Survive the Wilds",
       "path": "steam/smalland.json",
-      "result": "untested"
+      "result": "pass"
     },
     "sons-of-the-forest": {
       "name": "Sons Of The Forest",
@@ -621,7 +636,7 @@
     "supertuxkart": {
       "name": "SuperTuxKart",
       "path": "standalone/supertuxkart.json",
-      "result": "untested"
+      "result": "pass"
     },
     "sven-co-op": {
       "name": "Sven Co-op",
@@ -651,7 +666,7 @@
     "teeworlds": {
       "name": "Teeworlds",
       "path": "standalone/teeworlds.json",
-      "result": "untested"
+      "result": "pass"
     },
     "terraria-tmodloader": {
       "name": "tModloader",
@@ -671,7 +686,7 @@
     "tes3mp": {
       "name": "TES3MP (Morrowind multiplayer)",
       "path": "standalone/tes3mp.json",
-      "result": "untested"
+      "result": "pass"
     },
     "test-game": {
       "name": "Octail Test Game",
@@ -706,17 +721,17 @@
     "unturned": {
       "name": "Unturned",
       "path": "steam/unturned.json",
-      "result": "untested"
+      "result": "pass"
     },
     "unvanquished": {
       "name": "Unvanquished",
       "path": "standalone/unvanquished.json",
-      "result": "untested"
+      "result": "pass"
     },
     "uptime-kuma": {
       "name": "Uptime Kuma",
       "path": "apps/uptime-kuma.json",
-      "result": "untested"
+      "result": "pass"
     },
     "urban-terror": {
       "name": "Urban Terror",
@@ -731,7 +746,7 @@
     "valheim-bepinex": {
       "name": "Valheim BepINex",
       "path": "valheim/bepinex.json",
-      "result": "untested"
+      "result": "pass"
     },
     "valheim": {
       "name": "Valheim",
@@ -741,7 +756,7 @@
     "valkey": {
       "name": "Valkey (Redis-compatible)",
       "path": "apps/valkey.json",
-      "result": "untested"
+      "result": "pass"
     },
     "vein": {
       "name": "VEIN",
@@ -756,7 +771,7 @@
     "warfork": {
       "name": "Warfork",
       "path": "steam/warfork.json",
-      "result": "untested"
+      "result": "pass"
     },
     "windrose": {
       "name": "Windrose",
@@ -802,6 +817,8 @@
         "factorio",
         "mariadb",
         "minecraft-bedrock",
+        "minecraft-cuberite",
+        "minecraft-gate",
         "minecraft-pocketmine",
         "mumble",
         "openarena",
@@ -877,10 +894,13 @@
         "luanti",
         "minecraft-arclight",
         "minecraft-bungeecord",
+        "minecraft-cuberite",
         "minecraft-folia",
+        "minecraft-gate",
         "minecraft-geyser",
         "minecraft-leaf",
         "minecraft-mohist",
+        "minecraft-nanolimbo",
         "minecraft-paper",
         "minecraft-pocketmine",
         "minecraft-powernukkitx",
@@ -1108,6 +1128,7 @@
         "minecraft-geyser",
         "minecraft-leaf",
         "minecraft-mohist",
+        "minecraft-nanolimbo",
         "minecraft-neoforge",
         "minecraft-paper",
         "minecraft-powernukkitx",
@@ -1132,6 +1153,7 @@
         "minecraft-forge",
         "minecraft-geyser",
         "minecraft-leaf",
+        "minecraft-nanolimbo",
         "minecraft-neoforge",
         "minecraft-paper",
         "minecraft-powernukkitx",
