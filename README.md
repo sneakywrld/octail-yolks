@@ -32,7 +32,7 @@ parkervcp images or scripts, and CI fails a Dockerfile that tries.
 
 ![images: 38](https://img.shields.io/badge/images-38-2496ED) ![runtime: 31](https://img.shields.io/badge/runtime-31-blue) ![installers: 7](https://img.shields.io/badge/installers-7-blue) ![multi-arch: 29 of 38](https://img.shields.io/badge/multi--arch-29%20of%2038-informational) ![eggs using them: 158](https://img.shields.io/badge/eggs%20using%20them-158-brightgreen)
 
-**38 images**: 31 runtime images and 7 installer images, 29 of them built for amd64 and arm64. They run the 158 eggs of [octail-eggs](https://github.com/sneakywrld/octail-eggs), 140 of which passed a real run on one of our nodes.
+**38 images**: 31 runtime images and 7 installer images, 29 of them built for amd64 and arm64. They run the 158 eggs of [octail-eggs](https://github.com/sneakywrld/octail-eggs), 143 of which passed a real run on one of our nodes.
 The same numbers as a page: [docs/index.html](docs/index.html) (GitHub Pages, when switched on for `/docs`).
 
 | Family | Images | Eggs using them |
@@ -67,17 +67,17 @@ The same numbers as a page: [docs/index.html](docs/index.html) (GitHub Pages, wh
 | [`deno_2`](#deno_2) | Other runtimes | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 1: deno-app | 1 / 1 |
 | [`debian`](#debian) | Other runtimes | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 29: assaultcube, beammp, ddnet, et-legacy, factorio, mariadb, +23 more | 26 / 29 |
 | [`alpine`](#alpine) | Other runtimes | Alpine 3.24 (`alpine:3.24`) | amd64, arm64 | 2: luanti, test-game | 2 / 2 |
-| [`steamcmd_debian`](#steamcmd_debian) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 47: 7-days-to-die, american-truck-simulator, ark-survival-evolved, arma-3, arma-reforger, assetto-corsa, +41 more | 38 / 47 |
+| [`steamcmd_debian`](#steamcmd_debian) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 47: 7-days-to-die, american-truck-simulator, ark-survival-evolved, arma-3, arma-reforger, assetto-corsa, +41 more | 40 / 47 |
 | [`steamcmd_ubuntu`](#steamcmd_ubuntu) | SteamCMD and game images | Ubuntu 24.04 (`ubuntu:24.04`) | amd64 | 3: insurgency-sandstorm, pavlov-vr, stationeers | 2 / 3 |
 | [`steamcmd_dotnet`](#steamcmd_dotnet) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 1: eco | 1 / 1 |
-| [`steamcmd_sniper`](#steamcmd_sniper) | SteamCMD and game images | Steam Runtime 3 (sniper) (`registry.gitlab.steamos.cloud/steamrt/sniper/platform:latest-container-runtime-depot`) | amd64 | 1: counter-strike-2 | 0 / 1 |
+| [`steamcmd_sniper`](#steamcmd_sniper) | SteamCMD and game images | Steam Runtime 3 (sniper) (`registry.gitlab.steamos.cloud/steamrt/sniper/platform:latest-container-runtime-depot`) | amd64 | 1: counter-strike-2 | 1 / 1 |
 | [`source`](#source) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 21: black-mesa, counter-strike-16, counter-strike-condition-zero, day-of-defeat-source, day-of-defeat, day-of-infamy, +15 more | 21 / 21 |
 | [`rust`](#rust) | SteamCMD and game images | Debian 12 (`debian:bookworm-slim`) | amd64 | 1: rust | 1 / 1 |
 | [`proton`](#proton) | Wine and Proton | Debian 12 (`debian:bookworm-slim`) | amd64 | 6: abiotic-factor, ark-survival-ascended, astroneer, enshrouded, steamcmd-generic, windrose | 6 / 6 |
 | [`wine`](#wine) | Wine and Proton | Debian 12 (`debian:bookworm-slim`) | amd64 | 14: aska, empyrion, foundry, ground-branch, icarus, myth-of-empires, +8 more | 11 / 14 |
 | [`wine_staging`](#wine_staging) | Wine and Proton | Debian 12 (`debian:bookworm-slim`) | amd64 | 4: empyrion, ground-branch, stormworks, v-rising | 3 / 4 |
 | [`mono`](#mono) | .NET and Mono | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | – | – |
-| [`installer_debian`](#installer_debian) | Installers | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 132: 7-days-to-die, abiotic-factor, american-truck-simulator, ark-survival-ascended, ark-survival-evolved, arma-3, +126 more | 115 / 132 |
+| [`installer_debian`](#installer_debian) | Installers | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 132: 7-days-to-die, abiotic-factor, american-truck-simulator, ark-survival-ascended, ark-survival-evolved, arma-3, +126 more | 118 / 132 |
 | [`installer_alpine`](#installer_alpine) | Installers | Alpine 3.24 (`alpine:3.24`) | amd64, arm64 | 21: hytale, luanti, minecraft-arclight, minecraft-bungeecord, minecraft-cuberite, minecraft-folia, +15 more | 20 / 21 |
 | [`installer_java_8`](#installer_java_8) | Installers | Ubuntu 24.04 (`eclipse-temurin:8-jdk-noble`) | amd64, arm64 | 1: minecraft-forge | 1 / 1 |
 | [`installer_java_11`](#installer_java_11) | Installers | Ubuntu 24.04 (`eclipse-temurin:11-jdk-noble`) | amd64, arm64 | 1: minecraft-fabric | 1 / 1 |

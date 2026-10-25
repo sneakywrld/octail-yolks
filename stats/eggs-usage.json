@@ -111,7 +111,7 @@
     "counter-strike-2": {
       "name": "Counter-Strike 2",
       "path": "source/counter-strike-2.json",
-      "result": "untested"
+      "result": "pass"
     },
     "counter-strike-condition-zero": {
       "name": "Counter-Strike: Condition Zero",
@@ -496,7 +496,7 @@
     "palworld": {
       "name": "Palworld",
       "path": "steam/palworld.json",
-      "result": "untested"
+      "result": "pass"
     },
     "pavlov-vr": {
       "name": "Pavlov VR",
@@ -566,7 +566,7 @@
     "satisfactory": {
       "name": "Satisfactory",
       "path": "steam/satisfactory.json",
-      "result": "untested"
+      "result": "pass"
     },
     "scp-secret-laboratory": {
       "name": "SCP: Secret Laboratory",

@@ -9,10 +9,10 @@ window.OCTAIL_YOLKS_STATS = {
   "multi_arch": 29,
   "eggs_total": 158,
   "eggs_tested": {
-    "pass": 140,
+    "pass": 143,
     "fail": 0,
     "blocked": 15,
-    "untested": 3
+    "untested": 0
   },
   "ci": false,
   "families": [
@@ -732,10 +732,10 @@ window.OCTAIL_YOLKS_STATS = {
         "wurm-unlimited"
       ],
       "tested": {
-        "pass": 38,
+        "pass": 40,
         "fail": 0,
         "blocked": 7,
-        "untested": 2
+        "untested": 0
       },
       "ci": null
     },
@@ -797,10 +797,10 @@ window.OCTAIL_YOLKS_STATS = {
         "counter-strike-2"
       ],
       "tested": {
-        "pass": 0,
+        "pass": 1,
         "fail": 0,
         "blocked": 0,
-        "untested": 1
+        "untested": 0
       },
       "ci": null
     },
@@ -1116,10 +1116,10 @@ window.OCTAIL_YOLKS_STATS = {
         "zombie-panic-source"
       ],
       "tested": {
-        "pass": 115,
+        "pass": 118,
         "fail": 0,
         "blocked": 14,
-        "untested": 3
+        "untested": 0
       },
       "ci": null
     },
@@ -1384,7 +1384,7 @@ window.OCTAIL_YOLKS_STATS = {
     "counter-strike-2": {
       "name": "Counter-Strike 2",
       "path": "source/counter-strike-2.json",
-      "result": "untested"
+      "result": "pass"
     },
     "counter-strike-condition-zero": {
       "name": "Counter-Strike: Condition Zero",
@@ -1769,7 +1769,7 @@ window.OCTAIL_YOLKS_STATS = {
     "palworld": {
       "name": "Palworld",
       "path": "steam/palworld.json",
-      "result": "untested"
+      "result": "pass"
     },
     "pavlov-vr": {
       "name": "Pavlov VR",
@@ -1839,7 +1839,7 @@ window.OCTAIL_YOLKS_STATS = {
     "satisfactory": {
       "name": "Satisfactory",
       "path": "steam/satisfactory.json",
-      "result": "untested"
+      "result": "pass"
     },
     "scp-secret-laboratory": {
       "name": "SCP: Secret Laboratory",
