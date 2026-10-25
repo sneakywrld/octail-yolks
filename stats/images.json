@@ -1,8 +1,8 @@
 {
   "schema": 1,
   "registry": "ghcr.io/sneakywrld/octail-yolks",
-  "generatedAt": "2026-10-25T21:18:05Z",
-  "source": "https://github.com/sneakywrld/octail-yolks/actions/runs/40234312751",
+  "generatedAt": "2026-10-25T21:27:02Z",
+  "source": "https://github.com/sneakywrld/octail-yolks/actions/runs/40235511487",
   "images": [
     {
       "tag": "java_8",
@@ -322,29 +322,6 @@
       "fingerprint": "3a7964d33bc926d5e4acb89e7b2681c204af354eeb9362f9d3e19fe31efc10b5",
       "pushed": false,
       "checkedAt": "2026-10-25T21:14:56Z",
-      "vulnerabilities": null,
-      "fixable": null,
-      "scan": null
-    },
-    {
-      "tag": "go_1.23",
-      "image": "ghcr.io/sneakywrld/octail-yolks:go_1.23",
-      "kind": "runtime",
-      "digest": "sha256:bfc6d5a0752059239519a98e6ded1773b475dca6663a6b7d35cc012b041ba121",
-      "platforms": [
-        "linux/amd64",
-        "linux/arm64"
-      ],
-      "compressedSize": {
-        "linux/amd64": 353911311,
-        "linux/arm64": 343296051
-      },
-      "base": null,
-      "builtAt": "2026-10-23T19:06:19Z",
-      "revision": "ac8ff6c80dfeb69c6aeb0d6f6a03606048940e16",
-      "fingerprint": "5ddc4ce821f4d30457cb4235076e434f5008d06f7e321b09a34f7b22f5be3502",
-      "pushed": false,
-      "checkedAt": "2026-10-25T21:14:22Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
