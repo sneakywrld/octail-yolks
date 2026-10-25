@@ -20,7 +20,7 @@ RUN --mount=type=bind,source=common,target=/tmp/octail \
 ARG NPM_VERSION=11.21.1
 RUN npm install -g --no-fund --no-audit "npm@${NPM_VERSION}" \
  && npm cache clean --force \
- && npm --version | grep -qx "${NPM_VERSION}"
+ && test "$(npm --version)" = "${NPM_VERSION}"
 
 COPY --chmod=0755 common/entrypoint.sh /entrypoint.sh
 
