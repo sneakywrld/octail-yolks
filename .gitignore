@@ -1,0 +1,2 @@
+# Written by CI before every build (the ISO week): busts the cache of the layers that mount common/.
+/common/.refresh

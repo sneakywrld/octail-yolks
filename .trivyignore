@@ -7,3 +7,15 @@
 #   CVE-2026-12345 exp:2026-12-31
 #
 # test/check-workflows.sh fails an entry without both.
+
+# python_*: pip's vendored urllib3 2.7.0 (pip/_vendor); pip 26.2.2, the newest on 2026-10-25, still ships it (fix: 2.8.0)
+CVE-2026-97689 exp:2027-01-31
+# python_*: the same vendored urllib3 2.7.0 in pip 26.2.2, a second issue fixed in 2.8.0
+CVE-2026-97687 exp:2027-01-31
+# python_*: pip 26.2.2's vendored msgpack 1.1.2 (fix: 1.2.1, not vendored by any pip release yet)
+GHSA-6v7p-g79w-8964 exp:2027-01-31
+# python_*: pip 26.2.2's vendored setuptools 70.3.0 (pkg_resources; fix: 78.1.1, not vendored by any pip release yet)
+CVE-2025-47273 exp:2027-01-31
+# nodejs_*: undici 6.29.0 inside npm 11.21.1 (and 12.2.1, the newest on 2026-10-25); fixed in 6.29.1, which no npm
+# release bundles yet. Drop it and raise NPM_VERSION when one does.
+CVE-2026-109869 exp:2027-01-31

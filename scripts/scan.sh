@@ -4,7 +4,7 @@
 #
 # Writes to <output folder>:
 #   <tag>.trivy.json    Trivy's full report (vulnerabilities of every severity, after .trivyignore)
-#   <tag>.sarif         HIGH and CRITICAL only, for GitHub code scanning
+#   <tag>.sarif         HIGH and CRITICAL with a fixed version only, for GitHub code scanning (alerts are things to do)
 #   <tag>.cdx.json      the image's SBOM (CycloneDX)
 #   <tag>.scan.json     the counts per severity (all, and with a fix), the base and the policy result, for the build
 #                       report (scripts/report.sh -> stats/images.json)
@@ -91,7 +91,9 @@ if ! "${trivy}" "${common[@]}" --format json --output "${report}" "${image}" ||
 	echo "scan: trivy could not scan ${image}" >&2
 	exit 2
 fi
-"${trivy}" "${common[@]}" --severity HIGH,CRITICAL --format sarif --output "${out}/${tag}.sarif" "${image}" ||
+# Code scanning gets only what an update can fix: a finding with no fixed version anywhere (Debian's `will_not_fix`,
+# not yet fixed upstream) is an alert nobody can close. Those stay in the JSON report and the job summary.
+"${trivy}" "${common[@]}" --severity HIGH,CRITICAL --ignore-unfixed --format sarif --output "${out}/${tag}.sarif" "${image}" ||
 	echo "scan: trivy could not write the SARIF report" >&2
 # SBOM: packages only (no vulnerabilities, they go stale); attested to the pushed image by scripts/sign.sh.
 "${trivy}" image --quiet --format cyclonedx --output "${out}/${tag}.cdx.json" "${image}" ||

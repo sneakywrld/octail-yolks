@@ -869,12 +869,6 @@
       ],
       "installer": []
     },
-    "go_1.23": {
-      "runtime": [
-        "go-app"
-      ],
-      "installer": []
-    },
     "go_1.26": {
       "runtime": [
         "go-app"

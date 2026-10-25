@@ -196,6 +196,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Package upgrades (common/setup-apt.sh, setup-apk.sh) live in layers that mount common/: a new value here each
+      # ISO week rebuilds them instead of reusing the cache, so fixed distribution packages land within a week even
+      # when the base image wasn't republished. The content check below still pushes only what actually changed.
+      - name: Refresh week for package upgrades
+        run: date -u +%G-W%V > common/.refresh
+
       # Boot test before anything is pushed: the linux/amd64 image is loaded into the runner's Docker and started the
       # way Tentacle starts it, with the tag's `smoke` command from images.json (scripts/smoke.sh; it also adds the
       # image's size to the job summary). A failure stops the job, so neither :<tag> nor :<tag>-<date> moves. The

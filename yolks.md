@@ -76,7 +76,6 @@ All of it runs in this repository's `.github/workflows/build.yml`; the README ha
 | `nodejs_20`   | `node:20-bookworm-slim`                              | Node.js 20 with git and native-module build tools (past upstream EOL)   |
 | `nodejs_22`   | `node:22-bookworm-slim`                              | Node.js 22 with git and native-module build tools                       |
 | `python_3.12` | `python:3.12-slim-bookworm`                          | Python 3.12 with git and a C compiler for wheels                        |
-| `go_1.23`     | `golang:1.23-bookworm`                               | Go 1.23 (past upstream EOL; kept because eggs ask for it)               |
 | `debian`      | `debian:bookworm-slim`                               | Debian 12 with common game-server libraries (SDL, ICU, GLib, ffmpeg...) |
 | `alpine`      | `alpine:3.22`                                        | A small Alpine runtime                                                  |
 
@@ -136,7 +135,6 @@ several images (the Minecraft Java eggs offer Java 8 to 25) is listed under each
 - `python_3.12` (1): Python App.
 - `python_3.13` (1): Python App.
 - `python_3.14` (1): Python App.
-- `go_1.23` (1): Go App.
 - `go_1.26` (1): Go App.
 - `go_1.27` (1): Go App.
 - `bun_1` (1): Bun App.
@@ -179,6 +177,24 @@ several images (the Minecraft Java eggs offer Java 8 to 25) is listed under each
 
 Newest first. Dates are when the work landed in the Octail monorepo, where this repository's folder lives; "round" is
 the batch of parallel work it came in.
+
+### 2026-10-25: code scanning cleared
+
+GitHub code scanning had 1,929 open Trivy alerts. What they were and what changed:
+
+- **Packages older than Debian's fixes** (`linux-libc-dev`, openssl, perl, gnutls, expat, …): the base images ship
+  their packages as of their last publish, and we never upgraded on top. `common/setup-apt.sh` now runs
+  `apt-get upgrade` (`setup-apk.sh`: `apk upgrade`) first, and CI writes the ISO week into `common/.refresh` so those
+  layers are rebuilt at least weekly instead of coming from the build cache.
+- **Go 1.23** (1,199 alerts): its last release (1.23.12) has standard-library fixes only in Go 1.24 and newer, so the
+  image is retired. `go_1.26` replaces it for imported eggs (Go builds modules written for older versions); the Go
+  App egg offers 1.27 and 1.26. No server on vm1 used it.
+- **npm's bundled dependencies** (tar, minimatch, glob, pacote, sigstore, brace-expansion, undici) in the Node images:
+  npm 11.21.1 is installed over the npm Node bundles (`NPM_VERSION`).
+- **No fix anywhere** (Debian `will_not_fix`, nothing released upstream): code scanning now gets only findings with
+  a fixed version (`--ignore-unfixed` for the SARIF); the rest stays in the job summary and the JSON report.
+- **Fixed upstream, not yet in the tool that bundles it**: pip 26.2.2 vendors urllib3 2.7.0, msgpack 1.1.2 and
+  setuptools 70.3.0, and every npm bundles undici 6.29.0; those five IDs are in `.trivyignore` until 2027-01-31.
 
 ### 2026-10-24: every image in use on vm1, what the runs taught
 

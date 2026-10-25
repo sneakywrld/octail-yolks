@@ -30,16 +30,16 @@ parkervcp images or scripts, and CI fails a Dockerfile that tries.
 
 ## Stats
 
-![images: 38](https://img.shields.io/badge/images-38-2496ED) ![runtime: 31](https://img.shields.io/badge/runtime-31-blue) ![installers: 7](https://img.shields.io/badge/installers-7-blue) ![multi-arch: 29 of 38](https://img.shields.io/badge/multi--arch-29%20of%2038-informational) ![eggs using them: 158](https://img.shields.io/badge/eggs%20using%20them-158-brightgreen)
+![images: 37](https://img.shields.io/badge/images-37-2496ED) ![runtime: 30](https://img.shields.io/badge/runtime-30-blue) ![installers: 7](https://img.shields.io/badge/installers-7-blue) ![multi-arch: 28 of 37](https://img.shields.io/badge/multi--arch-28%20of%2037-informational) ![eggs using them: 158](https://img.shields.io/badge/eggs%20using%20them-158-brightgreen)
 
-**38 images**: 31 runtime images and 7 installer images, 29 of them built for amd64 and arm64. They run the 158 eggs of [octail-eggs](https://github.com/sneakywrld/octail-eggs), 143 of which passed a real run on one of our nodes.
+**37 images**: 30 runtime images and 7 installer images, 28 of them built for amd64 and arm64. They run the 158 eggs of [octail-eggs](https://github.com/sneakywrld/octail-eggs), 143 of which passed a real run on one of our nodes.
 The same numbers as a page: [docs/index.html](docs/index.html) (GitHub Pages, when switched on for `/docs`).
 
 | Family | Images | Eggs using them |
 | --- | --- | ---: |
 | Java | [`java_8`](#java_8) [`java_11`](#java_11) [`java_17`](#java_17) [`java_21`](#java_21) [`java_25`](#java_25) | 23 |
 | .NET and Mono | [`dotnet_8`](#dotnet_8) [`dotnet_9`](#dotnet_9) [`dotnet_10`](#dotnet_10) [`mono`](#mono) | 4 |
-| Other runtimes | [`nodejs_20`](#nodejs_20) [`nodejs_22`](#nodejs_22) [`nodejs_24`](#nodejs_24) [`python_3.12`](#python_3.12) [`python_3.13`](#python_3.13) [`python_3.14`](#python_3.14) [`go_1.23`](#go_1.23) [`go_1.26`](#go_1.26) [`go_1.27`](#go_1.27) [`bun_1`](#bun_1) [`deno_2`](#deno_2) [`debian`](#debian) [`alpine`](#alpine) | 37 |
+| Other runtimes | [`nodejs_20`](#nodejs_20) [`nodejs_22`](#nodejs_22) [`nodejs_24`](#nodejs_24) [`python_3.12`](#python_3.12) [`python_3.13`](#python_3.13) [`python_3.14`](#python_3.14) [`go_1.26`](#go_1.26) [`go_1.27`](#go_1.27) [`bun_1`](#bun_1) [`deno_2`](#deno_2) [`debian`](#debian) [`alpine`](#alpine) | 37 |
 | SteamCMD and game images | [`steamcmd_debian`](#steamcmd_debian) [`steamcmd_ubuntu`](#steamcmd_ubuntu) [`steamcmd_dotnet`](#steamcmd_dotnet) [`steamcmd_sniper`](#steamcmd_sniper) [`source`](#source) [`rust`](#rust) | 74 |
 | Wine and Proton | [`proton`](#proton) [`wine`](#wine) [`wine_staging`](#wine_staging) | 21 |
 | Installers | [`installer_debian`](#installer_debian) [`installer_alpine`](#installer_alpine) [`installer_java_8`](#installer_java_8) [`installer_java_11`](#installer_java_11) [`installer_java_17`](#installer_java_17) [`installer_java_21`](#installer_java_21) [`installer_java_25`](#installer_java_25) | 158 |
@@ -60,7 +60,6 @@ The same numbers as a page: [docs/index.html](docs/index.html) (GitHub Pages, wh
 | [`python_3.12`](#python_3.12) | Other runtimes | Debian 12 (`python:3.12-slim-bookworm`) | amd64, arm64 | 1: python-app | 1 / 1 |
 | [`python_3.13`](#python_3.13) | Other runtimes | Debian 12 (`python:3.13-slim-bookworm`) | amd64, arm64 | 1: python-app | 1 / 1 |
 | [`python_3.14`](#python_3.14) | Other runtimes | Debian 12 (`python:3.14-slim-bookworm`) | amd64, arm64 | 1: python-app | 1 / 1 |
-| [`go_1.23`](#go_1.23) | Other runtimes | Debian 12 (`golang:1.23-bookworm`) | amd64, arm64 | 1: go-app | 1 / 1 |
 | [`go_1.26`](#go_1.26) | Other runtimes | Debian 12 (`golang:1.26-bookworm`) | amd64, arm64 | 1: go-app | 1 / 1 |
 | [`go_1.27`](#go_1.27) | Other runtimes | Debian 12 (`golang:1.27-bookworm`) | amd64, arm64 | 1: go-app | 1 / 1 |
 | [`bun_1`](#bun_1) | Other runtimes | Debian 12 (`debian:bookworm-slim`) | amd64, arm64 | 1: bun-app | 1 / 1 |
@@ -117,8 +116,7 @@ images each tag stands in for, and the shipped eggs that use it); the tables bel
 | <a name="python_3.12"></a>`python_3.12` | amd64, arm64 | Python 3.12 (Debian 12), git, a C compiler for wheels | python-app |
 | <a name="python_3.13"></a>`python_3.13` | amd64, arm64 | Python 3.13 (Debian 12), git, a C compiler for wheels | python-app |
 | <a name="python_3.14"></a>`python_3.14` | amd64, arm64 | Python 3.14 (Debian 12), git, a C compiler for wheels | python-app (default) |
-| <a name="go_1.23"></a>`go_1.23` | amd64, arm64 | **Deprecated** (end of life August 2025, still built): Go 1.23 (Debian 12); `GOPATH`/`GOCACHE` in the server folder | go-app |
-| <a name="go_1.26"></a>`go_1.26` | amd64, arm64 | Go 1.26 (Debian 12); `GOPATH`/`GOCACHE` in the server folder, `GOTOOLCHAIN=local` | go-app |
+| <a name="go_1.26"></a>`go_1.26` | amd64, arm64 | Go 1.26 (Debian 12); `GOPATH`/`GOCACHE` in the server folder, `GOTOOLCHAIN=local`; also replaces Go 1.23 (retired 2026-10-25) | go-app |
 | <a name="go_1.27"></a>`go_1.27` | amd64, arm64 | Go 1.27 (Debian 12); `GOPATH`/`GOCACHE` in the server folder, `GOTOOLCHAIN=local` | go-app (default) |
 | <a name="bun_1"></a>`bun_1` | amd64, arm64 | Bun 1 (Debian 12): the release binary from oven-sh/bun, sha256-pinned (`BUN_VERSION`; amd64 is the "baseline" build, no AVX2 needed), `bunx`, git, native-module build tools | bun-app |
 | <a name="deno_2"></a>`deno_2` | amd64, arm64 | Deno 2 (Debian 12): the release binary from denoland/deno, sha256-pinned (`DENO_VERSION`); `DENO_DIR` in the server folder, no update check, no permission prompts | deno-app |

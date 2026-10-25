@@ -25,7 +25,6 @@ updates:
       - /images/dotnet_10
       - /images/dotnet_8
       - /images/dotnet_9
-      - /images/go_1.23
       - /images/go_1.26
       - /images/go_1.27
       - /images/installer_alpine

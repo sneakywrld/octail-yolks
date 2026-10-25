@@ -14,6 +14,14 @@ RUN --mount=type=bind,source=common,target=/tmp/octail \
         make \
         g++
 
+# npm's own dependencies (tar, minimatch, undici, ...) get their fixes with npm releases, not with Node's: the image
+# carries a pinned npm newer than the one Node bundles (11.x supports Node 20.17+, 22 and 24). Raise it when Trivy
+# reports one of npm's bundled packages and a newer npm has the fix.
+ARG NPM_VERSION=11.21.1
+RUN npm install -g --no-fund --no-audit "npm@${NPM_VERSION}" \
+ && npm cache clean --force \
+ && npm --version | grep -qx "${NPM_VERSION}"
+
 COPY --chmod=0755 common/entrypoint.sh /entrypoint.sh
 
 ENV HOME=/home/container \

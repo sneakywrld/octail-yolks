@@ -3,10 +3,10 @@ window.OCTAIL_YOLKS_STATS = {
   "schema": 1,
   "registry": "ghcr.io/sneakywrld/octail-yolks",
   "eggs_repo": "https://github.com/sneakywrld/octail-eggs",
-  "images": 38,
-  "runtime": 31,
+  "images": 37,
+  "runtime": 30,
   "installers": 7,
-  "multi_arch": 29,
+  "multi_arch": 28,
   "eggs_total": 158,
   "eggs_tested": {
     "pass": 143,
@@ -49,7 +49,6 @@ window.OCTAIL_YOLKS_STATS = {
         "python_3.12",
         "python_3.13",
         "python_3.14",
-        "go_1.23",
         "go_1.26",
         "go_1.27",
         "bun_1",
@@ -490,32 +489,10 @@ window.OCTAIL_YOLKS_STATS = {
       "ci": null
     },
     {
-      "tag": "go_1.23",
-      "kind": "runtime",
-      "family": "runtimes",
-      "description": "Go 1.23 (Debian 12), Go caches in the server folder; deprecated (end of life August 2025), still built",
-      "platforms": [
-        "amd64",
-        "arm64"
-      ],
-      "base": "golang:1.23-bookworm",
-      "distro": "Debian 12",
-      "eggs": [
-        "go-app"
-      ],
-      "tested": {
-        "pass": 1,
-        "fail": 0,
-        "blocked": 0,
-        "untested": 0
-      },
-      "ci": null
-    },
-    {
       "tag": "go_1.26",
       "kind": "runtime",
       "family": "runtimes",
-      "description": "Go 1.26 (Debian 12), Go caches in the server folder",
+      "description": "Go 1.26 (Debian 12), Go caches in the server folder; also stands in for Go 1.23 (end of life, retired: Go builds older modules)",
       "platforms": [
         "amd64",
         "arm64"

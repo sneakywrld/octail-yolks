@@ -240,23 +240,13 @@
       "eggs": ["python-app"]
     },
     {
-      "tag": "go_1.23",
-      "folder": "images/go_1.23",
-      "platforms": ["linux/amd64", "linux/arm64"],
-      "kind": "runtime",
-      "smoke": "go version | grep -F 'go1.23'",
-      "description": "Go 1.23 (Debian 12), Go caches in the server folder; deprecated (end of life August 2025), still built",
-      "replaces": [],
-      "eggs": ["go-app"]
-    },
-    {
       "tag": "go_1.26",
       "folder": "images/go_1.26",
       "platforms": ["linux/amd64", "linux/arm64"],
       "kind": "runtime",
       "smoke": "go version | grep -F 'go1.26'",
-      "description": "Go 1.26 (Debian 12), Go caches in the server folder",
-      "replaces": [],
+      "description": "Go 1.26 (Debian 12), Go caches in the server folder; also stands in for Go 1.23 (end of life, retired: Go builds older modules)",
+      "replaces": ["ghcr.io/parkervcp/yolks:go_1.23"],
       "eggs": ["go-app"]
     },
     {

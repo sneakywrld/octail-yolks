@@ -149,7 +149,7 @@ run_scan
 expect_rc 'scan: fixable CRITICAL in the base, unfixable CRITICAL and fixable HIGH in ours pass' 0 "${SCAN_RC}" "${SCAN_OUT}"
 expect_contains 'scan: the base is the final stage, followed through stage names' "${SCAN_LOG}" $'pull\n--quiet\n--platform\nlinux/amd64\ndebian:bookworm-slim'
 expect_contains 'scan: Trivy writes the JSON report' "${SCAN_LOG}" $'--format\njson'
-expect_contains 'scan: ... the SARIF with HIGH and CRITICAL' "${SCAN_LOG}" $'--severity\nHIGH,CRITICAL\n--format\nsarif'
+expect_contains 'scan: ... the SARIF with fixable HIGH and CRITICAL' "${SCAN_LOG}" $'--severity\nHIGH,CRITICAL\n--ignore-unfixed\n--format\nsarif'
 expect_contains 'scan: ... and a CycloneDX SBOM' "${SCAN_LOG}" $'--format\ncyclonedx'
 for f in game.trivy.json game.sarif game.cdx.json; do
 	if [ -f "${work}/scan-out/${f}" ]; then ok "scan: writes ${f}"; else not_ok "scan: writes ${f}"; fi
