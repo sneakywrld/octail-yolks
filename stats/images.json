@@ -1,28 +1,28 @@
 {
   "schema": 1,
   "registry": "ghcr.io/sneakywrld/octail-yolks",
-  "generatedAt": "2026-10-25T21:54:40Z",
-  "source": "https://github.com/sneakywrld/octail-yolks/actions/runs/40236558503",
+  "generatedAt": "2026-10-26T10:21:03Z",
+  "source": "https://github.com/sneakywrld/octail-yolks/actions/runs/40304668370",
   "images": [
     {
       "tag": "java_8",
       "image": "ghcr.io/sneakywrld/octail-yolks:java_8",
       "kind": "runtime",
-      "digest": "sha256:741244b5c452e7b0aa4ddf8e78fa3d078bd88bcbae1f11e78347ea272093b12e",
+      "digest": "sha256:a886e327d4b3f36d9297630fe29a8d9de7b31ebac76f0cd75e8b0b2fcb5a7dd2",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 128059005,
-        "linux/arm64": 126293092
+        "linux/amd64": 128059035,
+        "linux/arm64": 126293149
       },
       "base": null,
-      "builtAt": "2026-10-25T21:40:57Z",
+      "builtAt": "2026-10-26T10:11:28Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "3378592225b351bb663913cfb2a5a163380c84dc39b1f2fcf915014d8106539f",
+      "fingerprint": "00880850e64f8e49e1c8a5439eb8d537ed98f79a3844114e1aa2ab2dcc4605ef",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:45:37Z",
+      "checkedAt": "2026-10-26T10:16:50Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -31,21 +31,21 @@
       "tag": "java_11",
       "image": "ghcr.io/sneakywrld/octail-yolks:java_11",
       "kind": "runtime",
-      "digest": "sha256:0bd5d110abfb1ebe7674c125605d4fea2c8db601417215c2150a2370be6f6dd0",
+      "digest": "sha256:e97a42cf670ee206ad34124e1203ce9c2bf125d9426ae384b0c9b9cd0b92a9da",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 218731481,
-        "linux/arm64": 214617804
+        "linux/amd64": 218731465,
+        "linux/arm64": 214617766
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:03Z",
+      "builtAt": "2026-10-26T10:11:55Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "dfdee95c5604035e760b7a763f27b2b1d98db4858e9006b2d7ab3f0231484f1e",
+      "fingerprint": "5cb517c472d2e0a6912173d0c3f9029537d24b6d765e55946d3e7163adc15d8f",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:46:51Z",
+      "checkedAt": "2026-10-26T10:16:26Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -54,21 +54,21 @@
       "tag": "java_17",
       "image": "ghcr.io/sneakywrld/octail-yolks:java_17",
       "kind": "runtime",
-      "digest": "sha256:1ba4dc7257d8d32f657c0da08615dc2bf1772cb94038d95acb4a58ea08550480",
+      "digest": "sha256:1bf28febede5343d1d9c219456be12cc7aee5dc98100f626cd1392a154ec2b71",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 224690093,
-        "linux/arm64": 223871788
+        "linux/amd64": 224689984,
+        "linux/arm64": 223871822
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:00Z",
+      "builtAt": "2026-10-26T10:06:45Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "75ab86fc25333d246eeb46fbd508a0bd2162a3a10659c741d46ae27ce9f402e2",
+      "fingerprint": "956c9a914c9c2cfe415dd0dd81a5649294a44513a8656b62cc6125c6ec994879",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:47:00Z",
+      "checkedAt": "2026-10-26T10:12:40Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -77,21 +77,21 @@
       "tag": "java_21",
       "image": "ghcr.io/sneakywrld/octail-yolks:java_21",
       "kind": "runtime",
-      "digest": "sha256:48eb412a7878a38e095f3fbb8e0fc96d7f5352b4df13ed0868fb5fe4fae9e7e4",
+      "digest": "sha256:144aa72e1e107c0e50e86b26b1d1b4bb6cc1c05836f7425d5b2fe6e569e89b23",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 236979091,
-        "linux/arm64": 235624249
+        "linux/amd64": 236979055,
+        "linux/arm64": 235624131
       },
       "base": null,
-      "builtAt": "2026-10-25T21:46:40Z",
+      "builtAt": "2026-10-26T10:06:47Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "6fe671ab6c33747ca8df0e173140e680a659722204e8f9f13d926a91dba3d297",
+      "fingerprint": "2bd838732a019443498245b4a15bccce4c6592ed63b4d16edfef963d2fe0e244",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:51:49Z",
+      "checkedAt": "2026-10-26T10:12:13Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -100,21 +100,21 @@
       "tag": "java_25",
       "image": "ghcr.io/sneakywrld/octail-yolks:java_25",
       "kind": "runtime",
-      "digest": "sha256:f19e39804c44b180a86d15d5aa692ac5e6137999e856c5ec274614a95f31f624",
+      "digest": "sha256:a118cee28fda1d4c39be89d66549dc32686713bf6fe5fd24327e5f5403778e7f",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 169109915,
-        "linux/arm64": 168389521
+        "linux/amd64": 169109780,
+        "linux/arm64": 168389682
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:01Z",
+      "builtAt": "2026-10-26T10:06:45Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "a4798913bdb270db3129d80dda017497a6968a49edfd4e66f92f99585bcb1052",
+      "fingerprint": "86ab8b33b5974eb767d7e97ee1b51ccc36d3442d615bbe812017c8fb0fdd8424",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:45:35Z",
+      "checkedAt": "2026-10-26T10:12:46Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -123,21 +123,21 @@
       "tag": "dotnet_8",
       "image": "ghcr.io/sneakywrld/octail-yolks:dotnet_8",
       "kind": "runtime",
-      "digest": "sha256:8608984e364eb2a674cf2ccbd96ee5f1fb0b0c7b4cb76b894b1648ab990bfd9d",
+      "digest": "sha256:a007d016b50c5dbaaeba02016347d7b07ad3c0e339066ca6598e8fe1f9519a9a",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 123009211,
-        "linux/arm64": 121379404
+        "linux/amd64": 125776722,
+        "linux/arm64": 123979868
       },
       "base": null,
-      "builtAt": "2026-10-25T21:40:57Z",
+      "builtAt": "2026-10-26T10:11:30Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "bdab62365801806ad77e3eae0a12ff1c8f37e5422a9a3d43778ac86c3665621e",
+      "fingerprint": "dbce01f2526116615704ce6acce9ae208ad8777cad0f29c903e0f6a27edfa6df",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:44:21Z",
+      "checkedAt": "2026-10-26T10:15:02Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -146,21 +146,21 @@
       "tag": "dotnet_9",
       "image": "ghcr.io/sneakywrld/octail-yolks:dotnet_9",
       "kind": "runtime",
-      "digest": "sha256:d2bb46170653f1ea53c3012cec5d7f6d808f0a8480e46d60e3b167220b4f0018",
+      "digest": "sha256:e2d7626a35fcd65fbd077107e0c029d33633463917fd05c591b86cfdc338166c",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 125365293,
-        "linux/arm64": 123371376
+        "linux/amd64": 128133419,
+        "linux/arm64": 125971636
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:01Z",
+      "builtAt": "2026-10-26T10:06:46Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "570ba2fdfee8a4b7fc9f833ae7ae26aa79d5c48fa7cce094df94e00702b76319",
+      "fingerprint": "2c103f4ad391f4fe88b5577f73623c8fa92aa11e3203814a004c363139a3e516",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:44:43Z",
+      "checkedAt": "2026-10-26T10:11:02Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -169,21 +169,21 @@
       "tag": "dotnet_10",
       "image": "ghcr.io/sneakywrld/octail-yolks:dotnet_10",
       "kind": "runtime",
-      "digest": "sha256:6af8b35d4106e1403a6d386d614cbd4549b60e41e0273a6aa38f5d9bbf3a4056",
+      "digest": "sha256:aa2c3d93c65daff3653a5a546dfc9d0ca80f836cb64bb41599beddfbd1fbddd7",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 119444345,
-        "linux/arm64": 116208975
+        "linux/amd64": 118597514,
+        "linux/arm64": 115363355
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:00Z",
+      "builtAt": "2026-10-26T10:12:36Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "2854e3dd8df0d8fb7f91949a84a74dc697f005d89dde855b0472f6cd451a5913",
+      "fingerprint": "c7737276481d4484cec80a8016926886d52ada8533137b3f6c876104ec8c420b",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:45:29Z",
+      "checkedAt": "2026-10-26T10:17:30Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -192,21 +192,21 @@
       "tag": "nodejs_20",
       "image": "ghcr.io/sneakywrld/octail-yolks:nodejs_20",
       "kind": "runtime",
-      "digest": "sha256:cce3fb34487e5d8dd7395737a860e9ad8bcd1c8828ed1166e08e0700ff208998",
+      "digest": "sha256:36503637356e5cfab555f4dcf538df87df12837fdd69875a637bbbcf99b580a9",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 227412872,
-        "linux/arm64": 221159694
+        "linux/amd64": 227410694,
+        "linux/arm64": 221160667
       },
       "base": null,
-      "builtAt": "2026-10-25T21:29:50Z",
+      "builtAt": "2026-10-26T10:12:49Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "ffc30a4002a45c92ef8684155af4d6fa659150fe5fe9db05510d9e38cb0161d3",
-      "pushed": false,
-      "checkedAt": "2026-10-25T21:46:08Z",
+      "fingerprint": "f574322ceaa8a6c406ca7371a2f5cf37a098d422bd154de6a68c7ae845c75025",
+      "pushed": true,
+      "checkedAt": "2026-10-26T10:19:05Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -215,21 +215,21 @@
       "tag": "nodejs_22",
       "image": "ghcr.io/sneakywrld/octail-yolks:nodejs_22",
       "kind": "runtime",
-      "digest": "sha256:808f6c7a375437b61e7da3ebfae7d9fd09f913d2f6e12fb05cadb4037667449a",
+      "digest": "sha256:45adeaf5f653a3d261c6c709428a76fe66f5584b5a43aa8bf2307f34665f0f1b",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 224629660,
-        "linux/arm64": 218750038
+        "linux/amd64": 224628769,
+        "linux/arm64": 218747733
       },
       "base": null,
-      "builtAt": "2026-10-25T21:29:48Z",
+      "builtAt": "2026-10-26T10:13:07Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "5761bc22093a673b8999cd8b75f1f860dd275863650971823aa0d803f25198c8",
-      "pushed": false,
-      "checkedAt": "2026-10-25T21:47:44Z",
+      "fingerprint": "24895a5dab119084abfe2903987ef81fe70bd4cee5b320c953f2068b43f14765",
+      "pushed": true,
+      "checkedAt": "2026-10-26T10:20:24Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -238,21 +238,21 @@
       "tag": "nodejs_24",
       "image": "ghcr.io/sneakywrld/octail-yolks:nodejs_24",
       "kind": "runtime",
-      "digest": "sha256:bfdcd511d5339eb3ea72d4a9f894624e66dc23631913bcb77bf72da2b9ac20dc",
+      "digest": "sha256:8e486731c82e83b0f9bf99be5538169967efb50d6e0dca647d5230a875b86ab4",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 225768237,
-        "linux/arm64": 219727296
+        "linux/amd64": 225768987,
+        "linux/arm64": 219725133
       },
       "base": null,
-      "builtAt": "2026-10-25T21:29:48Z",
+      "builtAt": "2026-10-26T10:13:28Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "d4e29a2e7222232e4c473d4fac33943058a7bf645c1807174681ddffe0ad796f",
-      "pushed": false,
-      "checkedAt": "2026-10-25T21:42:16Z",
+      "fingerprint": "7061f41c4cdb2ca72217f0c7ea8c5a1748c6dcff9cef628965fe5647096c953c",
+      "pushed": true,
+      "checkedAt": "2026-10-26T10:20:43Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -261,21 +261,21 @@
       "tag": "python_3.12",
       "image": "ghcr.io/sneakywrld/octail-yolks:python_3.12",
       "kind": "runtime",
-      "digest": "sha256:ebac0e213e6be8ec13f3dc053600854840c7104f5526ca69c7601f426f51272a",
+      "digest": "sha256:6fc99ad74ba30dc1f1ad9900f27af72b4a0a0cd6fcdd872926717fb2aeb113c5",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 152141193,
-        "linux/arm64": 147312362
+        "linux/amd64": 154894477,
+        "linux/arm64": 149905956
       },
       "base": null,
-      "builtAt": "2026-10-25T21:42:34Z",
+      "builtAt": "2026-10-26T10:06:47Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "287eddd16349106b147c03aabbbcb206fdbc819fae1a9b51354354754049c77b",
+      "fingerprint": "862a0b395afaca2b62fd593278ea595c89edb11b9d9dc730e4abae91c64cb82c",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:47:13Z",
+      "checkedAt": "2026-10-26T10:11:01Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -284,21 +284,21 @@
       "tag": "python_3.13",
       "image": "ghcr.io/sneakywrld/octail-yolks:python_3.13",
       "kind": "runtime",
-      "digest": "sha256:86aba000ac8e889bd71172efcc5b274874775efe03a45c51d7aaa77233d8e46b",
+      "digest": "sha256:4b094c1bc8e86820d8169bcafc538ce2c6c094bae20b00728510ccbff9c71db7",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 151936055,
-        "linux/arm64": 147098752
+        "linux/amd64": 154681656,
+        "linux/arm64": 149693122
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:00Z",
+      "builtAt": "2026-10-26T10:06:44Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "dc57f8b7c34321b1a99b3bb4fd74f8d1845c9bcdd86b075cd7c5215a9d0f4f84",
+      "fingerprint": "00f3123e6651b35081877bf0f0889b1b01c2d270251d29943b0b4e91110d5042",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:44:52Z",
+      "checkedAt": "2026-10-26T10:12:01Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -307,21 +307,21 @@
       "tag": "python_3.14",
       "image": "ghcr.io/sneakywrld/octail-yolks:python_3.14",
       "kind": "runtime",
-      "digest": "sha256:364cc6eb4251ab0363704a20a2f631777e5189d32fbb21a8f62f65f690f4b5fa",
+      "digest": "sha256:d464ce1b51dbcc23aa6bb4ed110106ab0e6328e3b871c027458714c09ba1af01",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 152400381,
-        "linux/arm64": 147548250
+        "linux/amd64": 155145726,
+        "linux/arm64": 150142034
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:02Z",
+      "builtAt": "2026-10-26T10:06:44Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "d43e30568e0c96be69c13ca3c691b0b9f7658a6552edf4d143a46869ac3fec42",
+      "fingerprint": "292bc69d6bce8de2e5544edb0e9faf6e6786e35d79a8074b73fe82b7bf5a44f3",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:46:08Z",
+      "checkedAt": "2026-10-26T10:11:35Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -330,21 +330,21 @@
       "tag": "go_1.26",
       "image": "ghcr.io/sneakywrld/octail-yolks:go_1.26",
       "kind": "runtime",
-      "digest": "sha256:b0e978afdddbbc6c09fa08bcac957d97a4e5bbaa3c880b5a150a0b161b6e0469",
+      "digest": "sha256:59cbc8f1ed0212e29407ccd94910e05f13eaa2e7b17ec625c5ded9c51cb90b34",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 311164711,
-        "linux/arm64": 301667141
+        "linux/amd64": 314770870,
+        "linux/arm64": 305109637
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:02Z",
+      "builtAt": "2026-10-26T10:11:24Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "92fd67913c94dc1a9d03a47bfe82082dd2d22c2a90470667556d35dc08921910",
+      "fingerprint": "fc08f57c8fc8b1e5953be436e07f1edf5f4c82f981ec75646614fe3246fcec09",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:46:43Z",
+      "checkedAt": "2026-10-26T10:16:10Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -353,21 +353,21 @@
       "tag": "go_1.27",
       "image": "ghcr.io/sneakywrld/octail-yolks:go_1.27",
       "kind": "runtime",
-      "digest": "sha256:3c68ae691437916b27691f99ea61500dd56c646bfba004e52c6558508dccfdd4",
+      "digest": "sha256:3d5704500f017f0f0abd20b21af76b27030c24e7916c5b4cdd9e2c2e043b1f20",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 314962924,
-        "linux/arm64": 305134885
+        "linux/amd64": 318569076,
+        "linux/arm64": 308577255
       },
       "base": null,
-      "builtAt": "2026-10-25T21:45:48Z",
+      "builtAt": "2026-10-26T10:06:45Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "0047e5f952c18fb87de78538e1b646e14cc93c9a3823f66574be729013b97716",
+      "fingerprint": "172f80c58d21c1d5cb5d887f3233b19e05fdfc81aa007138005899f06c5ee1a3",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:50:00Z",
+      "checkedAt": "2026-10-26T10:10:58Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -376,21 +376,21 @@
       "tag": "bun_1",
       "image": "ghcr.io/sneakywrld/octail-yolks:bun_1",
       "kind": "runtime",
-      "digest": "sha256:18e36aed5da945965ef294cb3dd669efe351daf0b4951fdb8aebb41389503b08",
+      "digest": "sha256:920c6e492f296674d616479e0c803d779a42f765e69afc9e6d2fa35aa1f6565a",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 221972095,
-        "linux/arm64": 216838900
+        "linux/amd64": 221971902,
+        "linux/arm64": 216837557
       },
       "base": null,
-      "builtAt": "2026-10-25T21:45:56Z",
+      "builtAt": "2026-10-26T10:06:47Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "f0b51250c487dc68d560164e9de156ccaf53824038d64d27b15987c4e6f68fb7",
+      "fingerprint": "755dce657ca5f93625f3c700c429d2b81d94cd92f3b30e4306b450b135d569df",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:52:28Z",
+      "checkedAt": "2026-10-26T10:14:01Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -399,21 +399,21 @@
       "tag": "deno_2",
       "image": "ghcr.io/sneakywrld/octail-yolks:deno_2",
       "kind": "runtime",
-      "digest": "sha256:1abf1a3a1bc92e673fa42cd1e88b6500dd35b8a77b38fa27f36b7179a531de85",
+      "digest": "sha256:ba385ff7c52fa61f9d6abc34652cebcd457178ac6225e8029c28b4a3bf2c1cb0",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 116846890,
-        "linux/arm64": 115559614
+        "linux/amd64": 116848031,
+        "linux/arm64": 115558349
       },
       "base": null,
-      "builtAt": "2026-10-25T21:40:59Z",
+      "builtAt": "2026-10-26T10:06:41Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "62ce8c20c5e06f78ebdad6df537c8058db6c4b5bd78d8f99bbd4e9f13fe593b4",
+      "fingerprint": "fbcc2e36d95ec0b719c2f683065179ae7fe296944d6c0d6cc2ee2235249ffe4e",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:44:58Z",
+      "checkedAt": "2026-10-26T10:11:14Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -422,21 +422,21 @@
       "tag": "debian",
       "image": "ghcr.io/sneakywrld/octail-yolks:debian",
       "kind": "runtime",
-      "digest": "sha256:0b73f5f5453d925bc569ea24add8e61e7e549507fe37e9e1b2a41fc27655577e",
+      "digest": "sha256:3c5175b80cd9c5e51fb62390d4a1e109f50c94f2c0b47048dd67619f74aa9576",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 265310017,
-        "linux/arm64": 249101125
+        "linux/amd64": 265309449,
+        "linux/arm64": 249104237
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:02Z",
+      "builtAt": "2026-10-26T10:06:44Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "e40ca58c758ba9b4e655b7874a511e8f3834bfb8f655b923e62e95c9fdd1ffad",
+      "fingerprint": "4e7e9fd7aac3e9fef15d4e01ae0810936232d89592de544a3d61d9b21eddca69",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:48:42Z",
+      "checkedAt": "2026-10-26T10:13:05Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -445,21 +445,21 @@
       "tag": "alpine",
       "image": "ghcr.io/sneakywrld/octail-yolks:alpine",
       "kind": "runtime",
-      "digest": "sha256:7be1c28c6f62385ecd03cb7c847cc8d9625861d4c73fc188aef641b61be560ef",
+      "digest": "sha256:a1786bf2431bd6913ef22253ad3e82ea31a9f7572f266902e7b9c463c255d270",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 14263457,
-        "linux/arm64": 14707198
+        "linux/amd64": 14263466,
+        "linux/arm64": 14707220
       },
       "base": null,
-      "builtAt": "2026-10-25T21:40:57Z",
+      "builtAt": "2026-10-26T10:13:09Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "d4fce7a0fb88789753a2e40b44796574be0c08efeae1e569aa6c87dbb914d316",
+      "fingerprint": "4926967b8791fa88560a35049e8d6da3f20151d0e86ce9c0f387c67b52a0ab58",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:42:19Z",
+      "checkedAt": "2026-10-26T10:15:07Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -468,19 +468,19 @@
       "tag": "steamcmd_debian",
       "image": "ghcr.io/sneakywrld/octail-yolks:steamcmd_debian",
       "kind": "runtime",
-      "digest": "sha256:2abe47f4251bc949e0b497bf608336b12bdc90eedd3d25b257d6cfa59a881a64",
+      "digest": "sha256:4779f52cb520f0063ddcad623b238712a9a8c722bcd4639b3f7789e7e88ba6d9",
       "platforms": [
         "linux/amd64"
       ],
       "compressedSize": {
-        "linux/amd64": 158605529
+        "linux/amd64": 158604568
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:00Z",
+      "builtAt": "2026-10-26T10:13:02Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "d689a42f48f7b5e2adbf13931a48fd00cb82db2bccb949f3b1e804b02ae25bae",
+      "fingerprint": "521a2ab6caf3dccfaffce5ffa524b4377c43a7f25e3af0e4e5ac9323fc462107",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:43:18Z",
+      "checkedAt": "2026-10-26T10:15:49Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -489,19 +489,19 @@
       "tag": "steamcmd_ubuntu",
       "image": "ghcr.io/sneakywrld/octail-yolks:steamcmd_ubuntu",
       "kind": "runtime",
-      "digest": "sha256:02ed6c8741c57bcfccd2b5e620347a35eb022c1c66312fbc84163d08742a710c",
+      "digest": "sha256:06ad1e6f90549fd34804da01b7435488c1e6aaf0e58c09c9fd80850252e59c22",
       "platforms": [
         "linux/amd64"
       ],
       "compressedSize": {
-        "linux/amd64": 235725835
+        "linux/amd64": 235725826
       },
       "base": null,
-      "builtAt": "2026-10-25T21:44:26Z",
+      "builtAt": "2026-10-26T10:12:57Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "169db8e977ac722173a889689ef369d08370b1985fdcb9c86d6f1cc4e02a8a5e",
+      "fingerprint": "37a841ce1469fedb367f0cd95ac0995b2df852013cc07a7d11031b33f9946c3d",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:47:42Z",
+      "checkedAt": "2026-10-26T10:15:21Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -510,19 +510,19 @@
       "tag": "steamcmd_dotnet",
       "image": "ghcr.io/sneakywrld/octail-yolks:steamcmd_dotnet",
       "kind": "runtime",
-      "digest": "sha256:bb3d019952936b1cea377f941225bbad8e802dbe873a3b7cff92032d4603c378",
+      "digest": "sha256:4b972be504ed1ffa918393adff9e9c4a1bac4a3891d25ec7e557cc861013605a",
       "platforms": [
         "linux/amd64"
       ],
       "compressedSize": {
-        "linux/amd64": 201889474
+        "linux/amd64": 201890039
       },
       "base": null,
-      "builtAt": "2026-10-25T21:47:14Z",
+      "builtAt": "2026-10-26T10:06:48Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "69fcd6f6a7aeaf36fda13c83baaf54cd305082ed159f6875fe2d5982fc09fdf9",
+      "fingerprint": "af5fb05029d5cb50aa8a4551f0f7283c6ea75ba3a417a690e1a1c8d5ff689383",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:49:52Z",
+      "checkedAt": "2026-10-26T10:09:34Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -531,7 +531,7 @@
       "tag": "steamcmd_sniper",
       "image": "ghcr.io/sneakywrld/octail-yolks:steamcmd_sniper",
       "kind": "runtime",
-      "digest": "sha256:1463b3ac51b7ed8f11ac098e27f167d82d723f0499ac9d6d59487192b6238a39",
+      "digest": "sha256:268333e970ce775c8cda1ef8b369eb557c4f7f1997cb5f82ffe30522495e8bd0",
       "platforms": [
         "linux/amd64"
       ],
@@ -539,11 +539,11 @@
         "linux/amd64": 425774335
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:01Z",
+      "builtAt": "2026-10-26T10:06:43Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "45220cea4ca06d242db068b3e3571150f81179193dded181a0931e7c4c93d2ec",
+      "fingerprint": "a13b5771f7f376131395e50c26d7cbb588c1a610d7e14c71388739aedad4bc98",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:44:00Z",
+      "checkedAt": "2026-10-26T10:09:27Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -552,19 +552,19 @@
       "tag": "source",
       "image": "ghcr.io/sneakywrld/octail-yolks:source",
       "kind": "runtime",
-      "digest": "sha256:24a42ca740388b95d76ce19c8ccd7da908c952143940d2d5d823556f5b77fea0",
+      "digest": "sha256:ed9edc67eaf976535ada2dcad2c373556dea67530f9e30b24504265be3ac8c47",
       "platforms": [
         "linux/amd64"
       ],
       "compressedSize": {
-        "linux/amd64": 168803034
+        "linux/amd64": 168804304
       },
       "base": null,
-      "builtAt": "2026-10-25T21:44:39Z",
+      "builtAt": "2026-10-26T10:11:21Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "08101caa276631845514a4129e437685953e473b717c82b0c4cb1bafdce69c49",
+      "fingerprint": "f287264383b184ce72313f270004fd07d771487a47ca21aa44f22eec3ff10373",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:47:34Z",
+      "checkedAt": "2026-10-26T10:13:35Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -573,19 +573,19 @@
       "tag": "rust",
       "image": "ghcr.io/sneakywrld/octail-yolks:rust",
       "kind": "runtime",
-      "digest": "sha256:7ec66f8fd3dfaa91306ca2dd8a6f7736585a537f83c70ac0750c257ab3bb9675",
+      "digest": "sha256:a524657ba89babd80ad8c122039648bed1855ef3fff292d1fa19de74739e0647",
       "platforms": [
         "linux/amd64"
       ],
       "compressedSize": {
-        "linux/amd64": 158487265
+        "linux/amd64": 158487974
       },
       "base": null,
-      "builtAt": "2026-10-25T21:47:12Z",
+      "builtAt": "2026-10-26T10:12:22Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "71c1cbf8c1ae74afb23ad9a03dd1307e2bf7d663d79c42888680484649e06244",
+      "fingerprint": "f963309c1f6002a83f4528f5135962d128d8730c62652c8afdeec93b76050f98",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:49:48Z",
+      "checkedAt": "2026-10-26T10:15:17Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -594,19 +594,19 @@
       "tag": "proton",
       "image": "ghcr.io/sneakywrld/octail-yolks:proton",
       "kind": "runtime",
-      "digest": "sha256:61b148f76a5925554e8bd368bc8e7ae6acc87538c54a9775b2ad74d3b5c1e2b6",
+      "digest": "sha256:a67ddfffdce51d4ea8d35f4b2da7fbbd4711d00204ed57c41bc0c84e35a13d93",
       "platforms": [
         "linux/amd64"
       ],
       "compressedSize": {
-        "linux/amd64": 720508361
+        "linux/amd64": 720509867
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:00Z",
+      "builtAt": "2026-10-26T10:12:27Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "7b19454073d3fde3f2af9509ac363ca3be65a1ba5c41e1af204ca68af66590fb",
+      "fingerprint": "8e3c664dc9f34606984b19d65b128809e2a57c72c5771c53d9a760edbdf4c795",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:47:06Z",
+      "checkedAt": "2026-10-26T10:18:04Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -615,19 +615,19 @@
       "tag": "wine",
       "image": "ghcr.io/sneakywrld/octail-yolks:wine",
       "kind": "runtime",
-      "digest": "sha256:091a850fea322d3275f88f1ebaeaf0ca0fbb5e6b5b34bed4932e00d0f250c0ff",
+      "digest": "sha256:e205ee491ea5d092d894869c88674f4cf695e9e636d1daf500f89f2630597c03",
       "platforms": [
         "linux/amd64"
       ],
       "compressedSize": {
-        "linux/amd64": 1024036461
+        "linux/amd64": 1024039492
       },
       "base": null,
-      "builtAt": "2026-10-25T21:40:57Z",
+      "builtAt": "2026-10-26T10:06:44Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "552c9399162d84132142de705fbdf4be538967a1555793bcf3eea97bb0eb47f1",
+      "fingerprint": "4b8f99712374b3ec95a460fed6e7f9a3da23fc541532e1d760cf0ef89dc623e7",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:47:00Z",
+      "checkedAt": "2026-10-26T10:13:54Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -636,19 +636,19 @@
       "tag": "wine_staging",
       "image": "ghcr.io/sneakywrld/octail-yolks:wine_staging",
       "kind": "runtime",
-      "digest": "sha256:d4688636b8906477ad49c392e4ca2c063c66804cc678779ae68fcb56d1cac6e7",
+      "digest": "sha256:47c8293949a0558ecfb5713475701d44721ee2a9fbe9204c4fa7ef1de2cb4660",
       "platforms": [
         "linux/amd64"
       ],
       "compressedSize": {
-        "linux/amd64": 1102888049
+        "linux/amd64": 1102891534
       },
       "base": null,
-      "builtAt": "2026-10-25T21:45:55Z",
+      "builtAt": "2026-10-26T10:06:47Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "00a24a80535f299e3bebecbffb1728a4670eb4b34f68c85b8e078077ccc4e7db",
+      "fingerprint": "23181752b5dce6d4f3b37894bfa15d82fda801d453e47e404ec04613d629d935",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:54:03Z",
+      "checkedAt": "2026-10-26T10:15:04Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -657,21 +657,21 @@
       "tag": "mono",
       "image": "ghcr.io/sneakywrld/octail-yolks:mono",
       "kind": "runtime",
-      "digest": "sha256:705b8ec1d2a5d9905899b9123d475fabd16a81d9f90fcd492ef15ffe39355ea2",
+      "digest": "sha256:a7136fca3b2078b2d6d9d1221c8acbe5aaaccfe67ed43548479b40f563ed5100",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 193604007,
-        "linux/arm64": 184283157
+        "linux/amd64": 193603151,
+        "linux/arm64": 184284664
       },
       "base": null,
-      "builtAt": "2026-10-25T21:43:39Z",
+      "builtAt": "2026-10-26T10:09:49Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "004e66f3cba478a042c115bbb7d4576cedc1ee65cb507efd59c6edd176e281b2",
+      "fingerprint": "85111f279e2439a4d5812d3218eede173fcbd206cc6d559d75fe5c586dfa5dac",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:52:33Z",
+      "checkedAt": "2026-10-26T10:18:57Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -680,21 +680,21 @@
       "tag": "installer_debian",
       "image": "ghcr.io/sneakywrld/octail-yolks:installer_debian",
       "kind": "installer",
-      "digest": "sha256:59fddb672380f6bc3a7ce7fe5362c04f6153afc89ebeb2ce97154ff735ab5aaa",
+      "digest": "sha256:bb0113ef5d39f5469d34ae539641a590410a4edf6715faf120ed4ce4189e72a8",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 105534449,
-        "linux/arm64": 99583811
+        "linux/amd64": 105533477,
+        "linux/arm64": 99582022
       },
       "base": null,
-      "builtAt": "2026-10-25T21:41:02Z",
+      "builtAt": "2026-10-26T10:09:55Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "c738b9505d3710db14bf3a91692602af48ed0574a07fef6596f7aeef3b8af421",
+      "fingerprint": "90529fed8572536d0bb574095fb62823f79be3b5efebf83ead5dfc5dec1d6e36",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:47:09Z",
+      "checkedAt": "2026-10-26T10:14:17Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -703,21 +703,21 @@
       "tag": "installer_alpine",
       "image": "ghcr.io/sneakywrld/octail-yolks:installer_alpine",
       "kind": "installer",
-      "digest": "sha256:5c05afba4a876c93c2e1a2a6b198bfb95f59dbde7a1892d5b2caef2362a68ad1",
+      "digest": "sha256:016b98427a5c897c1e495599885b19a87c379dc5170a55cff8c9a790302d7399",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 21121112,
-        "linux/arm64": 21739162
+        "linux/amd64": 21121003,
+        "linux/arm64": 21739184
       },
       "base": null,
-      "builtAt": "2026-10-25T21:42:35Z",
+      "builtAt": "2026-10-26T10:12:23Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "4cd4d4a2ac0a46e053db638528ba5c8695de21aaff0ba2a3db3f69a7eea02941",
+      "fingerprint": "2f71bd105c8e7ce7edbc689141ab27cce90151d87ecaf7eb7b6b0a01aab76232",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:44:29Z",
+      "checkedAt": "2026-10-26T10:13:47Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -726,21 +726,21 @@
       "tag": "installer_java_8",
       "image": "ghcr.io/sneakywrld/octail-yolks:installer_java_8",
       "kind": "installer",
-      "digest": "sha256:5ced9fc7568d6507a995145b4b942767d09d407486c5082137cdc243fe7f31fb",
+      "digest": "sha256:5ae17310fcdf7d181b535ea289cf96e2d3b4fae15f0c47a9401793dcf076f82a",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 135884808,
-        "linux/arm64": 133911844
+        "linux/amd64": 135884794,
+        "linux/arm64": 133911815
       },
       "base": null,
-      "builtAt": "2026-10-25T21:46:32Z",
+      "builtAt": "2026-10-26T10:06:46Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "b4bcd4f20dab866a6c487ad049ba4af5e6e6a002952ceeb6bf13cd9d38c0b6f2",
+      "fingerprint": "c06843881020d6d7fbf1e8aae8e4590fdaf0b7add0e55c0e26027a95d121f86d",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:51:49Z",
+      "checkedAt": "2026-10-26T10:12:01Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -749,21 +749,21 @@
       "tag": "installer_java_11",
       "image": "ghcr.io/sneakywrld/octail-yolks:installer_java_11",
       "kind": "installer",
-      "digest": "sha256:cefa7a5c0b3f9843b0296ef35b904638cab7467e021e6678883837540fc75b1a",
+      "digest": "sha256:7eca3e278516f66569556927fd34367c3cffe4caa6501c62596ca5a8e33bc6bc",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 226558720,
-        "linux/arm64": 222236743
+        "linux/amd64": 226558712,
+        "linux/arm64": 222236714
       },
       "base": null,
-      "builtAt": "2026-10-25T21:45:02Z",
+      "builtAt": "2026-10-26T10:06:46Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "f3042d5090fc84948ed43e6c01a621591942382123e38d4f2b342a2810a2d712",
+      "fingerprint": "c0e111666e0d0bd1451b130f01885b8799b9f644c8936caa184f9f4436e5cfae",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:50:32Z",
+      "checkedAt": "2026-10-26T10:12:39Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -772,21 +772,21 @@
       "tag": "installer_java_17",
       "image": "ghcr.io/sneakywrld/octail-yolks:installer_java_17",
       "kind": "installer",
-      "digest": "sha256:d9c4045c04d99e57087557a7f4e7d7a1b1ecb3d74553f0dd641c601b4a9d11e2",
+      "digest": "sha256:1e9ca5380dcbce5f723d1438b29b72c2069870e9a533791212d29e6dbd0c698f",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 232517705,
-        "linux/arm64": 231490494
+        "linux/amd64": 232517613,
+        "linux/arm64": 231490526
       },
       "base": null,
-      "builtAt": "2026-10-25T21:40:59Z",
+      "builtAt": "2026-10-26T10:06:43Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "b3ac4d397e8d20e4243f3ceab18d1350c039b4e5ba0e5b32f92d3b94cf8b639b",
+      "fingerprint": "5efa5efaf9a0690967c6100ade5255251aaa68e4c9d1e2a78aba915e7058bd70",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:46:19Z",
+      "checkedAt": "2026-10-26T10:12:44Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -795,21 +795,21 @@
       "tag": "installer_java_21",
       "image": "ghcr.io/sneakywrld/octail-yolks:installer_java_21",
       "kind": "installer",
-      "digest": "sha256:e1ba76bb66409a2c33f7998435e3213d4298131030b462d5c4216a3c44e4c937",
+      "digest": "sha256:ecd1cb1c1e00523ab40b5c9661e7d9e2ea2353b1c4b608c7fed5aed0bc43ad0b",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 244806469,
-        "linux/arm64": 243242885
+        "linux/amd64": 244806499,
+        "linux/arm64": 243242852
       },
       "base": null,
-      "builtAt": "2026-10-25T21:45:17Z",
+      "builtAt": "2026-10-26T10:06:44Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "9d20f47bd85e15b7dd5c7b8a04bef9f10afaf6314e24c92ecb6fd2bd80853d2e",
+      "fingerprint": "59b83c883e3828191c9c32f2879ef34c1d77221e900367ad0970053bd81d52ce",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:50:37Z",
+      "checkedAt": "2026-10-26T10:12:26Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
@@ -818,21 +818,21 @@
       "tag": "installer_java_25",
       "image": "ghcr.io/sneakywrld/octail-yolks:installer_java_25",
       "kind": "installer",
-      "digest": "sha256:68cda99af98170226ddafd16d0b180cd319e4e10c509f290337190c3cc50fe65",
+      "digest": "sha256:31d42d6ecffa6917e7bb1a42483a546fb7b3d1e77858443a723b1ecb93a7118c",
       "platforms": [
         "linux/amd64",
         "linux/arm64"
       ],
       "compressedSize": {
-        "linux/amd64": 177224727,
-        "linux/arm64": 176315338
+        "linux/amd64": 177224491,
+        "linux/arm64": 176315503
       },
       "base": null,
-      "builtAt": "2026-10-25T21:45:09Z",
+      "builtAt": "2026-10-26T10:06:43Z",
       "revision": "6678f20335d751e2adf95b5dbbe2a21d228a022c",
-      "fingerprint": "becc13138b74cf33ad33087266ecd794b39cf9e0ac44ad8d09b2e8058f948443",
+      "fingerprint": "8311c10d36a25a2f9c4ad3987c914c3377f88703b798f909cc5d437610a37fa4",
       "pushed": true,
-      "checkedAt": "2026-10-25T21:50:25Z",
+      "checkedAt": "2026-10-26T10:12:06Z",
       "vulnerabilities": null,
       "fixable": null,
       "scan": null
