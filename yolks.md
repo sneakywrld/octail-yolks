@@ -178,6 +178,13 @@ several images (the Minecraft Java eggs offer Java 8 to 25) is listed under each
 Newest first. Dates are when the work landed in the Octail monorepo, where this repository's folder lives; "round" is
 the batch of parallel work it came in.
 
+### 2026-10-26: Node.js 26, Python 3.15, build info
+
+- **New tags**: `nodejs_26` (`node:26-bookworm-slim`, LTS from late October 2026; the Node.js App egg keeps Node 24
+  LTS as its default until then) and `python_3.15` (`python:3.15-slim-bookworm`, now the Python App egg's default).
+- **Build info**: every image that starts through the entrypoint carries `OCTAIL_IMAGE=<tag>-<yyyymmdd>` (the
+  dated tag CI pushes), so the console banner says which build runs instead of `(no build info)`.
+
 ### 2026-10-25: code scanning cleared
 
 GitHub code scanning had 1,929 open Trivy alerts. What they were and what changed:

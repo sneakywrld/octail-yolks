@@ -3,10 +3,10 @@ window.OCTAIL_YOLKS_STATS = {
   "schema": 1,
   "registry": "ghcr.io/sneakywrld/octail-yolks",
   "eggs_repo": "https://github.com/sneakywrld/octail-eggs",
-  "images": 37,
-  "runtime": 30,
+  "images": 39,
+  "runtime": 32,
   "installers": 7,
-  "multi_arch": 28,
+  "multi_arch": 30,
   "eggs_total": 158,
   "eggs_tested": {
     "pass": 143,
@@ -46,9 +46,11 @@ window.OCTAIL_YOLKS_STATS = {
         "nodejs_20",
         "nodejs_22",
         "nodejs_24",
+        "nodejs_26",
         "python_3.12",
         "python_3.13",
         "python_3.14",
+        "python_3.15",
         "go_1.26",
         "go_1.27",
         "bun_1",
@@ -423,6 +425,28 @@ window.OCTAIL_YOLKS_STATS = {
       "ci": null
     },
     {
+      "tag": "nodejs_26",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Node.js 26 (Debian 12) with git and native-module build tools; LTS from late October 2026",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "node:26-bookworm-slim",
+      "distro": "Debian 12",
+      "eggs": [
+        "nodejs-app"
+      ],
+      "tested": {
+        "pass": 1,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 0
+      },
+      "ci": null
+    },
+    {
       "tag": "python_3.12",
       "kind": "runtime",
       "family": "runtimes",
@@ -476,6 +500,28 @@ window.OCTAIL_YOLKS_STATS = {
         "arm64"
       ],
       "base": "python:3.14-slim-bookworm",
+      "distro": "Debian 12",
+      "eggs": [
+        "python-app"
+      ],
+      "tested": {
+        "pass": 1,
+        "fail": 0,
+        "blocked": 0,
+        "untested": 0
+      },
+      "ci": null
+    },
+    {
+      "tag": "python_3.15",
+      "kind": "runtime",
+      "family": "runtimes",
+      "description": "Python 3.15 (Debian 12) with git and a C compiler for wheels",
+      "platforms": [
+        "amd64",
+        "arm64"
+      ],
+      "base": "python:3.15-slim-bookworm",
       "distro": "Debian 12",
       "eggs": [
         "python-app"

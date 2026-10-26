@@ -43,10 +43,12 @@ updates:
       - /images/nodejs_20
       - /images/nodejs_22
       - /images/nodejs_24
+      - /images/nodejs_26
       - /images/proton
       - /images/python_3.12
       - /images/python_3.13
       - /images/python_3.14
+      - /images/python_3.15
       - /images/rust
       - /images/source
       - /images/steamcmd_debian

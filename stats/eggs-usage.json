@@ -1197,6 +1197,12 @@
       ],
       "installer": []
     },
+    "nodejs_26": {
+      "runtime": [
+        "nodejs-app"
+      ],
+      "installer": []
+    },
     "proton": {
       "runtime": [
         "abiotic-factor",
@@ -1221,6 +1227,12 @@
       "installer": []
     },
     "python_3.14": {
+      "runtime": [
+        "python-app"
+      ],
+      "installer": []
+    },
+    "python_3.15": {
       "runtime": [
         "python-app"
       ],
