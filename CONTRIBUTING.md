@@ -40,8 +40,10 @@ applied there by hand and come back with the next publish, so your commit may ar
 6. **Tests**: behaviour that runs without Docker (a hook, the entrypoint) gets a case in `test/run.sh`
    (entrypoint features that need neither jq nor python go in `test/entrypoint.sh`, which also runs on its own,
    e.g. in Git Bash on Windows).
-7. **Build info** (optional): `ENV OCTAIL_IMAGE=<tag>-<yyyymmdd>` or a one-line `/etc/octail/image` shows in the
-   entrypoint's banner; without it the banner says `(no build info)`.
+7. **Build info**: an image that starts through the entrypoint ends with `ARG OCTAIL_IMAGE=` and
+   `ENV OCTAIL_IMAGE=${OCTAIL_IMAGE}` right before `ENTRYPOINT` (copy the block from another image;
+   `test/check-images.sh` checks it). CI passes `<tag>-<yyyymmdd>`, the dated tag it pushes, and the entrypoint's
+   banner shows it; a local build without the argument says `(no build info)`.
 
 ## Changing the entrypoint
 

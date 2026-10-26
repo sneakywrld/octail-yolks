@@ -189,6 +189,14 @@ if [ "${repo_mode}" = 1 ]; then
 		rows=$(grep -cF "| <a name=\"${tag}\"></a>\`${tag}\` |" "${root}/README.md")
 		[ "${rows}" = 1 ] || err "README.md: the tag table should have one row for ${tag} (found ${rows})"
 	done < <(jq -r '.images[].tag' "${root}/images.json")
+
+	# Images that start through the entrypoint carry the build info its banner shows (CI passes OCTAIL_IMAGE).
+	for dockerfile in "${root}"/images/*/Dockerfile; do
+		grep -qF 'CMD ["/entrypoint.sh"]' "${dockerfile}" || continue
+		if ! grep -qxF 'ARG OCTAIL_IMAGE=' "${dockerfile}" || ! grep -qxF "ENV OCTAIL_IMAGE=\${OCTAIL_IMAGE}" "${dockerfile}"; then
+			err "${dockerfile#"${root}/"}: needs ARG OCTAIL_IMAGE= and ENV OCTAIL_IMAGE=\${OCTAIL_IMAGE} before ENTRYPOINT"
+		fi
+	done
 fi
 
 if [ "${errors}" -gt 0 ]; then

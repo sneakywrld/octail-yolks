@@ -479,7 +479,8 @@ image → tag map is in `images.json` (`replaces`) and in Octail's `scripts/eggs
      `octail: image java_21-20261023 on Ubuntu 24.04.3 LTS, user container (uid 988), TZ UTC, umask 0022` and
      `octail: limits: memory 4710 MiB (server 4096 MiB), CPU 250%, threads 512, open files 1048576, /tmp 100 MiB`
      (the container's cgroup limits; memory is the plan plus Tentacle's JVM overhead). The image part comes from
-     `OCTAIL_IMAGE` or the first line of `/etc/octail/image` when the image has one, else `(no build info)`. A `TZ`
+     `OCTAIL_IMAGE` (CI builds set it to the dated tag they push, e.g. `java_21-20261026`) or the first line of
+     `/etc/octail/image` when the image has one, else `(no build info)`. A `TZ`
      the image has no zone file for gets one warning line (the C library silently uses UTC then).
   3. Source the image's hooks from `/etc/octail/entrypoint.d/*.sh` (below).
   4. Run the server owner's [pre-start scripts](#pre-start-scripts-of-a-server), if the server has any.

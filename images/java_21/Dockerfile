@@ -32,5 +32,9 @@ ENV HOME=/home/container \
 USER container
 WORKDIR /home/container
 STOPSIGNAL SIGINT
+# The console banner's image line (common/entrypoint.sh): CI passes the dated tag it pushes, <tag>-<yyyymmdd>.
+# Metadata only, last, so a new date never rebuilds a layer.
+ARG OCTAIL_IMAGE=
+ENV OCTAIL_IMAGE=${OCTAIL_IMAGE}
 ENTRYPOINT ["/usr/bin/tini", "-g", "--"]
 CMD ["/entrypoint.sh"]

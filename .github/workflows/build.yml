@@ -216,6 +216,7 @@ jobs:
           pull: true
           load: true
           tags: octail-yolks-smoke:${{ matrix.image.tag }}
+          build-args: OCTAIL_IMAGE=${{ matrix.image.tag }}-${{ steps.meta.outputs.date }}
           cache-from: type=gha,scope=${{ matrix.image.tag }}
 
       - name: Boot test
@@ -273,6 +274,7 @@ jobs:
           pull: true
           push: ${{ github.event_name != 'pull_request' && steps.check.outputs.push == 'true' }}
           provenance: mode=max
+          build-args: OCTAIL_IMAGE=${{ matrix.image.tag }}-${{ steps.meta.outputs.date }}
           sbom: true
           tags: |
             ${{ steps.meta.outputs.registry }}:${{ matrix.image.tag }}
